@@ -15,7 +15,7 @@ bnb_quantization_config_path = None
 pretrained_model_name_or_path = (
     "Qwen/Qwen-Image-2512"
 )
-huggingface_token = "***REMOVED***"
+#huggingface_token = 
 
 # LoRA 通用默认
 use_lora = True
