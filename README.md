@@ -55,56 +55,18 @@ See [OpenSciDraw/README.md](OpenSciDraw/README.md) for detailed module documenta
 ### Environment Setup
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd ScienceFlow
+# for qwenimage2512:
+bash env_setup/init_qwen25_env.sh
 
-# Create and activate conda environment
-conda create -n scienceflow python=3.10
-conda activate scienceflow
-
-# Install dependencies
-bash env_setup/install_dependencies.sh
-
-# Or install manually
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
-pip install diffusers transformers accelerate peft prodigyopt
-pip install pyarrow pandas pillow wandb
-```
-
-### Verify Installation
-
-```bash
-python -c "import torch; print(f'PyTorch: {torch.__version__}')"
-python -c "import diffusers; print(f'Diffusers: {diffusers.__version__}')"
+# for flux.2-klein-base-9B
+bash env_setup/init_flux2_env.sh
 ```
 
 ## 🚀 Quick Start
 
-### 1. Prepare Data
+Please view `amlt/` for detailed runnning scripts. We use accelerate.
 
-ScienceFlow supports two data modes:
-
-**Option A: Parquet Dataset (Recommended for large-scale training)**
-```bash
-# Pre-compute latents and embeddings
-python prepare_parquet_dataset.py \
-    --model_type Flux2Klein \
-    --input_dir /path/to/images \
-    --output_dir /path/to/parquet_output
-```
-
-**Option B: Online Processing**
-- Images and captions are processed on-the-fly during training
-- Suitable for small datasets or prototyping
-
-### 2. Configure Training
-
-Edit or create a config file in `configs/`:
-
-```python
-# configs/my_experiment.py
-_base_ = '../base_config.py'
+For any new experiments please modify `configs/base_config.py`
 
 model_type = 'Flux2Klein'  # or 'QwenImage'
 pretrained_model_name_or_path = "black-forest-labs/FLUX.2-klein-base-9B"
@@ -357,84 +319,6 @@ mixed_precision = "bf16"  # or "fp16"
 rank = 64
 ```
 
-#### 2. **Loss Too High / Not Converging**
-
-**Symptoms:** Loss stays around 2.0+ or increases
-
-**Solutions:**
-```python
-# Try Prodigy optimizer (adaptive learning rate)
-optimizer = "prodigy"
-learning_rate = 1.0
-
-# Verify position ID format (critical for Flux2Klein)
-# Should be: [T=0, H_idx, W_idx, L=0] for images
-#            [T=0, H=0, W=0, L=idx] for text
-
-# Check latent normalization
-# Flux2Klein requires: patchify → BatchNorm normalize
-
-# Verify data quality
-# - Check parquet files are correctly generated
-# - Verify latents have reasonable range (-10 to 10 before norm)
-```
-
-#### 3. **Blurry/Noisy Generated Images**
-
-**Symptoms:** Validation images are completely distorted
-
-**Causes & Solutions:**
-- **Wrong Position IDs**: Fixed in our implementation (see [Flux2Klein_train_iteration_func.py](OpenSciDraw/train_iteration_funcs/Flux2Klein_train_iteration_func.py))
-- **Missing Latent Normalization**: Ensure patchify + BN norm is applied
-- **Incorrect Data Format**: Verify parquet dataset structure
-- **Training Instability**: Try lower learning rate or Prodigy optimizer
-
-#### 4. **DataLoader Hangs / Slow**
-
-**Solutions:**
-```python
-# Adjust num_workers
-dataloader_num_workers = 4  # Try different values (2, 4, 8)
-
-# Enable pin_memory
-# Already enabled in train_OpenSciDraw_loop.py
-
-# Check disk I/O
-# - Use SSD for parquet files
-# - Pre-fetch data to local disk if using network storage
-```
-
-#### 5. **LoRA Layers Not Found**
-
-**Symptoms:** Warning about unexpected keys or no trainable parameters
-
-**Solutions:**
-```python
-# Verify layer names with model architecture
-# For Flux2Klein, ensure you include both:
-# - MMDiT blocks: to_out.0
-# - Single blocks: attn.to_out (no .0)
-
-# Use explicit layer names
-lora_layers = "attn.to_k,attn.to_q,..."  # More explicit
-```
-
-## 📊 Performance Benchmarks
-
-### Flux2Klein Training (A100 80GB)
-
-| Config | Batch Size | Grad Accum | Memory | Speed (steps/s) |
-|--------|------------|------------|--------|-----------------|
-| LoRA-128 + BF16 | 2 | 1 | ~45GB | 1.2 |
-| LoRA-64 + BF16 | 4 | 1 | ~55GB | 0.9 |
-| LoRA-128 + FP16 | 2 | 2 | ~42GB | 1.1 |
-
-### Expected Training Time
-
-- **Small Dataset** (10K samples): 2-4 hours @ 4x A100
-- **Medium Dataset** (100K samples): 1-2 days @ 4x A100
-- **Large Dataset** (1M samples): 7-10 days @ 4x A100
-
 ## 🐛 Known Issues
 
 1. **Flux2Klein VAE Loading**: Requires HuggingFace token for gated models
@@ -448,44 +332,9 @@ lora_layers = "attn.to_k,attn.to_q,..."  # More explicit
 
 ## 📚 Additional Resources
 
-- [OpenSciDraw Module Documentation](OpenSciDraw/README.md)
 - [Flux2Klein Official Repo](https://github.com/black-forest-labs/flux)
 - [Diffusers Documentation](https://huggingface.co/docs/diffusers)
 - [PEFT Documentation](https://huggingface.co/docs/peft)
-
-## 🤝 Contributing
-
-We welcome contributions! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes with clear commit messages
-4. Add/update documentation
-5. Submit a pull request
-
-## 📝 Citation
-
-If you use ScienceFlow in your research, please cite:
-
-```bibtex
-@software{scienceflow2026,
-  title = {ScienceFlow: A Unified Framework for Scientific Figure Generation},
-  author = {Your Name},
-  year = {2026},
-  url = {https://github.com/your-org/ScienceFlow}
-}
-```
-
-## 📄 License
-
-[Your License Here]
-
-## 🙏 Acknowledgments
-
-- Flux2Klein by Black Forest Labs
-- QwenImage by Alibaba DAMO Academy
-- Diffusers by HuggingFace
-- PEFT library for LoRA implementation
 
 ---
 
