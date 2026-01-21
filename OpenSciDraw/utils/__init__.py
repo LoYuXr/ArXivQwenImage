@@ -20,6 +20,18 @@ from .lora_utils import add_lora_and_load_ckpt_to_models
 from .lora_utils import DummyImagePipeline
 from .general_util_funcs import get_module_recursively, seed_everything
 
+# Model Factory: Dynamic model loading based on config.model_type
+from .model_factory import (
+    ModelFactory,
+    ModelSpec,
+    MODEL_REGISTRY,
+    initialize_models,
+    get_pipeline_class,
+    get_transformer_class,
+    get_model_spec,
+    register_model,
+)
+
 __all__ = [
     'parse_config',
     'unwrap_model',
@@ -36,4 +48,13 @@ __all__ = [
     'seed_everything',
     'pack_latents',
     'unpack_latents',
+    # Model Factory exports
+    'ModelFactory',
+    'ModelSpec',
+    'MODEL_REGISTRY',
+    'initialize_models',
+    'get_pipeline_class',
+    'get_transformer_class',
+    'get_model_spec',
+    'register_model',
 ]

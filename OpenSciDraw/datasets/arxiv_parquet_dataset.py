@@ -54,6 +54,9 @@ class ArXiVParquetDataset(Dataset):
 
         self.meta_df = self.meta_df.iloc[:num_train_examples]
         print(f"✅ Loaded {len(self.meta_df)} samples.")
+        
+    def __len__(self):
+        return len(self.meta_df)
 
     def _parallel_load_metadata(self, paths, max_workers, num_train_examples):
         meta_list = []

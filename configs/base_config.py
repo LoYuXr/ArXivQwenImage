@@ -9,12 +9,21 @@ variant = None
 
 bnb_quantization_config_path = None
 
+# ====== Model Type (for model factory) ======
+# Supported: 'QwenImage', 'Flux2Klein'
+# This determines which model classes to load (VAE, Transformer, Pipeline, etc.)
+model_type = 'QwenImage'
+
 # Transformer 架构
+transformer_cfg = dict(
+    type='QwenImageTransformer2DModel',
+)
 
 # ====== 模型权重与结构 ======
 pretrained_model_name_or_path = (
     "Qwen/Qwen-Image-2512"
 )
+huggingface_token = "" #PLEASE FILLIN
 
 # LoRA 通用默认
 use_lora = True

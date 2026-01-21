@@ -35,7 +35,8 @@ from tqdm.auto import tqdm
 
 import torch
 import torch.utils.checkpoint
-
+from torch.utils.data import RandomSampler
+from torch.utils.data import DistributedSampler
 # Accelerate
 from accelerate import Accelerator, DistributedType
 from accelerate.logging import get_logger
@@ -44,17 +45,12 @@ from accelerate.utils import (
     ProjectConfiguration,
     set_seed,
 )
+from accelerate import Accelerator, DataLoaderConfiguration
 
 # Transformers / Diffusers
 import transformers
 import diffusers
-from diffusers import (
-    AutoencoderKLQwenImage,
-    BitsAndBytesConfig,
-    FlowMatchEulerDiscreteScheduler,
-    QwenImagePipeline,
-    QwenImageTransformer2DModel,
-)
+from diffusers import BitsAndBytesConfig
 from diffusers.optimization import get_scheduler
 from diffusers.training_utils import (
     _collate_lora_metadata,
@@ -96,8 +92,13 @@ from OpenSciDraw.utils import (
     parse_config,
     unwrap_model,
     get_trainable_params,
-    initialize_QwenImage_all_models,
+    initialize_QwenImage_all_models,  # Legacy, kept for backward compatibility
     add_lora_and_load_ckpt_to_models,
+    # Model Factory: Dynamic model loading
+    ModelFactory,
+    initialize_models,
+    get_pipeline_class,
+    get_transformer_class,
 )
 
 # =========================================================
@@ -206,12 +207,16 @@ def main(config):
         logging_dir=logging_dir
     )
     kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
+    
+    dataloader_config = DataLoaderConfiguration(dispatch_batches=False)
+    
     accelerator = Accelerator(
         gradient_accumulation_steps=config.gradient_accumulation_steps,
         mixed_precision=config.mixed_precision,
         log_with=config.report_to,
         project_config=accelerator_project_config,
         kwargs_handlers=[kwargs],
+        dataloader_config=dataloader_config,
     )
     
     # Disable AMP for MPS.
@@ -271,6 +276,15 @@ def main(config):
             config.learning_rate * config.gradient_accumulation_steps * config.train_batch_size * accelerator.num_processes
         )
 
+    # =========================================================
+    # Model Initialization via Model Factory
+    # =========================================================
+    # Use the unified model factory based on config.model_type
+    # Supported types: 'QwenImage', 'Flux2Klein', etc.
+    model_type = getattr(config, 'model_type', 'QwenImage')
+    logger.info(f"[INFO] Using model type: {model_type}")
+    
+    model_factory = ModelFactory(config)
     (
         vae,
         transformer,
@@ -279,10 +293,14 @@ def main(config):
         noise_scheduler,
         text_encoding_pipeline,
         vae_scale_factor,
-    ) = initialize_QwenImage_all_models(config)
+    ) = model_factory.load_all()
     
-    latents_mean = (torch.tensor(vae.config.latents_mean).view(1, vae.config.z_dim, 1, 1, 1)).to(accelerator.device) # 这个vae不大一样，16维的latent
-    latents_std = 1.0 / torch.tensor(vae.config.latents_std).view(1, vae.config.z_dim, 1, 1, 1).to(accelerator.device)
+    # Get the Pipeline and Transformer classes for save/load hooks
+    PipelineClass = model_factory.PipelineClass
+    TransformerClass = model_factory.TransformerClass
+    
+    # Get latents mean/std (model-specific)
+    latents_mean, latents_std = model_factory.get_latents_stats(vae, accelerator.device)
 
     noise_scheduler_copy = copy.deepcopy(noise_scheduler)
 
@@ -352,7 +370,8 @@ def main(config):
                     if weights:
                         weights.pop()
 
-                QwenImagePipeline.save_lora_weights(  ### 我们如何根据config.transformer_cfg = dict(type='QwenImageTransformer2DModel',)来动态获取QwenImagePipeline???
+                # Use dynamic PipelineClass from model factory
+                PipelineClass.save_lora_weights(
                     model_output_dir,
                     transformer_lora_layers=transformer_lora_layers_to_save,
                     **_collate_lora_metadata(modules_to_save),
@@ -371,12 +390,14 @@ def main(config):
                     else:
                         raise ValueError(f"unexpected save model: {model.__class__}")
             else:
-                transformer_ = QwenImageTransformer2DModel.from_pretrained( #同理，如何动态获取???
+                # Use dynamic TransformerClass from model factory
+                transformer_ = TransformerClass.from_pretrained(
                     config.pretrained_model_name_or_path, subfolder="transformer"
                 )
                 transformer_.add_adapter(transformer_lora_config)
 
-            lora_state_dict = QwenImagePipeline.lora_state_dict(input_dir) #同理，如何动态获取???
+            # Use dynamic PipelineClass for loading lora state dict
+            lora_state_dict = PipelineClass.lora_state_dict(input_dir)
 
             transformer_state_dict = {
                 f"{k.replace('transformer.', '')}": v for k, v in lora_state_dict.items() if k.startswith("transformer.")
@@ -487,20 +508,54 @@ def main(config):
     # train_dataset = DATASETS.build(config.dataset)
     
     # data sampler config refine
-    sampler_configs = config.data_sampler
-    sampler_configs["num_replicas"] = accelerator.num_processes  # <--- 总卡数
-    sampler_configs["rank"] = accelerator.process_index      # <--- 当前卡是第几
-    config.data_sampler = sampler_configs
+    # sampler_configs = config.data_sampler
+    # sampler_configs["num_replicas"] = accelerator.num_processes  # <--- 总卡数
+    # sampler_configs["rank"] = accelerator.process_index      # <--- 当前卡是第几
+    # config.data_sampler = sampler_configs
+    # train_sampler = DATASETS.build(
+    #     config.data_sampler, default_args={"dataset": train_dataset})
+    base_sampler = DistributedSampler(
+        train_dataset,
+        num_replicas=1,#accelerator.num_processes,
+        rank=0,#accelerator.process_index,
+        shuffle=True,
+        seed=config.seed
+    )
+    # sampler_configs = config.data_sampler.copy()
+    # sampler_configs["sampler"] = base_sampler
+    # sampler_configs["dataset"] = train_dataset
+    # sampler_configs["num_replicas"] = accelerator.num_processes  # <--- 总卡数
+    # sampler_configs["rank"] = accelerator.process_index      # <--- 当前卡是第几
+    # config.data_sampler = sampler_configs
+    mysampler_configs = {
+        "type": "ArXiVMixScaleBatchSampler",
+        "dataset": train_dataset,
+        "batch_size": config.train_batch_size,
+        "num_replicas": 1, #accelerator.num_processes,
+        "rank": 0, #accelerator.process_index,
+        "drop_last": True,
+        "shuffle": True,
+        "seed": config.seed
+    }
+    train_sampler = DATASETS.build(mysampler_configs)
 
-    train_sampler = DATASETS.build(
-        config.data_sampler, default_args={"dataset": train_dataset})
+
+    #train_sampler = DATASETS.build(config.data_sampler)
     
     train_dataloader = torch.utils.data.DataLoader(
         train_dataset,
         batch_sampler=train_sampler,
         num_workers=config.dataloader_num_workers,
         collate_fn=train_dataset.collate_fn,
+        pin_memory=True # 建议开启提升效率
     )
+    
+    # train_dataloader = torch.utils.data.DataLoader(
+    #     train_dataset,
+    #     batch_sampler=train_sampler,
+    #     num_workers=config.dataloader_num_workers,
+    #     collate_fn=train_dataset.collate_fn,
+    # )
     
     
     lr_scheduler = get_scheduler(
@@ -518,7 +573,7 @@ def main(config):
     transformer, optimizer, train_dataloader, lr_scheduler = accelerator.prepare(
         transformer, optimizer, train_dataloader, lr_scheduler
     )
-
+    
     if accelerator.is_main_process:
         tracker_name = config.tracker_name
         accelerator.init_trackers(
@@ -611,7 +666,7 @@ def main(config):
                         accelerator,
                         config,
                     )
-
+                    
                     # 1. 收集所有显卡的 loss 用于日志
                     # 注意：这里 loss 已经是标量了
                     avg_loss = accelerator.gather(loss.repeat(bs)).mean()
@@ -628,7 +683,20 @@ def main(config):
                         optimizer.step()
                         lr_scheduler.step()
                         optimizer.zero_grad()
-                        
+                    
+                    ################## debug only  ##################
+                    # progress_bar.update(1)
+                    # global_step += 1
+                    # progress_bar.set_postfix(status="Scanning Data...")    
+                    
+                    # if step % 100 == 0:
+                    # # 假设 batch['image_path'] 是一个 list
+                    #     caption = batch['captions'][0] 
+                    #     print(f"[Rank {accelerator.process_index}] Step {step}: {caption}")
+                    
+                    #################################################
+                    
+                    
                         # --- 进度条与检查点逻辑 ---
                         progress_bar.update(1)
                         global_step += 1
@@ -682,7 +750,7 @@ def main(config):
                                     torch.cuda.empty_cache()
                         
 
-                    # accelerator.wait_for_everyone() # 通常不需要每步都等，save_state 内部会处理
+                    accelerator.wait_for_everyone() # 通常不需要每步都等，save_state 内部会处理
 
             except torch.cuda.OutOfMemoryError:
                 print("Skipping batch due to OOM...")
@@ -710,7 +778,8 @@ def main(config):
         transformer_lora_layers = get_peft_model_state_dict(transformer)
         modules_to_save["transformer"] = transformer
 
-        QwenImagePipeline.save_lora_weights(
+        # Use dynamic PipelineClass from model factory
+        PipelineClass.save_lora_weights(
             save_directory=config.model_output_dir,
             transformer_lora_layers=transformer_lora_layers,
             **_collate_lora_metadata(modules_to_save),
@@ -718,126 +787,7 @@ def main(config):
 
     accelerator.end_training()
 
-
 if __name__ == "__main__":
     config = parse_config()
     main(config)
     
-    
-        # for step, batch in enumerate(train_dataloader):
-
-        #     models_to_accumulate = [transformer]
-
-        #     try:
-        #         with accelerator.accumulate(models_to_accumulate):
-        #             loss, bs = train_iteration_func(
-        #                 batch,
-        #                 vae,
-        #                 transformer,
-        #                 text_encoding_pipeline,
-        #                 noise_scheduler_copy,
-        #                 accelerator,
-        #                 config,
-        #             )
-
-        #             avg_loss = accelerator.gather(loss.repeat(bs)).mean()
-        #             train_loss += avg_loss.item() / config.gradient_accumulation_steps
-
-        #             accelerator.backward(loss)
-        #             if accelerator.sync_gradients:
-        #                 params_to_clip = transformer.parameters()
-        #                 accelerator.clip_grad_norm_(params_to_clip, config.max_grad_norm)
-
-        #             optimizer.step()
-
-        #             lr_scheduler.step()
-        #             optimizer.zero_grad()
-
-        #     except torch.cuda.OutOfMemoryError:
-        #         print("Skipping batch due to OOM...")
-        #         torch.cuda.empty_cache()
-        #         continue
-
-        #     torch.cuda.empty_cache()
-
-        #     # Checks if the accelerator has performed an optimization step behind the scenes
-        #     if accelerator.sync_gradients:
-        #         progress_bar.update(1)
-        #         global_step += 1
-
-        #         if accelerator.is_main_process or accelerator.distributed_type == DistributedType.DEEPSPEED:
-        #             if global_step % config.checkpointing_steps == 0 or global_step == config.max_train_steps:
-        #                 # _before_ saving state, check if this save would set us over the `checkpoints_total_limit`
-        #                 if config.checkpoints_total_limit is not None:
-        #                     checkpoints = os.listdir(config.model_output_dir)
-        #                     checkpoints = [d for d in checkpoints if d.startswith("checkpoint")]
-        #                     checkpoints = sorted(checkpoints, key=lambda x: int(x.split("-")[1]))
-
-        #                     # before we save the new checkpoint, we need to have at _most_ `checkpoints_total_limit - 1` checkpoints
-        #                     if len(checkpoints) >= config.checkpoints_total_limit:
-        #                         num_to_remove = len(checkpoints) - config.checkpoints_total_limit + 1
-        #                         removing_checkpoints = checkpoints[0:num_to_remove]
-
-        #                         logger.info(
-        #                             f"{len(checkpoints)} checkpoints already exist, removing {len(removing_checkpoints)} checkpoints"
-        #                         )
-        #                         logger.info(f"removing checkpoints: {', '.join(removing_checkpoints)}")
-
-        #                         for removing_checkpoint in removing_checkpoints:
-        #                             removing_checkpoint = os.path.join(config.model_output_dir, removing_checkpoint)
-        #                             shutil.rmtree(removing_checkpoint)
-
-        #         if global_step % config.checkpointing_steps == 0 or global_step == config.max_train_steps:
-        #             save_path = os.path.join(config.model_output_dir, f"checkpoint-{global_step}")
-        #             accelerator.save_state(save_path)
-                    
-        #             if accelerator.is_main_process:
-        #                 logger.info(f"Successfully saved checkpoint to {save_path}")
-
-        #         accelerator.wait_for_everyone()
-
-
-        #     logs = {
-        #         "loss": loss.detach().item(),
-        #         "train_loss": train_loss, # from ART
-        #         "lr": lr_scheduler.get_last_lr()[0],
-        #     }
-        #     progress_bar.set_postfix(**logs)
-        #     accelerator.log(logs, step=global_step)
-
-        #     train_loss = 0.0
-
-        #     if global_step >= config.max_train_steps:
-        #         break
-        
-        
-            # if accelerator.is_main_process:
-            #     # print('start validation')
-            #     if config.validation_prompts is not None and global_step > 0 and (global_step % config.validation_steps == 0 or global_step == 1 or global_step == config.max_train_steps-1):
-                    
-            #         # === FIX START: 临时移动模型到 GPU ===
-            #         if config.use_parquet_dataset:
-            #             vae.to(accelerator.device)
-            #             if hasattr(text_encoding_pipeline, 'text_encoder'):
-            #                 text_encoding_pipeline.text_encoder.to(accelerator.device)
-            #         # ===================================
-
-            #         validation_func(
-            #             vae=vae,
-            #             transformer=transformer,
-            #             text_encoder=text_encoding_pipeline.text_encoder,
-            #             accelerator=accelerator,
-            #             scheduler = noise_scheduler,
-            #             tokenizer = text_encoding_pipeline.tokenizer,
-            #             args=config,
-            #         )
-                    
-            #         # === FIX END: 移回 CPU 并清空缓存 ===
-            #         if config.use_parquet_dataset:
-            #             vae.to("cpu")
-            #             if hasattr(text_encoding_pipeline, 'text_encoder'):
-            #                 text_encoding_pipeline.text_encoder.to("cpu")
-            #             torch.cuda.empty_cache()
-            #         # ==================================
-
-            #     # print('finish validation')
