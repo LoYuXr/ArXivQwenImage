@@ -1,0 +1,66 @@
+# amlt run -d visionflow_basic run_fluxklein_fulltune_50000_ga4.yaml -y
+target:
+  name: msrresrchvc #palisades33 #palisades04
+  service: sing
+  workspace_name: mcgvisionflowws
+
+environment:
+  image: amlt-sing/acpt-torch2.7.1-py3.10-cuda12.6-ubuntu22.04
+  
+
+storage:
+  data:
+    container_name: yuxuanluo
+    mount_dir: /mnt/data # 数据挂载点
+    storage_account_name: mcgvisionflowsa
+
+code:
+  # 你的代码本地目录，该目录下的所有文件会被上传
+  local_dir: /home/v-yuxluo/WORK_local/ArXivQwenImage
+
+description: 0124_Run_fluxklein_9b_base_fullfinetune_ga4
+
+jobs:
+- name: 0124_Run_fluxklein_9b_base_fullfinetune_ga4
+  
+  process_count_per_node: 1
+  sku: 1x80G4-A100 #4x40G8-A100-IB-NvLink #8x40G8-A100-IB-NvLink #80G4-A100-NvLink #4x80G8-H100-IB-NvLink #4x40G8-A100-IB-NvLink #80G8-H100-IB-NvLink #80G4-A100-NvLink #80G2-A100 #40G8-A100-IB-NvLink
+  
+  command:
+  # - sudo mkdir /dev/temp_data
+  # - sudo mount -o mode=1777,nosuid,nodev,size=256G -t tmpfs tmpfs /dev/temp_data
+  - sudo apt-get update
+  - sudo apt-get install -y libglib2.0-0
+  - sudo apt-get install -y libgl1
+  - sudo apt-get install -y curl
+  - sudo apt-get install -y libaio-dev
+  - sudo apt-get install -y poppler-utils
+  
+  # 2. 赋予脚本执行权限 (防止上传后权限丢失)
+  - pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+  - pip install git+https://github.com/huggingface/diffusers
+  - pip install transformers==4.55.0 accelerate protobuf wandb #4.51.3不支持dict的config传入
+  - pip install opencv-python pandas pyarrow datasets ftfy sentencepiece einops scikit-learn timm==0.9.2 mmengine tqdm
+  - pip install bitsandbytes>=0.43.0 peft pydantic ray[train] prodigyopt
+  - export WANDB_ENTITY=v-yuxluo  # 强制使用你截图中的 Username
+  - export WANDB_PROJECT=ArXivQwenImage-Run  # 给项目起个新名字，确保拥有完整权限
+  - export WANDB_BASE_URL="https://microsoft-research.wandb.io"
+  - export WANDB_API_KEY=$${{secrets.WANDB_API_KEY}}
+  - export HF_TOKEN=$${{secrets.HF_TOKEN}}
+  - wandb login $$WANDB_API_KEY
+  - wandb login
+  - accelerate launch
+    --config_file accelerate_cfg/deepspeed_zero2_bf16.yaml
+    train_OpenSciDraw_fulltune.py
+    configs/260124/flux2klein_fulltune_50000_amlt_ga4.py
+
+  
+  identity: managed
+  submit_args:
+    env:
+      _AZUREML_SINGULARITY_JOB_UAI: /subscriptions/e56674e8-8a8b-4559-8a24-4149e2e4565b/resourcegroups/mcg_vision_flow_rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mcgvisionflowid
+    max_run_duration_seconds: 1200000
+  sla_tier: premium #premium #premium
+  execution_mode: basic
+  priority: high
+  tags: ["Project_Name:VisionFlow"]

@@ -69,7 +69,17 @@ def Qwen_Image_train_iteration_func_parquet(
         ] * bsz
                 
     # pack for latent
+    # 1. Pack 前的检查
+    # 期望 model_input 形状: (Batch, Channels, Frames, H_latent, W_latent)
+    # 例如: (4, 16, 1, 66, 132)
+    #print(f"DEBUG: [Pre-Pack] noisy_model_input shape: {noisy_model_input.shape}")
+    
+    # 2. 这里的 Permute 必须和你的 VAE/Transformer 逻辑一致
+    # 许多 DiT 模型要求 (B, T, C, H, W) 
     noisy_model_input = noisy_model_input.permute(0, 2, 1, 3, 4)
+    #print(f"DEBUG: [Post-Permute] noisy_model_input shape: {noisy_model_input.shape}")
+
+    # 3. 执行 Pack
     packed_noisy_model_input = pack_latents(
         noisy_model_input,
         batch_size=model_input.shape[0],
@@ -77,35 +87,57 @@ def Qwen_Image_train_iteration_func_parquet(
         height=model_input.shape[3],
         width=model_input.shape[4],
     )
+    #print(f"DEBUG: [Post-Pack] packed_noisy_model_input shape: {packed_noisy_model_input.shape}")
 
+    # 4. Transformer 推理
     model_pred = transformer(
         hidden_states=packed_noisy_model_input,
-        encoder_hidden_states=prompt_embeds,
-        encoder_hidden_states_mask=prompt_embeds_mask,
+        encoder_hidden_states=text_embeddings,
+        encoder_hidden_states_mask=text_embeddings_mask,
         timestep=timesteps / 1000,
         img_shapes=img_shapes,
         return_dict=False,
     )[0]
+    #print(f"DEBUG: [Transformer Output] model_pred shape: {model_pred.shape}")
+
+    # 5. Unpack 前的逻辑修正与检查
+    # ！！！本质错误点预警！！！
+    # 如果你的 model_input 是已经在 Parquet 里的 Latent (已经缩小了 8 倍)
+    # 那么调用 unpack_latents 时，vae_scale_factor 应该设为 1，
+    # 否则函数内部会尝试再次除以 8，导致维度计算错误。
     
-    # unpack
-    model_pred = unpack_latents(
-            model_pred, 
-            height=model_input.shape[3],
-            width=model_input.shape[4],
-            vae_scale_factor=config.vae_scale_factor
-        )
+    latent_h = model_input.shape[3]
+    latent_w = model_input.shape[4]
+    
+    #print(f"DEBUG: [Pre-Unpack] Target Latent HW: {latent_h}x{latent_w}")
+    
+    try:
+        model_pred = unpack_latents(
+                model_pred, 
+                height=latent_h, 
+                width=latent_w,
+                # 如果输入已经是 latent，这里传 1；如果是原始像素尺寸，传 8
+                vae_scale_factor=1 
+            )
+        #print(f"DEBUG: [Post-Unpack] model_pred shape: {model_pred.shape}")
+    except RuntimeError as e:
+        print(f"❌ Unpack Failed!")
+        print(f"Expected elements based on Latent HW: {bsz} * {model_input.shape[1]} * {latent_h} * {latent_w} = {bsz * model_input.shape[1] * latent_h * latent_w}")
+        print(f"Actual elements in model_pred: {model_pred.numel()}")
+        raise e
 
     weighting = compute_loss_weighting_for_sd3(weighting_scheme=config.weighting_scheme, sigmas=sigmas)
     
     target = noise - model_input
     
-    # print('hii27')
     loss = (model_pred.float() - target.float()) ** 2
     
+    # 这里的 reshape 保证了 loss 是 (Batch_Size, -1)
     loss = torch.mean((weighting.float() * loss).reshape(target.shape[0], -1), 1,)
-    # print('hii31')
-    bs = loss.shape[0]
-    loss = loss.mean()
+    
+    # === 修复开始 ===
+    bs = loss.shape[0]  # 先获取 Batch Size
+    loss = loss.mean()  # 再 Reduce 到标量
     # print('hii32')
     return loss, bs
     
@@ -229,11 +261,13 @@ def Qwen_Image_train_iteration_func(
     
     target = noise - model_input
     
-    # Loss 计算
     loss = (model_pred.float() - target.float()) ** 2
+    
+    # 这里的 reshape 保证了 loss 是 (Batch_Size, -1)
     loss = torch.mean((weighting.float() * loss).reshape(target.shape[0], -1), 1,)
     
-    bs = loss.shape[0]
-    loss = loss.mean()
+    # === 修复开始 ===
+    bs = loss.shape[0]  # 先获取 Batch Size
+    loss = loss.mean()  # 再 Reduce 到标量
     
     return loss, bs

@@ -1,0 +1,10 @@
+schemaVersion: 0.0.1
+isProduction: false
+accountableOwners:
+  directOwners:
+  - xinjiezhang@microsoft.com
+  - xunguo@microsoft.com
+routing:
+  defaultAreaPath:
+    org: MSRAMCG
+    path: VisionFlow

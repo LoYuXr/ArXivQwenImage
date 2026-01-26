@@ -1,0 +1,158 @@
+nohup: ignoring input
+01/21/2026 17:04:18 - INFO - __main__ - Distributed environment: NO
+Num processes: 1
+Process index: 0
+Local process index: 0
+Device: cuda
+
+Mixed precision type: bf16
+
+01/21/2026 17:04:18 - INFO - __main__ - [INFO] Using model type: Flux2Klein
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory - ============================================================
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory - 🏭 Model Factory Initialized
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory -    Model Type: Flux2Klein
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory -    Pretrained Path: black-forest-labs/FLUX.2-klein-base-9B
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory -    Cache Dir: None
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory -    VAE Class: AutoencoderKLFlux2
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory -    Transformer Class: Flux2Transformer2DModel
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory -    Text Encoder Class: Qwen3ForCausalLM
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory -    Pipeline Class: Flux2KleinPipeline
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory - ============================================================
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading tokenizer: Qwen2TokenizerFast
+01/21/2026 17:04:18 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading text encoder: Qwen3ForCausalLM
+`torch_dtype` is deprecated! Use `dtype` instead!
+Config (path: configs/260121/flux2klein_fulltune_local_debug.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'Flux2Klein', 'transformer_cfg': {'type': 'Flux2Transformer2DModel'}, 'pretrained_model_name_or_path': 'black-forest-labs/FLUX.2-klein-base-9B', 'huggingface_token': '***REMOVED***', 'use_lora': False, 'lora_layers': None, 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 10, 'max_train_steps': 500, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'AdamW', 'use_8bit_adam': True, 'learning_rate': 1e-05, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 50, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 100, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 3, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': None, 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'none', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 1.0, 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data', 'parquet_base_path': 'ArXiV_parquet/flux_latents_test', 'num_workers': 4, 'num_train_examples': 100, 'debug_mode': True, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 2, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'Flux2Klein_fulltune_train_iteration', 'model_output_dir': '/home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_debug', 'logging_dir': '/home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_debug/logs', 'log_steps': 10, 'wandb_project': 'Flux2Klein-FullTune-Debug', 'run_name': 'flux2klein_9b_fulltune_local_debug', 'dataloader_num_workers': 4, 'debug_mode': True, 'config_dir': 'configs/260121/flux2klein_fulltune_local_debug.py'}
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 57.74it/s]
+01/21/2026 17:04:19 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading VAE: AutoencoderKLFlux2
+All model checkpoint weights were used when initializing AutoencoderKLFlux2.
+
+All the weights of AutoencoderKLFlux2 were initialized from the model checkpoint at black-forest-labs/FLUX.2-klein-base-9B.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use AutoencoderKLFlux2 for predictions without further training.
+01/21/2026 17:04:20 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading transformer: Flux2Transformer2DModel
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 6321.48it/s]
+Instantiating Flux2Transformer2DModel model under default dtype torch.bfloat16.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 74.11it/s]
+All model checkpoint weights were used when initializing Flux2Transformer2DModel.
+
+All the weights of Flux2Transformer2DModel were initialized from the model checkpoint at black-forest-labs/FLUX.2-klein-base-9B.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use Flux2Transformer2DModel for predictions without further training.
+01/21/2026 17:04:20 - INFO - OpenSciDraw.utils.model_factory - [INFO] Fine-tuning the full model ...
+01/21/2026 17:04:20 - INFO - OpenSciDraw.utils.model_factory - [INFO] Enabling gradient checkpointing for transformer
+01/21/2026 17:04:20 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading scheduler: FlowMatchEulerDiscreteScheduler
+01/21/2026 17:04:20 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading text encoding pipeline: Flux2KleinPipeline
+{'is_distilled'} was not found in config. Values will be initialized to default values.
+Loading pipeline components...:   0%|          | 0/2 [00:00<?, ?it/s]Loading pipeline components...: 100%|██████████| 2/2 [00:00<00:00, 5626.16it/s]
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:343: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  if hasattr(vae, attr_name):
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:344: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  attr_value = getattr(vae, attr_name)
+01/21/2026 17:04:21 - INFO - OpenSciDraw.utils.model_factory - [INFO] VAE scale factor: 16
+01/21/2026 17:04:21 - INFO - __main__ - [INFO] Configuring model devices and offloading
+01/21/2026 17:04:21 - INFO - __main__ - [INFO] Using parquet dataset - VAE and text encoder remain on CPU
+01/21/2026 17:04:25 - INFO - __main__ - [INFO] Gradient checkpointing enabled
+01/21/2026 17:04:25 - INFO - __main__ - [INFO] Number of trainable parameters: 9078.58M
+01/21/2026 17:04:25 - INFO - __main__ - [INFO] Loading dataset
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/flux_latents_test...
+⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]Scanning Parquet Files:   6%|▌         | 5/84 [00:00<00:02, 32.98it/s]Scanning Parquet Files:  15%|█▌        | 13/84 [00:00<00:01, 54.62it/s]Scanning Parquet Files:  27%|██▋       | 23/84 [00:00<00:00, 67.60it/s]Scanning Parquet Files:  39%|███▉      | 33/84 [00:00<00:00, 63.08it/s]Scanning Parquet Files:  48%|████▊     | 40/84 [00:00<00:00, 61.58it/s]Scanning Parquet Files:  56%|█████▌    | 47/84 [00:00<00:00, 48.77it/s]Scanning Parquet Files:  63%|██████▎   | 53/84 [00:00<00:00, 49.11it/s]Scanning Parquet Files:  73%|███████▎  | 61/84 [00:01<00:00, 51.63it/s]Scanning Parquet Files:  82%|████████▏ | 69/84 [00:01<00:00, 57.78it/s]Scanning Parquet Files:  92%|█████████▏| 77/84 [00:01<00:00, 58.88it/s]Scanning Parquet Files: 100%|██████████| 84/84 [00:01<00:00, 58.64it/s]
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+01/21/2026 17:04:27 - INFO - __main__ - ***** Running training *****
+01/21/2026 17:04:27 - INFO - __main__ -   Num examples = 100
+01/21/2026 17:04:27 - INFO - __main__ -   Num Epochs = 20
+01/21/2026 17:04:27 - INFO - __main__ -   Instantaneous batch size per device = 1
+01/21/2026 17:04:27 - INFO - __main__ -   Total train batch size (w. parallel, distributed & accumulation) = 4
+01/21/2026 17:04:27 - INFO - __main__ -   Gradient Accumulation steps = 4
+01/21/2026 17:04:27 - INFO - __main__ -   Total optimization steps = 500
+✅ Loaded 100 samples.
+Filtered dataset: 100 samples remaining.
+Steps:   0%|          | 0/500 [00:00<?, ?it/s]01/21/2026 17:04:27 - INFO - __main__ - [INFO] Using training iteration function: Flux2Klein_fulltune_train_iteration
+wandb: Loaded settings from
+wandb:   /home/v-yuxluo/.config/wandb/settings
+wandb: [wandb.login()] Loaded credentials for https://microsoft-research.wandb.io from /home/v-yuxluo/.netrc.
+wandb: Currently logged in as: v-yuxluo to https://microsoft-research.wandb.io. Use `wandb login --relogin` to force relogin
+wandb: setting up run iue4kdut
+wandb: Tracking run with wandb version 0.24.0
+wandb: Run data is saved locally in /home/v-yuxluo/WORK_local/ArXivQwenImage/wandb/run-20260121_170428-iue4kdut
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run flux2klein_9b_fulltune_local_debug
+wandb: ⭐️ View project at https://microsoft-research.wandb.io/v-yuxluo/Flux2Klein-FullTune-Debug
+wandb: 🚀 View run at https://microsoft-research.wandb.io/v-yuxluo/Flux2Klein-FullTune-Debug/runs/iue4kdut
+
+[Step 0] Training Debug Info:
+  Loss: 0.661919
+  Latent shape: torch.Size([1, 32, 66, 126]), Packed shape: torch.Size([1, 2079, 128])
+  Latent mean: -0.0188, std: 0.8555
+  Noise mean: -0.0001, std: 1.0000
+  Target mean: 0.0187, std: 1.3203
+  Model pred mean: 0.0225, std: 1.2471
+  Sigmas: [0.6171875]... (timesteps: [618.0])
+Traceback (most recent call last):
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 614, in <module>
+    main()
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 534, in main
+    accelerator.backward(loss)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/accelerator.py", line 2852, in backward
+    loss.backward(**kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/_tensor.py", line 581, in backward
+    torch.autograd.backward(
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/autograd/__init__.py", line 347, in backward
+    _engine_run_backward(
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/autograd/graph.py", line 825, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/checkpoint.py", line 1125, in unpack_hook
+    frame.recompute_fn(*args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/checkpoint.py", line 1519, in recompute_fn
+    fn(*args, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/diffusers/models/transformers/transformer_flux2.py", line 445, in forward
+    attn_output = self.attn(
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/diffusers/models/transformers/transformer_flux2.py", line 390, in forward
+    return self.processor(self, hidden_states, attention_mask, image_rotary_emb, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/diffusers/models/transformers/transformer_flux2.py", line 309, in __call__
+    hidden_states = torch.cat([hidden_states, mlp_hidden_states], dim=-1)
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 258.00 MiB. GPU 0 has a total capacity of 79.15 GiB of which 214.12 MiB is free. Process 3818882 has 51.68 GiB memory in use. Including non-PyTorch memory, this process has 27.25 GiB memory in use. Of the allocated memory 26.48 GiB is allocated by PyTorch, and 272.54 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+Traceback (most recent call last):
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 614, in <module>
+    main()
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 534, in main
+    accelerator.backward(loss)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/accelerator.py", line 2852, in backward
+    loss.backward(**kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/_tensor.py", line 581, in backward
+    torch.autograd.backward(
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/autograd/__init__.py", line 347, in backward
+    _engine_run_backward(
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/autograd/graph.py", line 825, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/checkpoint.py", line 1125, in unpack_hook
+    frame.recompute_fn(*args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/checkpoint.py", line 1519, in recompute_fn
+    fn(*args, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/diffusers/models/transformers/transformer_flux2.py", line 445, in forward
+    attn_output = self.attn(
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/diffusers/models/transformers/transformer_flux2.py", line 390, in forward
+    return self.processor(self, hidden_states, attention_mask, image_rotary_emb, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/diffusers/models/transformers/transformer_flux2.py", line 309, in __call__
+    hidden_states = torch.cat([hidden_states, mlp_hidden_states], dim=-1)
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 258.00 MiB. GPU 0 has a total capacity of 79.15 GiB of which 214.12 MiB is free. Process 3818882 has 51.68 GiB memory in use. Including non-PyTorch memory, this process has 27.25 GiB memory in use. Of the allocated memory 26.48 GiB is allocated by PyTorch, and 272.54 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mflux2klein_9b_fulltune_local_debug[0m at: [34mhttps://microsoft-research.wandb.io/v-yuxluo/Flux2Klein-FullTune-Debug/runs/iue4kdut[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20260121_170428-iue4kdut/logs[0m

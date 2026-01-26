@@ -1,0 +1,48 @@
+description: Flux2Klein 9B Full Fine-tuning with DeepSpeed ZeRO-2 - 50K steps
+
+target:
+  service: sing
+  name: msrresrchbasicvc
+  workspace_name: mcgvisionflowws
+
+environment:
+  image: amlt-sing/acpt-torch2.7.1-py3.10-cuda12.6-ubuntu22.04
+  setup:
+    - set -e
+    # Install dependencies
+    - pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cu124
+    - pip install diffusers==0.33.1 transformers==4.51.3 accelerate==1.6.0
+    - pip install wandb sentencepiece peft datasets
+    - pip install flash-attn --no-build-isolation
+    - pip install deepspeed
+    - pip install pyarrow pandas
+    # Login to services
+    - wandb login $$WANDB_API_KEY$$WANDB_API_KEY
+    - huggingface-cli login --token $$HF_TOKEN
+    # Set NCCL environment
+    - export NCCL_DEBUG=INFO
+    - export NCCL_IB_DISABLE=0
+    - export NCCL_NET_GDR_LEVEL=2
+    # Navigate to workspace
+    - cd $$AMLT_CODE_DIR
+
+storage:
+  yuxuanluo:
+    storage_account_name: mcgvisionflowsa
+    container_name: yuxuanluo
+    mount_dir: /mnt/data
+    is_output: true
+
+code:
+  local_dir: /home/v-yuxluo/WORK_local/ArXivQwenImage
+
+jobs:
+  - name: flux2klein_9b_fulltune_50k
+    sku: 1x80G4-A100
+    priority: high
+    process_count_per_node: 1
+    command:
+      - cd $$AMLT_CODE_DIR
+      - accelerate launch --config_file accelerate_cfg/deepspeed_zero2_bf16.yaml train_OpenSciDraw_fulltune.py configs/260122/flux2klein_fulltune_50000_amlt.py
+    sla_tier: basic
+    execution_mode: basic

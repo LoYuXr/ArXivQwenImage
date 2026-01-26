@@ -1,0 +1,498 @@
+==========================================
+Starting Flux2Klein Full Fine-tuning (5000 steps)
+Using DeepSpeed ZeRO-2 with 4 GPUs
+==========================================
+Thu Jan 22 02:35:46 UTC 2026
+W0122 02:35:54.019000 32645 site-packages/torch/distributed/run.py:793] 
+W0122 02:35:54.019000 32645 site-packages/torch/distributed/run.py:793] *****************************************
+W0122 02:35:54.019000 32645 site-packages/torch/distributed/run.py:793] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0122 02:35:54.019000 32645 site-packages/torch/distributed/run.py:793] *****************************************
+Config (path: configs/260122/flux2klein_fulltune_5000.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'Flux2Klein', 'transformer_cfg': {'type': 'Flux2Transformer2DModel'}, 'pretrained_model_name_or_path': 'black-forest-labs/FLUX.2-klein-base-9B', 'huggingface_token': '***REMOVED***', 'use_lora': False, 'lora_layers': None, 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'AdamW', 'use_8bit_adam': False, 'learning_rate': 1e-05, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 500, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 5, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': None, 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'none', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 3.5, 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data', 'parquet_base_path': 'ArXiV_parquet/flux_latents_test', 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 2, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'Flux2Klein_fulltune_train_iteration', 'model_output_dir': '/home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000', 'logging_dir': '/home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000/logs', 'log_steps': 10, 'wandb_project': 'Flux2Klein-FullTune', 'run_name': 'flux2klein_9b_fulltune_5000steps', 'validation_func': 'Flux2Klein_fulltune_validation_func_parquet', 'validation_steps': 500, 'num_inference_steps': 28, 'validation_prompts': ['A detailed scientific diagram showing the structure of an atom with electrons orbiting the nucleus', 'A mathematical function graph showing a sine wave with labeled axes', 'A chemical reaction diagram with molecular structures and arrows', 'A physics diagram showing electromagnetic wave propagation', 'A flowchart explaining a machine learning algorithm'], 'resolution_list': [(1024, 1024), (1024, 768), (1024, 1024), (1024, 768), (1024, 1024)], 'max_sequence_length': 512, 'dataloader_num_workers': 4, 'debug_mode': False, 'config_dir': 'configs/260122/flux2klein_fulltune_5000.py'}
+Config (path: configs/260122/flux2klein_fulltune_5000.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'Flux2Klein', 'transformer_cfg': {'type': 'Flux2Transformer2DModel'}, 'pretrained_model_name_or_path': 'black-forest-labs/FLUX.2-klein-base-9B', 'huggingface_token': '***REMOVED***', 'use_lora': False, 'lora_layers': None, 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'AdamW', 'use_8bit_adam': False, 'learning_rate': 1e-05, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 500, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 5, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': None, 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'none', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 3.5, 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data', 'parquet_base_path': 'ArXiV_parquet/flux_latents_test', 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 2, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'Flux2Klein_fulltune_train_iteration', 'model_output_dir': '/home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000', 'logging_dir': '/home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000/logs', 'log_steps': 10, 'wandb_project': 'Flux2Klein-FullTune', 'run_name': 'flux2klein_9b_fulltune_5000steps', 'validation_func': 'Flux2Klein_fulltune_validation_func_parquet', 'validation_steps': 500, 'num_inference_steps': 28, 'validation_prompts': ['A detailed scientific diagram showing the structure of an atom with electrons orbiting the nucleus', 'A mathematical function graph showing a sine wave with labeled axes', 'A chemical reaction diagram with molecular structures and arrows', 'A physics diagram showing electromagnetic wave propagation', 'A flowchart explaining a machine learning algorithm'], 'resolution_list': [(1024, 1024), (1024, 768), (1024, 1024), (1024, 768), (1024, 1024)], 'max_sequence_length': 512, 'dataloader_num_workers': 4, 'debug_mode': False, 'config_dir': 'configs/260122/flux2klein_fulltune_5000.py'}
+Config (path: configs/260122/flux2klein_fulltune_5000.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'Flux2Klein', 'transformer_cfg': {'type': 'Flux2Transformer2DModel'}, 'pretrained_model_name_or_path': 'black-forest-labs/FLUX.2-klein-base-9B', 'huggingface_token': '***REMOVED***', 'use_lora': False, 'lora_layers': None, 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'AdamW', 'use_8bit_adam': False, 'learning_rate': 1e-05, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 500, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 5, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': None, 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'none', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 3.5, 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data', 'parquet_base_path': 'ArXiV_parquet/flux_latents_test', 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 2, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'Flux2Klein_fulltune_train_iteration', 'model_output_dir': '/home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000', 'logging_dir': '/home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000/logs', 'log_steps': 10, 'wandb_project': 'Flux2Klein-FullTune', 'run_name': 'flux2klein_9b_fulltune_5000steps', 'validation_func': 'Flux2Klein_fulltune_validation_func_parquet', 'validation_steps': 500, 'num_inference_steps': 28, 'validation_prompts': ['A detailed scientific diagram showing the structure of an atom with electrons orbiting the nucleus', 'A mathematical function graph showing a sine wave with labeled axes', 'A chemical reaction diagram with molecular structures and arrows', 'A physics diagram showing electromagnetic wave propagation', 'A flowchart explaining a machine learning algorithm'], 'resolution_list': [(1024, 1024), (1024, 768), (1024, 1024), (1024, 768), (1024, 1024)], 'max_sequence_length': 512, 'dataloader_num_workers': 4, 'debug_mode': False, 'config_dir': 'configs/260122/flux2klein_fulltune_5000.py'}
+Config (path: configs/260122/flux2klein_fulltune_5000.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'Flux2Klein', 'transformer_cfg': {'type': 'Flux2Transformer2DModel'}, 'pretrained_model_name_or_path': 'black-forest-labs/FLUX.2-klein-base-9B', 'huggingface_token': '***REMOVED***', 'use_lora': False, 'lora_layers': None, 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'AdamW', 'use_8bit_adam': False, 'learning_rate': 1e-05, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 500, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 5, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': None, 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'none', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 3.5, 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data', 'parquet_base_path': 'ArXiV_parquet/flux_latents_test', 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 2, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'Flux2Klein_fulltune_train_iteration', 'model_output_dir': '/home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000', 'logging_dir': '/home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000/logs', 'log_steps': 10, 'wandb_project': 'Flux2Klein-FullTune', 'run_name': 'flux2klein_9b_fulltune_5000steps', 'validation_func': 'Flux2Klein_fulltune_validation_func_parquet', 'validation_steps': 500, 'num_inference_steps': 28, 'validation_prompts': ['A detailed scientific diagram showing the structure of an atom with electrons orbiting the nucleus', 'A mathematical function graph showing a sine wave with labeled axes', 'A chemical reaction diagram with molecular structures and arrows', 'A physics diagram showing electromagnetic wave propagation', 'A flowchart explaining a machine learning algorithm'], 'resolution_list': [(1024, 1024), (1024, 768), (1024, 1024), (1024, 768), (1024, 1024)], 'max_sequence_length': 512, 'dataloader_num_workers': 4, 'debug_mode': False, 'config_dir': 'configs/260122/flux2klein_fulltune_5000.py'}
+NCCL version 2.21.5+cuda12.4
+01/22/2026 02:36:02 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 2
+Local process index: 2
+Device: cuda:2
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 2, 'offload_optimizer': {'device': 'none', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': False}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/22/2026 02:36:02 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 3
+Local process index: 3
+Device: cuda:3
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 2, 'offload_optimizer': {'device': 'none', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': False}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/22/2026 02:36:02 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 1
+Local process index: 1
+Device: cuda:1
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 2, 'offload_optimizer': {'device': 'none', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': False}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/22/2026 02:36:02 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 0
+Local process index: 0
+Device: cuda:0
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 2, 'offload_optimizer': {'device': 'none', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': False}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/22/2026 02:36:02 - INFO - __main__ - [INFO] Using model type: Flux2Klein
+01/22/2026 02:36:02 - INFO - OpenSciDraw.utils.model_factory - ============================================================
+01/22/2026 02:36:02 - INFO - OpenSciDraw.utils.model_factory - 🏭 Model Factory Initialized
+01/22/2026 02:36:02 - INFO - OpenSciDraw.utils.model_factory -    Model Type: Flux2Klein
+01/22/2026 02:36:02 - INFO - OpenSciDraw.utils.model_factory -    Pretrained Path: black-forest-labs/FLUX.2-klein-base-9B
+01/22/2026 02:36:02 - INFO - OpenSciDraw.utils.model_factory -    Cache Dir: None
+01/22/2026 02:36:02 - INFO - OpenSciDraw.utils.model_factory -    VAE Class: AutoencoderKLFlux2
+01/22/2026 02:36:02 - INFO - OpenSciDraw.utils.model_factory -    Transformer Class: Flux2Transformer2DModel
+01/22/2026 02:36:02 - INFO - OpenSciDraw.utils.model_factory -    Text Encoder Class: Qwen3ForCausalLM
+01/22/2026 02:36:02 - INFO - OpenSciDraw.utils.model_factory -    Pipeline Class: Flux2KleinPipeline
+01/22/2026 02:36:02 - INFO - OpenSciDraw.utils.model_factory - ============================================================
+01/22/2026 02:36:02 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading tokenizer: Qwen2TokenizerFast
+01/22/2026 02:36:03 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading text encoder: Qwen3ForCausalLM
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 56.10it/s]
+Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 52.79it/s]
+Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 53.60it/s]
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:00<00:00, 54.36it/s]
+01/22/2026 02:36:03 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading VAE: AutoencoderKLFlux2
+All model checkpoint weights were used when initializing AutoencoderKLFlux2.
+
+All the weights of AutoencoderKLFlux2 were initialized from the model checkpoint at black-forest-labs/FLUX.2-klein-base-9B.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use AutoencoderKLFlux2 for predictions without further training.
+01/22/2026 02:36:04 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading transformer: Flux2Transformer2DModel
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 12729.30it/s]
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 14413.42it/s]
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 35098.78it/s]
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 27503.63it/s]
+Instantiating Flux2Transformer2DModel model under default dtype torch.bfloat16.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 78.44it/s]
+All model checkpoint weights were used when initializing Flux2Transformer2DModel.
+
+All the weights of Flux2Transformer2DModel were initialized from the model checkpoint at black-forest-labs/FLUX.2-klein-base-9B.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use Flux2Transformer2DModel for predictions without further training.
+01/22/2026 02:36:04 - INFO - OpenSciDraw.utils.model_factory - [INFO] Fine-tuning the full model ...
+01/22/2026 02:36:04 - INFO - OpenSciDraw.utils.model_factory - [INFO] Enabling gradient checkpointing for transformer
+01/22/2026 02:36:04 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading scheduler: FlowMatchEulerDiscreteScheduler
+01/22/2026 02:36:04 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading text encoding pipeline: Flux2KleinPipeline
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:343: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  if hasattr(vae, attr_name):
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:344: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  attr_value = getattr(vae, attr_name)
+{'is_distilled'} was not found in config. Values will be initialized to default values.
+Loading pipeline components...:   0%|          | 0/2 [00:00<?, ?it/s]Loading pipeline components...: 100%|██████████| 2/2 [00:00<00:00, 4652.58it/s]
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:343: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  if hasattr(vae, attr_name):
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:344: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  attr_value = getattr(vae, attr_name)
+01/22/2026 02:36:04 - INFO - OpenSciDraw.utils.model_factory - [INFO] VAE scale factor: 16
+01/22/2026 02:36:04 - INFO - __main__ - [INFO] DeepSpeed detected - keeping transformer in bf16 for ZeRO-3
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:343: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  if hasattr(vae, attr_name):
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:344: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  attr_value = getattr(vae, attr_name)
+01/22/2026 02:36:04 - INFO - __main__ - [INFO] Configuring model devices and offloading
+01/22/2026 02:36:04 - INFO - __main__ - [INFO] Using parquet dataset - VAE and text encoder remain on CPU
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:343: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  if hasattr(vae, attr_name):
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:344: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  attr_value = getattr(vae, attr_name)
+01/22/2026 02:36:04 - INFO - __main__ - [INFO] DeepSpeed mode: transformer stays on CPU, ZeRO-3 will handle placement
+01/22/2026 02:36:04 - INFO - __main__ - [INFO] Gradient checkpointing enabled
+01/22/2026 02:36:04 - INFO - __main__ - [INFO] Number of trainable parameters: 9078.58M
+01/22/2026 02:36:04 - INFO - __main__ - [INFO] Loading dataset
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/flux_latents_test...
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/flux_latents_test...
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/flux_latents_test...
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/flux_latents_test...
+⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]Scanning Parquet Files:   6%|▌         | 5/84 [00:00<00:02, 36.57it/s]Scanning Parquet Files:   6%|▌         | 5/84 [00:00<00:01, 39.77it/s]Scanning Parquet Files:   6%|▌         | 5/84 [00:00<00:01, 40.89it/s]Scanning Parquet Files:   6%|▌         | 5/84 [00:00<00:02, 39.24it/s]Scanning Parquet Files:  15%|█▌        | 13/84 [00:00<00:01, 54.06it/s]Scanning Parquet Files:  15%|█▌        | 13/84 [00:00<00:01, 52.58it/s]Scanning Parquet Files:  15%|█▌        | 13/84 [00:00<00:01, 51.23it/s]Scanning Parquet Files:  15%|█▌        | 13/84 [00:00<00:01, 49.54it/s]Scanning Parquet Files:  25%|██▌       | 21/84 [00:00<00:01, 54.35it/s]Scanning Parquet Files:  25%|██▌       | 21/84 [00:00<00:01, 58.99it/s]Scanning Parquet Files:  25%|██▌       | 21/84 [00:00<00:01, 58.74it/s]Scanning Parquet Files:  25%|██▌       | 21/84 [00:00<00:01, 54.40it/s]Scanning Parquet Files:  35%|███▍      | 29/84 [00:00<00:00, 59.03it/s]Scanning Parquet Files:  35%|███▍      | 29/84 [00:00<00:00, 61.48it/s]Scanning Parquet Files:  35%|███▍      | 29/84 [00:00<00:00, 59.80it/s]Scanning Parquet Files:  35%|███▍      | 29/84 [00:00<00:00, 58.27it/s]Scanning Parquet Files:  42%|████▏     | 35/84 [00:00<00:01, 48.15it/s]Scanning Parquet Files:  43%|████▎     | 36/84 [00:00<00:00, 54.54it/s]Scanning Parquet Files:  43%|████▎     | 36/84 [00:00<00:00, 53.95it/s]Scanning Parquet Files:  42%|████▏     | 35/84 [00:00<00:00, 49.95it/s]Scanning Parquet Files:  50%|█████     | 42/84 [00:00<00:01, 37.32it/s]Scanning Parquet Files:  50%|█████     | 42/84 [00:00<00:01, 36.74it/s]Scanning Parquet Files:  49%|████▉     | 41/84 [00:01<00:01, 32.97it/s]Scanning Parquet Files:  49%|████▉     | 41/84 [00:00<00:01, 36.86it/s]Scanning Parquet Files:  56%|█████▌    | 47/84 [00:01<00:01, 36.49it/s]Scanning Parquet Files:  56%|█████▌    | 47/84 [00:01<00:01, 36.00it/s]Scanning Parquet Files:  54%|█████▎    | 45/84 [00:01<00:01, 32.10it/s]Scanning Parquet Files:  55%|█████▍    | 46/84 [00:01<00:01, 33.39it/s]Scanning Parquet Files:  61%|██████    | 51/84 [00:01<00:00, 36.64it/s]Scanning Parquet Files:  63%|██████▎   | 53/84 [00:01<00:00, 37.31it/s]Scanning Parquet Files:  63%|██████▎   | 53/84 [00:01<00:00, 36.22it/s]Scanning Parquet Files:  63%|██████▎   | 53/84 [00:01<00:00, 36.77it/s]Scanning Parquet Files:  68%|██████▊   | 57/84 [00:01<00:00, 37.49it/s]Scanning Parquet Files:  73%|███████▎  | 61/84 [00:01<00:00, 41.75it/s]Scanning Parquet Files:  73%|███████▎  | 61/84 [00:01<00:00, 40.96it/s]Scanning Parquet Files:  75%|███████▌  | 63/84 [00:01<00:00, 42.28it/s]Scanning Parquet Files:  73%|███████▎  | 61/84 [00:01<00:00, 40.87it/s]Scanning Parquet Files:  82%|████████▏ | 69/84 [00:01<00:00, 46.43it/s]Scanning Parquet Files:  82%|████████▏ | 69/84 [00:01<00:00, 46.81it/s]Scanning Parquet Files:  82%|████████▏ | 69/84 [00:01<00:00, 41.65it/s]Scanning Parquet Files:  90%|█████████ | 76/84 [00:01<00:00, 51.89it/s]Scanning Parquet Files:  82%|████████▏ | 69/84 [00:01<00:00, 42.80it/s]Scanning Parquet Files:  92%|█████████▏| 77/84 [00:01<00:00, 49.28it/s]Scanning Parquet Files: 100%|██████████| 84/84 [00:01<00:00, 47.86it/s]
+✅ Loaded 190237 samples.
+Scanning Parquet Files:  92%|█████████▏| 77/84 [00:01<00:00, 46.95it/s]Scanning Parquet Files:  92%|█████████▏| 77/84 [00:01<00:00, 44.41it/s]Scanning Parquet Files:  98%|█████████▊| 82/84 [00:01<00:00, 48.60it/s]Scanning Parquet Files: 100%|██████████| 84/84 [00:01<00:00, 47.20it/s]
+✅ Loaded 190237 samples.
+Filtered dataset: 190132 samples remaining.
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+Scanning Parquet Files:  98%|█████████▊| 82/84 [00:01<00:00, 45.41it/s]Scanning Parquet Files: 100%|██████████| 84/84 [00:01<00:00, 43.61it/s]
+Filtered dataset: 190132 samples remaining.
+Scanning Parquet Files:  98%|█████████▊| 82/84 [00:01<00:00, 47.04it/s]Scanning Parquet Files: 100%|██████████| 84/84 [00:01<00:00, 45.21it/s]
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+01/22/2026 02:36:07 - INFO - __main__ - [INFO] Set DeepSpeed train_micro_batch_size_per_gpu to 1
+✅ Loaded 190237 samples.
+✅ Loaded 190237 samples.
+Filtered dataset: 190132 samples remaining.
+Filtered dataset: 190132 samples remaining.
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+Before initializing optimizer states
+MA 25.37 GB         Max_MA 29.59 GB         CA 29.6 GB         Max_CA 30 GB 
+CPU Virtual Memory:  used = 46.28 GB, percent = 5.3%
+After initializing optimizer states
+MA 25.37 GB         Max_MA 33.82 GB         CA 38.06 GB         Max_CA 38 GB 
+CPU Virtual Memory:  used = 46.47 GB, percent = 5.4%
+After initializing ZeRO optimizer
+MA 25.37 GB         Max_MA 25.37 GB         CA 38.06 GB         Max_CA 38 GB 
+CPU Virtual Memory:  used = 46.56 GB, percent = 5.4%
+01/22/2026 02:36:32 - INFO - __main__ - ***** Running training *****
+01/22/2026 02:36:32 - INFO - __main__ -   Num examples = 190132
+01/22/2026 02:36:32 - INFO - __main__ -   Num Epochs = 2
+01/22/2026 02:36:32 - INFO - __main__ -   Instantaneous batch size per device = 1
+01/22/2026 02:36:32 - INFO - __main__ -   Total train batch size (w. parallel, distributed & accumulation) = 16
+01/22/2026 02:36:32 - INFO - __main__ -   Gradient Accumulation steps = 4
+01/22/2026 02:36:32 - INFO - __main__ -   Total optimization steps = 5000
+Steps:   0%|          | 0/5000 [00:00<?, ?it/s]01/22/2026 02:36:32 - INFO - __main__ - [INFO] Using training iteration function: Flux2Klein_fulltune_train_iteration
+01/22/2026 02:36:33 - INFO - __main__ - [INFO] Using validation function: Flux2Klein_fulltune_validation_func_parquet
+01/22/2026 02:36:33 - INFO - __main__ - [INFO] Validation every 500 steps
+wandb: Loaded settings from
+wandb:   /home/v-yuxluo/.config/wandb/settings
+wandb: [wandb.login()] Loaded credentials for https://microsoft-research.wandb.io from /home/v-yuxluo/.netrc.
+wandb: Currently logged in as: v-yuxluo to https://microsoft-research.wandb.io. Use `wandb login --relogin` to force relogin
+wandb: Tracking run with wandb version 0.24.0
+wandb: Run data is saved locally in /home/v-yuxluo/WORK_local/ArXivQwenImage/wandb/run-20260122_023634-7d6jcnve
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run flux2klein_9b_fulltune_5000steps
+wandb: ⭐️ View project at https://microsoft-research.wandb.io/v-yuxluo/Flux2Klein-FullTune
+wandb: 🚀 View run at https://microsoft-research.wandb.io/v-yuxluo/Flux2Klein-FullTune/runs/7d6jcnve
+01/22/2026 02:36:35 - INFO - __main__ - 
+======================================================================
+01/22/2026 02:36:35 - INFO - __main__ - Starting Training Loop
+01/22/2026 02:36:35 - INFO - __main__ - ======================================================================
+
+[Step 0] Training Debug Info:
+  Loss: 0.599027
+  Latent shape: torch.Size([1, 32, 78, 114]), Packed shape: torch.Size([1, 2223, 128])
+  Latent mean: -0.0016, std: 0.8984
+  Noise mean: -0.0001, std: 1.0000
+  Target mean: 0.0015, std: 1.3438
+  Model pred mean: 0.0049, std: 1.2891
+  Sigmas: [0.6171875]... (timesteps: [618.0])
+
+[Step 0] Training Debug Info:
+  Loss: 1.166942
+  Latent shape: torch.Size([1, 32, 78, 114]), Packed shape: torch.Size([1, 2223, 128])
+  Latent mean: 0.0295, std: 0.9609
+  Noise mean: -0.0000, std: 1.0000
+  Target mean: -0.0295, std: 1.3828
+  Model pred mean: -0.0036, std: 0.8789
+  Sigmas: [0.041015625]... (timesteps: [41.0])
+
+[Step 0] Training Debug Info:
+  Loss: 0.641546
+  Latent shape: torch.Size([1, 32, 72, 126]), Packed shape: torch.Size([1, 2268, 128])
+  Latent mean: 0.0056, std: 0.9102
+  Noise mean: 0.0040, std: 0.9961
+  Target mean: -0.0015, std: 1.3516
+  Model pred mean: 0.0015, std: 1.2812
+  Sigmas: [0.609375]... (timesteps: [610.0])
+
+[Step 0] Training Debug Info:
+  Loss: 1.469110
+  Latent shape: torch.Size([1, 32, 66, 138]), Packed shape: torch.Size([1, 2277, 128])
+  Latent mean: -0.0054, std: 0.8672
+  Noise mean: -0.0032, std: 1.0000
+  Target mean: 0.0021, std: 1.3203
+  Model pred mean: 0.0066, std: 1.3906
+  Sigmas: [0.400390625]... (timesteps: [400.0])
+Steps:   0%|          | 1/5000 [00:17<24:37:58, 17.74s/it]01/22/2026 02:36:50 - INFO - __main__ - 
+🔍 Running validation at step 1...
+01/22/2026 02:36:54 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func - 
+============================================================
+01/22/2026 02:36:54 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func - Running validation at step 1 (parquet mode)...
+01/22/2026 02:36:54 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func - ============================================================
+01/22/2026 02:36:54 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func - 
+============================================================
+01/22/2026 02:36:54 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func - Running validation at step 1...
+01/22/2026 02:36:54 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func - ============================================================
+01/22/2026 02:36:54 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -   Moving VAE and text_encoder to GPU...
+01/22/2026 02:36:54 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -   Generating image 1/5: A detailed scientific diagram showing the structure of an atom with electrons or...
+
+  0%|          | 0/28 [00:00<?, ?it/s][A
+  4%|▎         | 1/28 [00:00<00:17,  1.53it/s][A
+  7%|▋         | 2/28 [00:01<00:22,  1.17it/s][A
+ 11%|█         | 3/28 [00:02<00:22,  1.09it/s][A
+ 14%|█▍        | 4/28 [00:03<00:22,  1.06it/s][A
+ 18%|█▊        | 5/28 [00:04<00:22,  1.04it/s][A
+ 21%|██▏       | 6/28 [00:05<00:21,  1.03it/s][A
+ 25%|██▌       | 7/28 [00:06<00:20,  1.02it/s][A
+ 29%|██▊       | 8/28 [00:07<00:19,  1.01it/s][A
+ 32%|███▏      | 9/28 [00:08<00:18,  1.01it/s][A
+ 36%|███▌      | 10/28 [00:09<00:17,  1.01it/s][A
+ 39%|███▉      | 11/28 [00:10<00:16,  1.01it/s][A
+ 43%|████▎     | 12/28 [00:11<00:15,  1.00it/s][A
+ 46%|████▋     | 13/28 [00:12<00:14,  1.00it/s][A
+ 50%|█████     | 14/28 [00:13<00:13,  1.00it/s][A
+ 54%|█████▎    | 15/28 [00:14<00:12,  1.00it/s][A
+ 57%|█████▋    | 16/28 [00:15<00:11,  1.00it/s][A
+ 61%|██████    | 17/28 [00:16<00:11,  1.00s/it][A
+ 64%|██████▍   | 18/28 [00:17<00:10,  1.00s/it][A
+ 68%|██████▊   | 19/28 [00:18<00:09,  1.00s/it][A
+ 71%|███████▏  | 20/28 [00:19<00:08,  1.00s/it][A
+ 75%|███████▌  | 21/28 [00:20<00:07,  1.00s/it][A
+ 79%|███████▊  | 22/28 [00:21<00:06,  1.00s/it][A
+ 82%|████████▏ | 23/28 [00:22<00:05,  1.00s/it][A
+ 86%|████████▌ | 24/28 [00:23<00:04,  1.00s/it][A
+ 89%|████████▉ | 25/28 [00:24<00:03,  1.00s/it][A
+ 93%|█████████▎| 26/28 [00:25<00:02,  1.00s/it][A
+ 96%|█████████▋| 27/28 [00:26<00:01,  1.01s/it][A
+100%|██████████| 28/28 [00:27<00:00,  1.01s/it][A100%|██████████| 28/28 [00:27<00:00,  1.01it/s]
+01/22/2026 02:37:23 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -     Saved to: /home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000/validation_images/step_000001/step000001_prompt00_0_A_detailed_scientific_diagram_showing_the_structur.png
+01/22/2026 02:37:23 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -   Generating image 2/5: A mathematical function graph showing a sine wave with labeled axes...
+
+  0%|          | 0/28 [00:00<?, ?it/s][A
+  4%|▎         | 1/28 [00:00<00:13,  1.96it/s][A
+  7%|▋         | 2/28 [00:01<00:17,  1.50it/s][A
+ 11%|█         | 3/28 [00:02<00:17,  1.39it/s][A
+ 14%|█▍        | 4/28 [00:02<00:17,  1.35it/s][A
+ 18%|█▊        | 5/28 [00:03<00:17,  1.32it/s][A
+ 21%|██▏       | 6/28 [00:04<00:16,  1.31it/s][A
+ 25%|██▌       | 7/28 [00:05<00:16,  1.30it/s][A
+ 29%|██▊       | 8/28 [00:05<00:15,  1.30it/s][A
+ 32%|███▏      | 9/28 [00:06<00:14,  1.29it/s][A
+ 36%|███▌      | 10/28 [00:07<00:13,  1.29it/s][A
+ 39%|███▉      | 11/28 [00:08<00:13,  1.29it/s][A
+ 43%|████▎     | 12/28 [00:09<00:12,  1.28it/s][A
+ 46%|████▋     | 13/28 [00:09<00:11,  1.28it/s][A
+ 50%|█████     | 14/28 [00:10<00:10,  1.28it/s][A
+ 54%|█████▎    | 15/28 [00:11<00:10,  1.28it/s][A
+ 57%|█████▋    | 16/28 [00:12<00:09,  1.28it/s][A
+ 61%|██████    | 17/28 [00:12<00:08,  1.28it/s][A
+ 64%|██████▍   | 18/28 [00:13<00:07,  1.28it/s][A
+ 68%|██████▊   | 19/28 [00:14<00:07,  1.28it/s][A
+ 71%|███████▏  | 20/28 [00:15<00:06,  1.28it/s][A
+ 75%|███████▌  | 21/28 [00:16<00:05,  1.28it/s][A
+ 79%|███████▊  | 22/28 [00:16<00:04,  1.28it/s][A
+ 82%|████████▏ | 23/28 [00:17<00:03,  1.28it/s][A
+ 86%|████████▌ | 24/28 [00:18<00:03,  1.28it/s][A
+ 89%|████████▉ | 25/28 [00:19<00:02,  1.28it/s][A
+ 93%|█████████▎| 26/28 [00:20<00:01,  1.28it/s][A
+ 96%|█████████▋| 27/28 [00:20<00:00,  1.28it/s][A
+100%|██████████| 28/28 [00:21<00:00,  1.28it/s][A100%|██████████| 28/28 [00:21<00:00,  1.30it/s]
+01/22/2026 02:37:45 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -     Saved to: /home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000/validation_images/step_000001/step000001_prompt01_0_A_mathematical_function_graph_showing_a_sine_wave.png
+01/22/2026 02:37:45 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -   Generating image 3/5: A chemical reaction diagram with molecular structures and arrows...
+
+  0%|          | 0/28 [00:00<?, ?it/s][A
+  4%|▎         | 1/28 [00:00<00:17,  1.51it/s][A
+  7%|▋         | 2/28 [00:01<00:22,  1.15it/s][A
+ 11%|█         | 3/28 [00:02<00:23,  1.07it/s][A
+ 14%|█▍        | 4/28 [00:03<00:23,  1.04it/s][A
+ 18%|█▊        | 5/28 [00:04<00:22,  1.02it/s][A
+ 21%|██▏       | 6/28 [00:05<00:21,  1.01it/s][A
+ 25%|██▌       | 7/28 [00:06<00:21,  1.00s/it][A
+ 29%|██▊       | 8/28 [00:07<00:20,  1.01s/it][A
+ 32%|███▏      | 9/28 [00:08<00:19,  1.01s/it][A
+ 36%|███▌      | 10/28 [00:09<00:18,  1.01s/it][A
+ 39%|███▉      | 11/28 [00:10<00:17,  1.01s/it][A
+ 43%|████▎     | 12/28 [00:11<00:16,  1.01s/it][A
+ 46%|████▋     | 13/28 [00:12<00:15,  1.02s/it][A
+ 50%|█████     | 14/28 [00:13<00:14,  1.02s/it][A
+ 54%|█████▎    | 15/28 [00:14<00:13,  1.02s/it][A
+ 57%|█████▋    | 16/28 [00:15<00:12,  1.02s/it][A
+ 61%|██████    | 17/28 [00:16<00:11,  1.02s/it][A
+ 64%|██████▍   | 18/28 [00:17<00:10,  1.02s/it][A
+ 68%|██████▊   | 19/28 [00:18<00:09,  1.02s/it][A
+ 71%|███████▏  | 20/28 [00:19<00:08,  1.02s/it][A
+ 75%|███████▌  | 21/28 [00:21<00:07,  1.02s/it][A
+ 79%|███████▊  | 22/28 [00:22<00:06,  1.02s/it][A
+ 82%|████████▏ | 23/28 [00:23<00:05,  1.02s/it][A
+ 86%|████████▌ | 24/28 [00:24<00:04,  1.02s/it][A
+ 89%|████████▉ | 25/28 [00:25<00:03,  1.02s/it][A
+ 93%|█████████▎| 26/28 [00:26<00:02,  1.02s/it][A
+ 96%|█████████▋| 27/28 [00:27<00:01,  1.02s/it][A
+100%|██████████| 28/28 [00:28<00:00,  1.02s/it][A100%|██████████| 28/28 [00:28<00:00,  1.01s/it]
+01/22/2026 02:38:14 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -     Saved to: /home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000/validation_images/step_000001/step000001_prompt02_0_A_chemical_reaction_diagram_with_molecular_structu.png
+01/22/2026 02:38:14 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -   Generating image 4/5: A physics diagram showing electromagnetic wave propagation...
+
+  0%|          | 0/28 [00:00<?, ?it/s][A
+  4%|▎         | 1/28 [00:00<00:14,  1.93it/s][A
+  7%|▋         | 2/28 [00:01<00:17,  1.47it/s][A
+ 11%|█         | 3/28 [00:02<00:18,  1.37it/s][A
+ 14%|█▍        | 4/28 [00:02<00:18,  1.33it/s][A
+ 18%|█▊        | 5/28 [00:03<00:17,  1.30it/s][A
+ 21%|██▏       | 6/28 [00:04<00:17,  1.29it/s][A
+ 25%|██▌       | 7/28 [00:05<00:16,  1.28it/s][A
+ 29%|██▊       | 8/28 [00:06<00:15,  1.27it/s][A
+ 32%|███▏      | 9/28 [00:06<00:14,  1.27it/s][A
+ 36%|███▌      | 10/28 [00:07<00:14,  1.27it/s][A
+ 39%|███▉      | 11/28 [00:08<00:13,  1.27it/s][A
+ 43%|████▎     | 12/28 [00:09<00:12,  1.27it/s][A
+ 46%|████▋     | 13/28 [00:10<00:11,  1.26it/s][A
+ 50%|█████     | 14/28 [00:10<00:11,  1.26it/s][A
+ 54%|█████▎    | 15/28 [00:11<00:10,  1.26it/s][A
+ 57%|█████▋    | 16/28 [00:12<00:09,  1.26it/s][A
+ 61%|██████    | 17/28 [00:13<00:08,  1.26it/s][A
+ 64%|██████▍   | 18/28 [00:13<00:07,  1.26it/s][A
+ 68%|██████▊   | 19/28 [00:14<00:07,  1.26it/s][A
+ 71%|███████▏  | 20/28 [00:15<00:06,  1.26it/s][A
+ 75%|███████▌  | 21/28 [00:16<00:05,  1.26it/s][A
+ 79%|███████▊  | 22/28 [00:17<00:04,  1.26it/s][A
+ 82%|████████▏ | 23/28 [00:17<00:03,  1.26it/s][A
+ 86%|████████▌ | 24/28 [00:18<00:03,  1.26it/s][A
+ 89%|████████▉ | 25/28 [00:19<00:02,  1.26it/s][A
+ 93%|█████████▎| 26/28 [00:20<00:01,  1.26it/s][A
+ 96%|█████████▋| 27/28 [00:21<00:00,  1.26it/s][A
+100%|██████████| 28/28 [00:21<00:00,  1.26it/s][A100%|██████████| 28/28 [00:21<00:00,  1.28it/s]
+01/22/2026 02:38:37 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -     Saved to: /home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000/validation_images/step_000001/step000001_prompt03_0_A_physics_diagram_showing_electromagnetic_wave_pro.png
+01/22/2026 02:38:37 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -   Generating image 5/5: A flowchart explaining a machine learning algorithm...
+
+  0%|          | 0/28 [00:00<?, ?it/s][A
+  4%|▎         | 1/28 [00:00<00:18,  1.49it/s][A
+  7%|▋         | 2/28 [00:01<00:22,  1.14it/s][A
+ 11%|█         | 3/28 [00:02<00:23,  1.06it/s][A
+ 14%|█▍        | 4/28 [00:03<00:23,  1.02it/s][A
+ 18%|█▊        | 5/28 [00:04<00:22,  1.01it/s][A
+ 21%|██▏       | 6/28 [00:05<00:22,  1.01s/it][A
+ 25%|██▌       | 7/28 [00:06<00:21,  1.01s/it][A
+ 29%|██▊       | 8/28 [00:07<00:20,  1.02s/it][A
+ 32%|███▏      | 9/28 [00:08<00:19,  1.02s/it][A
+ 36%|███▌      | 10/28 [00:09<00:18,  1.02s/it][A
+ 39%|███▉      | 11/28 [00:10<00:17,  1.02s/it][A
+ 43%|████▎     | 12/28 [00:11<00:16,  1.02s/it][A
+ 46%|████▋     | 13/28 [00:12<00:15,  1.03s/it][A
+ 50%|█████     | 14/28 [00:14<00:14,  1.03s/it][A
+ 54%|█████▎    | 15/28 [00:15<00:13,  1.03s/it][A
+ 57%|█████▋    | 16/28 [00:16<00:12,  1.03s/it][A
+ 61%|██████    | 17/28 [00:17<00:11,  1.03s/it][A
+ 64%|██████▍   | 18/28 [00:18<00:10,  1.03s/it][A
+ 68%|██████▊   | 19/28 [00:19<00:09,  1.03s/it][A
+ 71%|███████▏  | 20/28 [00:20<00:08,  1.03s/it][A
+ 75%|███████▌  | 21/28 [00:21<00:07,  1.03s/it][A
+ 79%|███████▊  | 22/28 [00:22<00:06,  1.03s/it][A
+ 82%|████████▏ | 23/28 [00:23<00:05,  1.03s/it][A
+ 86%|████████▌ | 24/28 [00:24<00:04,  1.03s/it][A
+ 89%|████████▉ | 25/28 [00:25<00:03,  1.03s/it][A
+ 93%|█████████▎| 26/28 [00:26<00:02,  1.03s/it][A
+ 96%|█████████▋| 27/28 [00:27<00:01,  1.03s/it][A
+100%|██████████| 28/28 [00:28<00:00,  1.03s/it][A100%|██████████| 28/28 [00:28<00:00,  1.01s/it]
+01/22/2026 02:39:06 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -     Saved to: /home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000/validation_images/step_000001/step000001_prompt04_0_A_flowchart_explaining_a_machine_learning_algorith.png
+01/22/2026 02:39:06 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -   Moving VAE and text_encoder back to CPU...
+01/22/2026 02:39:08 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func - 
+  ✅ Validation complete! Saved 5 images to:
+01/22/2026 02:39:08 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func -      /home/v-yuxluo/WORK_local/ArXivQwenImage/output/flux2klein_fulltune_5000/validation_images/step_000001
+01/22/2026 02:39:08 - INFO - OpenSciDraw.validation_funcs.Flux2Klein_fulltune_validation_func - ============================================================
+
+Steps:   0%|          | 2/5000 [02:53<137:34:27, 99.09s/it]Steps:   0%|          | 3/5000 [03:05<82:28:45, 59.42s/it] Steps:   0%|          | 4/5000 [03:18<56:43:54, 40.88s/it]Steps:   0%|          | 5/5000 [03:30<42:15:10, 30.45s/it]Steps:   0%|          | 6/5000 [03:42<33:27:39, 24.12s/it]Steps:   0%|          | 7/5000 [03:54<27:52:38, 20.10s/it]Steps:   0%|          | 8/5000 [04:05<24:13:03, 17.46s/it]Steps:   0%|          | 9/5000 [04:17<21:46:50, 15.71s/it]Steps:   0%|          | 10/5000 [04:29<20:09:49, 14.55s/it]Steps:   0%|          | 10/5000 [04:29<20:09:49, 14.55s/it, loss=0.5584, lr=2.00e-07]
+[Step 10] Training Debug Info:
+  Loss: 1.936947
+  Latent shape: torch.Size([1, 32, 48, 186]), Packed shape: torch.Size([1, 2232, 128])
+  Latent mean: 0.0161, std: 0.9336
+  Noise mean: 0.0004, std: 1.0000
+  Target mean: -0.0157, std: 1.3672
+  Model pred mean: -0.0077, std: 1.4766
+  Sigmas: [0.2890625]... (timesteps: [290.0])
+
+[Step 10] Training Debug Info:
+  Loss: 1.297910
+  Latent shape: torch.Size([1, 32, 48, 180]), Packed shape: torch.Size([1, 2160, 128])
+  Latent mean: 0.0061, std: 0.9297
+  Noise mean: -0.0008, std: 1.0000
+  Target mean: -0.0068, std: 1.3672
+  Model pred mean: 0.0205, std: 0.8516
+  Sigmas: [0.053955078125]... (timesteps: [54.0])
+
+[Step 10] Training Debug Info:
+  Loss: 2.329418
+  Latent shape: torch.Size([1, 32, 66, 138]), Packed shape: torch.Size([1, 2277, 128])
+  Latent mean: -0.0109, std: 0.8828
+  Noise mean: 0.0035, std: 1.0000
+  Target mean: 0.0145, std: 1.3359
+  Model pred mean: 0.0410, std: 1.3125
+  Sigmas: [0.2109375]... (timesteps: [211.0])
+
+[Step 10] Training Debug Info:
+  Loss: 0.386617
+  Latent shape: torch.Size([1, 32, 72, 120]), Packed shape: torch.Size([1, 2160, 128])
+  Latent mean: 0.0141, std: 0.9297
+  Noise mean: 0.0001, std: 1.0000
+  Target mean: -0.0140, std: 1.3672
+  Model pred mean: -0.0104, std: 1.2891
+  Sigmas: [0.71875]... (timesteps: [719.0])
+Steps:   0%|          | 11/5000 [04:41<19:00:23, 13.71s/it, loss=0.5584, lr=2.00e-07]Steps:   0%|          | 12/5000 [04:53<18:13:26, 13.15s/it, loss=0.5584, lr=2.00e-07]Steps:   0%|          | 13/5000 [05:05<17:50:19, 12.88s/it, loss=0.5584, lr=2.00e-07]Steps:   0%|          | 14/5000 [05:17<17:24:13, 12.57s/it, loss=0.5584, lr=2.00e-07]Steps:   0%|          | 15/5000 [05:29<17:06:01, 12.35s/it, loss=0.5584, lr=2.00e-07]Steps:   0%|          | 16/5000 [05:41<16:54:11, 12.21s/it, loss=0.5584, lr=2.00e-07]Steps:   0%|          | 17/5000 [05:53<16:47:12, 12.13s/it, loss=0.5584, lr=2.00e-07]Steps:   0%|          | 18/5000 [06:04<16:38:44, 12.03s/it, loss=0.5584, lr=2.00e-07]Steps:   0%|          | 19/5000 [06:16<16:35:02, 11.99s/it, loss=0.5584, lr=2.00e-07]Steps:   0%|          | 20/5000 [06:28<16:30:09, 11.93s/it, loss=0.5584, lr=2.00e-07]Steps:   0%|          | 20/5000 [06:28<16:30:09, 11.93s/it, loss=0.3745, lr=4.00e-07]
+[Step 20] Training Debug Info:
+  Loss: 2.878367
+  Latent shape: torch.Size([1, 32, 48, 186]), Packed shape: torch.Size([1, 2232, 128])
+  Latent mean: -0.0125, std: 0.8477
+  Noise mean: 0.0039, std: 1.0000
+  Target mean: 0.0164, std: 1.3125
+  Model pred mean: 0.0203, std: 1.5391
+  Sigmas: [0.2353515625]... (timesteps: [235.0])
+
+[Step 20] Training Debug Info:
+  Loss: 0.512906
+  Latent shape: torch.Size([1, 32, 54, 168]), Packed shape: torch.Size([1, 2268, 128])
+  Latent mean: 0.0310, std: 0.9297
+  Noise mean: 0.0009, std: 1.0000
+  Target mean: -0.0300, std: 1.3672
+  Model pred mean: -0.0283, std: 1.2656
+  Sigmas: [0.703125]... (timesteps: [703.0])
+
+[Step 20] Training Debug Info:
+  Loss: 2.030874
+  Latent shape: torch.Size([1, 32, 66, 138]), Packed shape: torch.Size([1, 2277, 128])
+  Latent mean: -0.0032, std: 0.8984
+  Noise mean: 0.0021, std: 1.0000
+  Target mean: 0.0053, std: 1.3438
+  Model pred mean: 0.0349, std: 1.1797
+  Sigmas: [0.197265625]... (timesteps: [197.0])
+
+[Step 20] Training Debug Info:
+  Loss: 0.654149
+  Latent shape: torch.Size([1, 32, 132, 66]), Packed shape: torch.Size([1, 2178, 128])
+  Latent mean: 0.0347, std: 0.9102
+  Noise mean: -0.0033, std: 1.0000
+  Target mean: -0.0378, std: 1.3594
+  Model pred mean: -0.0305, std: 1.2656
+  Sigmas: [0.6171875]... (timesteps: [619.0])
+Steps:   0%|          | 21/5000 [06:40<16:27:29, 11.90s/it, loss=0.3745, lr=4.00e-07]Steps:   0%|          | 22/5000 [06:52<16:35:28, 12.00s/it, loss=0.3745, lr=4.00e-07]Steps:   0%|          | 23/5000 [07:04<16:37:18, 12.02s/it, loss=0.3745, lr=4.00e-07]Steps:   0%|          | 24/5000 [07:16<16:33:33, 11.98s/it, loss=0.3745, lr=4.00e-07]Steps:   0%|          | 25/5000 [07:28<16:32:07, 11.97s/it, loss=0.3745, lr=4.00e-07]Steps:   1%|          | 26/5000 [07:40<16:29:49, 11.94s/it, loss=0.3745, lr=4.00e-07]Steps:   1%|          | 27/5000 [07:52<16:29:07, 11.93s/it, loss=0.3745, lr=4.00e-07]W0122 02:44:29.852000 32645 site-packages/torch/distributed/elastic/agent/server/api.py:704] Received Signals.SIGTERM death signal, shutting down workers
+W0122 02:44:29.856000 32645 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 32901 closing signal SIGTERM
+W0122 02:44:29.858000 32645 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 32902 closing signal SIGTERM
+W0122 02:44:29.860000 32645 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 32903 closing signal SIGTERM
+W0122 02:44:29.862000 32645 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 32904 closing signal SIGTERM
+Traceback (most recent call last):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/bin/accelerate", line 7, in <module>
+    sys.exit(main())
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/launch.py", line 1266, in launch_command
+    deepspeed_launcher(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/launch.py", line 952, in deepspeed_launcher
+    distrib_run.run(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 260, in launch_agent
+    result = agent.run()
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/elastic/metrics/api.py", line 137, in wrapper
+    result = f(*args, **kwargs)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 696, in run
+    result = self._invoke_run(role)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/elastic/agent/server/api.py", line 855, in _invoke_run
+    time.sleep(monitor_interval)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/api.py", line 84, in _terminate_process_handler
+    raise SignalException(f"Process {os.getpid()} got signal: {sigval}", sigval=sigval)
+torch.distributed.elastic.multiprocessing.api.SignalException: Process 32645 got signal: 15

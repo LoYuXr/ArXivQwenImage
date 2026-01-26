@@ -1,0 +1,85 @@
+# amlt run -d visionflow_basic run_fluxklein_test.yaml -y
+target:
+  name: msrresrchbasicvc
+  service: sing
+  workspace_name: mcgvisionflowws
+
+environment:
+  image: amlt-sing/acpt-torch2.7.1-py3.10-cuda12.6-ubuntu22.04
+  
+
+storage:
+  data:
+    container_name: yuxuanluo
+    mount_dir: /mnt/data
+    storage_account_name: mcgvisionflowsa
+
+code:
+  local_dir: /home/v-yuxluo/WORK_local/ArXivQwenImage
+
+description: Run_fluxklein_test_260120
+
+jobs:
+- name: Run_fluxklein_test_260120
+  process_count_per_node: 1
+  sku: 1x80G4-A100
+  
+  command:
+  - sudo apt-get update
+  - sudo apt-get install -y libglib2.0-0
+  - sudo apt-get install -y libgl1
+  - sudo apt-get install -y curl
+  - sudo apt-get install -y libaio-dev
+  - sudo apt-get install -y poppler-utils
+  
+  - pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+  - pip install git+https://github.com/huggingface/diffusers
+  - pip install transformers==4.55.0 accelerate protobuf wandb
+  - pip install opencv-python pandas pyarrow datasets ftfy sentencepiece einops scikit-learn timm==0.9.2 mmengine tqdm
+  - pip install bitsandbytes>=0.43.0 peft pydantic ray[train] prodigyopt
+  - export WANDB_ENTITY=v-yuxluo
+  - export WANDB_PROJECT=ArXivQwenImage-Run
+  - export WANDB_BASE_URL="https://microsoft-research.wandb.io"
+  - export WANDB_API_KEY=875d49aadaaa0b7a5d690629d3324b56306709bf
+  - wandb login 875d49aadaaa0b7a5d690629d3324b56306709bf
+  - wandb login
+  ### YOU NEED TO - export HF_TOKEN=""
+  - huggingface-cli login --token $$HF_TOKEN
+
+
+  - export NCCL_DEBUG=INFO 
+  - export TORCH_BLOCKING_WAIT=1
+  - export TORCH_CUDNN_V8_API_ENABLED=1
+  - export CUDA_LAUNCH_BLOCKING=1
+  - export HIP_LAUNCH_BLOCKING=1
+  - export TORCH_ASYNC_ERROR_HANDLING=1
+  - export NCCL_IB_PCI_RELAXED_ORDERING=1
+  - export NCCL_SOCKET_IFNAME=ib,en,eth,em,bond
+  - export NCCL_NET_GDR_LEVEL=5
+  - export NCCL_TOPO_FILE=/opt/microsoft/ndv4-topo.xml
+
+  - accelerate launch
+    --config_file accelerate_cfg/1m4g_bf16.yaml
+    train_OpenSciDraw_loop.py
+    configs/260120/test_newcode_fluxklein_parquet_dataset_config_amlt.py 
+
+  
+  identity: managed
+  submit_args:
+    env:
+      _AZUREML_SINGULARITY_JOB_UAI: /subscriptions/e56674e8-8a8b-4559-8a24-4149e2e4565b/resourcegroups/mcg_vision_flow_rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mcgvisionflowid
+      SHARED_MEMORY_PERCENT: 1
+      # AMLT_DOCKERFILE_TEMPLATE: DEFAULT
+      NCCL_IB_DISABLE: 0
+      NCCL_DEBUG: INFO
+      NCCL_IB_TIMEOUT: 60
+      NCCL_BLOCKING_WAIT: 0 # When set to 1, NCCL will make all collective operations block the CUDA stream they're launched on until the operation is complete. This means that subsequent operations in the same stream won't start executing until the NCCL operation finishes. If this variable is unset or set to 0, then the NCCL operations are asynchronous and can overlap with other operations in the same stream.
+      NCCL_ASYNC_ERROR_HANDLING: 1 # When set to 1, NCCL will not abort immediately upon encountering an error during an asynchronous collective operation. Instead, the error will be reported when the CUDA stream on which the operation was launched is synchronized. If this variable is unset or set to 0, then the default behavior is to abort on encountering an error.
+      MKL_THREADING_LAYER: GNU
+    max_attempts: 2
+    
+    max_run_duration_seconds: 1200000
+  sla_tier: standard
+  execution_mode: basic
+  priority: high
+  tags: ["Project_Name:VisionFlow"]
