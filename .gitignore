@@ -1,3 +1,16 @@
 __pycache__/
 wandb/
 debug/
+
+# Backup folders with potential secrets
+output/backup/
+
+# Log files with potential secrets  
+experiments/**/*.log
+
+# Backup configs with potential secrets
+utils/backup/
+
+# Local secrets
+_local_secrets.py
+secrets.py

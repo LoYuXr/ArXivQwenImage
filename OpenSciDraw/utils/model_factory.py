@@ -21,6 +21,7 @@ The factory will automatically resolve:
 """
 
 import importlib
+import os
 from typing import Dict, Any, Tuple, Optional, Type
 from dataclasses import dataclass, field
 import json
@@ -31,6 +32,20 @@ from accelerate.logging import get_logger
 from peft import prepare_model_for_kbit_training
 
 logger = get_logger(__name__)
+
+
+def get_hf_token(config) -> Optional[str]:
+    """Get HuggingFace token from config or environment variable.
+    
+    Priority:
+    1. config.huggingface_token (if set and not None)
+    2. HF_TOKEN environment variable
+    3. None
+    """
+    token = getattr(config, 'huggingface_token', None)
+    if token:
+        return token
+    return os.environ.get('HF_TOKEN', None)
 
 
 @dataclass
@@ -234,7 +249,7 @@ class ModelFactory:
             subfolder=self.spec.tokenizer_subfolder,
             revision=getattr(self.config, 'revision', None),
             cache_dir=getattr(self.config, 'cache_dir', None),
-            token=getattr(self.config, 'huggingface_token', None),
+            token=get_hf_token(self.config),
         )
     
     def load_text_encoder(self):
@@ -246,7 +261,7 @@ class ModelFactory:
             revision=getattr(self.config, 'revision', None),
             variant=getattr(self.config, 'variant', None),
             cache_dir=getattr(self.config, 'cache_dir', None),
-            token=getattr(self.config, 'huggingface_token', None),
+            token=get_hf_token(self.config),
             torch_dtype=getattr(self.config, 'weight_dtype', torch.bfloat16),
         )
         text_encoder.requires_grad_(False)
@@ -261,7 +276,7 @@ class ModelFactory:
             revision=getattr(self.config, 'revision', None),
             variant=getattr(self.config, 'variant', None),
             cache_dir=getattr(self.config, 'cache_dir', None),
-            token=getattr(self.config, 'huggingface_token', None),
+            token=get_hf_token(self.config),
         )
         vae.requires_grad_(False)
         return vae
@@ -287,7 +302,7 @@ class ModelFactory:
             revision=getattr(self.config, 'revision', None),
             variant=getattr(self.config, 'variant', None),
             cache_dir=getattr(self.config, 'cache_dir', None),
-            token=getattr(self.config, 'huggingface_token', None),
+            token=get_hf_token(self.config),
             quantization_config=quantization_config,
             torch_dtype=getattr(self.config, 'weight_dtype', torch.bfloat16),
         )
@@ -321,7 +336,7 @@ class ModelFactory:
             subfolder=self.spec.scheduler_subfolder,
             revision=getattr(self.config, 'revision', None),
             cache_dir=getattr(self.config, 'cache_dir', None),
-            token=getattr(self.config, 'huggingface_token', None),
+            token=get_hf_token(self.config),
             **scheduler_kwargs,
         )
     
@@ -335,6 +350,7 @@ class ModelFactory:
             tokenizer=tokenizer,
             text_encoder=text_encoder,
             scheduler=None,
+            token=get_hf_token(self.config),
         )
     
     def get_vae_scale_factor(self, vae) -> int:

@@ -251,7 +251,7 @@ class ArXiVParquetDatasetV2(Dataset):
     
 @DATASETS.register_module()
 class DistributedBucketSamplerV2(Sampler):
-    def __init__(self, dataset, batch_size, num_replicas=None, rank=None, drop_last=True, shuffle=True):
+    def __init__(self, dataset, batch_size, num_replicas=None, rank=None, drop_last=True, shuffle=True, seed=42):
         super().__init__(dataset)
         self.dataset = dataset
         self.batch_size = batch_size
@@ -259,15 +259,18 @@ class DistributedBucketSamplerV2(Sampler):
         self.rank = rank if rank is not None else (dist.get_rank() if dist.is_initialized() else 0)
         self.drop_last = drop_last
         self.shuffle = shuffle
+        self.seed = seed  # Base seed for reproducibility
         self.epoch = 0
 
         self.groups = self.dataset.meta_df.groupby(['bucket_h', 'bucket_w']).indices
 
     def __iter__(self):
         # --- 3. 分布式同步核心：所有进程必须共享同一个 RNG ---
+        # 使用 seed + epoch 来确保可复现性
+        combined_seed = self.seed + self.epoch
         g = torch.Generator()
-        g.manual_seed(self.epoch)
-        rng = random.Random(self.epoch) # 使用 Python 的 random 保证 shuffling 一致
+        g.manual_seed(combined_seed)
+        rng = random.Random(combined_seed)  # 使用 Python 的 random 保证 shuffling 一致
 
         all_batch_lists = []
         

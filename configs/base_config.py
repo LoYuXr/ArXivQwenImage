@@ -23,7 +23,9 @@ transformer_cfg = dict(
 pretrained_model_name_or_path = (
     "Qwen/Qwen-Image-2512"
 )
-huggingface_token = "" #PLEASE FILLIN
+# HuggingFace token will be read from HF_TOKEN environment variable at runtime
+# Set via: export HF_TOKEN=your_token_here
+huggingface_token = None
 
 # LoRA 通用默认
 use_lora = True

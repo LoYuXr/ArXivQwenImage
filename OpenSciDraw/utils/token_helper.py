@@ -4,7 +4,7 @@
 # This module provides a unified way to get sensitive tokens
 # with proper fallback hierarchy:
 #   1. Environment variables (highest priority, for AMLT/cloud)
-#   2. secrets.py file (for local development)
+#   2. _local_secrets.py file (for local development)
 #   3. None / default value (fallback)
 #
 # Usage in your code:
@@ -12,18 +12,22 @@
 #
 # For AMLT:
 #     Just set environment variables in your yaml, no need to hardcode tokens
+#
+# NOTE: We use _local_secrets.py instead of secrets.py to avoid
+#       conflicting with Python's standard library 'secrets' module
 # ============================================================
 
 import os
 from typing import Optional
 
-# Try to import from secrets.py (for local development)
+# Try to import from _local_secrets.py (for local development)
+# NOTE: Cannot use 'secrets.py' as it conflicts with Python stdlib
 try:
-    from secrets import HF_TOKEN as _SECRETS_HF_TOKEN
-    from secrets import WANDB_API_KEY as _SECRETS_WANDB_API_KEY
-    from secrets import WANDB_ENTITY as _SECRETS_WANDB_ENTITY
-    from secrets import WANDB_PROJECT as _SECRETS_WANDB_PROJECT
-    from secrets import WANDB_BASE_URL as _SECRETS_WANDB_BASE_URL
+    from _local_secrets import HF_TOKEN as _SECRETS_HF_TOKEN
+    from _local_secrets import WANDB_API_KEY as _SECRETS_WANDB_API_KEY
+    from _local_secrets import WANDB_ENTITY as _SECRETS_WANDB_ENTITY
+    from _local_secrets import WANDB_PROJECT as _SECRETS_WANDB_PROJECT
+    from _local_secrets import WANDB_BASE_URL as _SECRETS_WANDB_BASE_URL
     _SECRETS_AVAILABLE = True
 except ImportError:
     _SECRETS_HF_TOKEN = None
@@ -32,7 +36,6 @@ except ImportError:
     _SECRETS_WANDB_PROJECT = None
     _SECRETS_WANDB_BASE_URL = None
     _SECRETS_AVAILABLE = False
-
 
 def get_hf_token(config_token: Optional[str] = None) -> Optional[str]:
     """

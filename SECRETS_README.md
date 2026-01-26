@@ -7,7 +7,7 @@ This document explains how to manage sensitive credentials (HuggingFace tokens, 
 We use a **centralized secrets management** approach with the following priority hierarchy:
 
 1. **Environment Variables** (highest priority) - Best for AMLT/cloud deployments
-2. **secrets.py** - For local development
+2. **_local_secrets.py** - For local development
 3. **None/Default** - Falls back gracefully
 
 ## Quick Start
@@ -21,7 +21,7 @@ Run the setup script:
 ```
 
 This creates:
-- `secrets.py` - Python secrets for config files
+- `_local_secrets.py` - Python secrets for config files
 - `~/.hf_secrets` - Bash secrets for shell scripts
 
 ### For AMLT/Cloud Deployment
@@ -46,9 +46,9 @@ See `amlt/template_secure_tokens.yaml` for a full example.
 ## File Structure
 
 ```
-├── secrets.py              # Your local secrets (git-ignored)
+├── _local_secrets.py              # Your local secrets (git-ignored)
 ├── secrets.template.py     # Template file (safe to commit)
-├── setup_local_secrets.sh  # Script to create secrets.py
+├── setup_local_secrets.sh  # Script to create _local_secrets.py
 ├── setup_amlt_secrets.sh   # Script to set AMLT secrets
 ├── ~/.hf_secrets          # Bash secrets for shell scripts
 └── OpenSciDraw/utils/
@@ -62,7 +62,7 @@ See `amlt/template_secure_tokens.yaml` for a full example.
 The `base_config.py` automatically resolves tokens:
 
 ```python
-# Priority: HF_TOKEN env var > secrets.py > None
+# Priority: HF_TOKEN env var > _local_secrets.py > None
 try:
     from secrets import HF_TOKEN as _HF_TOKEN
     huggingface_token = os.environ.get("HF_TOKEN", _HF_TOKEN)
@@ -109,15 +109,15 @@ If you had hardcoded tokens in your config files:
 
 1. Run `./setup_local_secrets.sh` to create proper secrets files
 2. The old hardcoded tokens have been replaced with `huggingface_token = None`
-3. The code will automatically use `secrets.py` or environment variables
+3. The code will automatically use `_local_secrets.py` or environment variables
 
 ## Troubleshooting
 
 ### "Token not found" errors
 
-1. Check if `secrets.py` exists:
+1. Check if `_local_secrets.py` exists:
    ```bash
-   ls -la secrets.py
+   ls -la _local_secrets.py
    ```
 
 2. Check environment variable:
@@ -149,7 +149,7 @@ If you had hardcoded tokens in your config files:
 The following patterns are in `.gitignore`:
 
 ```
-secrets.py
+_local_secrets.py
 secrets_*.py
 !secrets.template.py
 *.secret

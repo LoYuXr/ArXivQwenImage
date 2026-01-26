@@ -12,16 +12,16 @@ echo "Local Secrets Setup"
 echo "============================================================"
 echo ""
 echo "This will create two files:"
-echo "  1. secrets.py - Python secrets for config files"
+echo "  1. _local_secrets.py - Python secrets for config files"
 echo "  2. ~/.hf_secrets - Bash secrets for shell scripts"
 echo ""
 
-# Check if secrets.py already exists
-if [ -f "secrets.py" ]; then
-    echo "Warning: secrets.py already exists!"
+# Check if _local_secrets.py already exists
+if [ -f "_local_secrets.py" ]; then
+    echo "Warning: _local_secrets.py already exists!"
     read -p "Overwrite? (y/N): " overwrite
     if [ "$overwrite" != "y" ] && [ "$overwrite" != "Y" ]; then
-        echo "Keeping existing secrets.py"
+        echo "Keeping existing _local_secrets.py"
         SKIP_PY=true
     fi
 fi
@@ -54,14 +54,14 @@ echo "------------------------------------------------------------"
 echo "Creating secrets files..."
 echo "------------------------------------------------------------"
 
-# Create secrets.py
+# Create _local_secrets.py
 if [ "$SKIP_PY" != "true" ]; then
-    cat > secrets.py << EOF
+    cat > _local_secrets.py << EOF
 # ============================================================
 # Secrets Configuration File
 # ============================================================
 # ⚠️  WARNING: This file should NEVER be committed to git!
-# ⚠️  Make sure 'secrets.py' is in .gitignore
+# ⚠️  Make sure '_local_secrets.py' is in .gitignore
 # ============================================================
 
 import os
@@ -87,9 +87,9 @@ def get_wandb_api_key():
 huggingface_token = get_hf_token()
 wandb_api_key = get_wandb_api_key()
 EOF
-    echo "✓ Created secrets.py"
+    echo "✓ Created _local_secrets.py"
 else
-    echo "⊘ Skipped secrets.py"
+    echo "⊘ Skipped _local_secrets.py"
 fi
 
 # Create ~/.hf_secrets
@@ -111,11 +111,11 @@ echo "Setup Complete!"
 echo "============================================================"
 echo ""
 echo "The following files were created:"
-echo "  - secrets.py (for Python configs)"
+echo "  - _local_secrets.py (for Python configs)"
 echo "  - ~/.hf_secrets (for shell scripts)"
 echo ""
 echo "These files are already in .gitignore and will NOT be committed."
 echo ""
 echo "To use in shell scripts, add: source ~/.hf_secrets"
-echo "To use in Python, import from secrets.py or use token_helper.py"
+echo "To use in Python, import from _local_secrets.py or use token_helper.py"
 echo "============================================================"
