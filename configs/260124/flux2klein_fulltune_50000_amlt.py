@@ -24,7 +24,7 @@ gradient_accumulation_steps = 4  # Effective batch = 1 * 4 * 4 GPUs = 16
 max_train_steps = 50000
 num_train_epochs = 1  # Will be capped by max_train_steps
 checkpointing_steps = 100
-checkpoints_total_limit = 3  # Keep only 3 checkpoints (~340GB)
+checkpoints_total_limit = None  # Keep all checkpoints
 validation_steps = 100
 
 # Learning Rate
@@ -70,7 +70,7 @@ tracker_project_name = "OpenSciDraw_Flux2Klein_9B_Fulltune"
 tracker_run_name = "260122_50k_steps_adamw_1e-5"
 
 # Resume
-resume_from_checkpoint = None  # Set to "latest" to resume from last checkpoint
+resume_from_checkpoint = "latest"
 
 # Debug
 report_to = "wandb"

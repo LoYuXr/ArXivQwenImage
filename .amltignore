@@ -1,0 +1,44 @@
+# ============================================================
+# AMLT Ignore File
+# ============================================================
+# This file controls what AMLT uploads to the cluster.
+# Unlike .gitignore, we WANT _local_secrets.py to be uploaded
+# so the training code can access HF_TOKEN and other secrets.
+# ============================================================
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# WandB local logs (don't need on cluster)
+wandb/
+
+# Debug folder
+debug/
+
+# Output folders
+output/
+
+# Experiments logs (too large, stored on blob)
+experiments/
+
+# Git folder
+.git/
+
+# Large model files (should be downloaded on cluster)
+*.safetensors
+*.bin
+*.ckpt
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test outputs
+test/output*/
+
+# NOTE: We intentionally do NOT exclude _local_secrets.py
+# so it gets uploaded to the cluster for authentication

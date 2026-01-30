@@ -1,0 +1,56 @@
+# DeepSpeed ZeRO-3 Configuration for QwenImage 20B - Maximum GPU Utilization
+# Target: ~70-75GB GPU memory usage per GPU (similar to Flux2Klein)
+#
+# Key optimizations:
+# - No parameter offload (keep all on GPU)
+# - Larger bucket sizes for better throughput
+# - Reduced gradient accumulation for more GPU work per step
+
+compute_environment: LOCAL_MACHINE
+debug: false
+distributed_type: DEEPSPEED
+downcast_bf16: 'no'
+enable_cpu_affinity: false
+gpu_ids: 0,1,2,3
+machine_rank: 0
+main_training_function: main
+mixed_precision: bf16
+num_machines: 1
+num_processes: 4
+rdzv_backend: static
+same_network: true
+tpu_env: []
+tpu_use_cluster: false
+tpu_use_sudo: false
+use_cpu: false
+
+deepspeed_config:
+  # ZeRO Stage 3: Full sharding
+  zero_stage: 3
+  
+  # ZeRO-3 specific options
+  zero3_init_flag: true
+  zero3_save_16bit_model: true
+  
+  # Gradient settings - use GA=1 for maximum GPU utilization per step
+  gradient_accumulation_steps: 1
+  gradient_clipping: 1.0
+  
+  # Batch size per GPU
+  train_micro_batch_size_per_gpu: 1
+  
+  # CPU Offloading - only offload optimizer to fit in memory
+  offload_optimizer_device: cpu
+  offload_optimizer_pin_memory: true
+  
+  # Keep parameters on GPU for maximum speed
+  offload_param_device: none
+  
+  # Large bucket sizes for better GPU utilization
+  reduce_bucket_size: 2000000000  # 2GB for gradient reduction
+  stage3_prefetch_bucket_size: 1000000000  # 1GB for prefetching
+  stage3_param_persistence_threshold: 10000000  # 10M params stay on GPU
+  
+  # Allow more parameters to be live on GPU
+  stage3_max_live_parameters: 4000000000  # 4B params can be live
+  stage3_max_reuse_distance: 4000000000

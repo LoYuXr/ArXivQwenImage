@@ -1,10 +1,14 @@
 """
 Full Fine-tuning Training Script for OpenSciDraw
 
-This script performs full parameter fine-tuning of diffusion models (e.g., Flux2Klein)
+This script performs full parameter fine-tuning of diffusion models
 without LoRA adapters. VAE and text encoder are offloaded and frozen.
 
-Key differences from train_OpenSciDraw_loop.py:
+Supported Models:
+- Flux2Klein (9B params): Use with DeepSpeed ZeRO-2
+- QwenImage (20B params): Use with DeepSpeed ZeRO-3 + CPU offload
+
+Key features:
 1. No LoRA configuration - direct transformer parameter training
 2. Uses parquet dataset with pre-computed latents/embeddings
 3. VAE and text encoder remain offloaded
@@ -12,9 +16,13 @@ Key differences from train_OpenSciDraw_loop.py:
 5. Supports BF16/FP16 mixed precision training
 
 Usage:
-    accelerate launch --config_file accelerate_cfg/1m4g_bf16.yaml \\
-        train_OpenSciDraw_fulltune.py \\
-        configs/260121/flux2klein_fulltune_local_debug.py
+    # Flux2Klein 9B with ZeRO-2:
+    accelerate launch --config_file accelerate_cfg/deepspeed_zero2_bf16.yaml \\
+        train_OpenSciDraw_fulltune.py configs/260124/flux2klein_fulltune_5000.py
+    
+    # QwenImage 20B with ZeRO-3:
+    accelerate launch --config_file accelerate_cfg/deepspeed_zero3_qwenimage_20b.yaml \\
+        train_OpenSciDraw_fulltune.py configs/260126/qwenimage_fulltune_local.py
 """
 
 # =========================================================
@@ -30,6 +38,31 @@ sys.path.insert(
     0,
     osp.abspath(osp.join(osp.dirname(osp.abspath(__file__)), "..")),
 )
+
+# =========================================================
+# Load secrets from _local_secrets.py (for HF_TOKEN and WANDB)
+# =========================================================
+try:
+    from _local_secrets import (
+        HF_TOKEN,
+        WANDB_API_KEY,
+        WANDB_ENTITY,
+        WANDB_PROJECT,
+        WANDB_BASE_URL,
+    )
+    # Set as environment variables (if not already set)
+    if not os.environ.get('HF_TOKEN'):
+        os.environ['HF_TOKEN'] = HF_TOKEN
+    if not os.environ.get('WANDB_API_KEY'):
+        os.environ['WANDB_API_KEY'] = WANDB_API_KEY
+    if not os.environ.get('WANDB_ENTITY'):
+        os.environ['WANDB_ENTITY'] = WANDB_ENTITY
+    if not os.environ.get('WANDB_PROJECT'):
+        os.environ['WANDB_PROJECT'] = WANDB_PROJECT
+    if not os.environ.get('WANDB_BASE_URL'):
+        os.environ['WANDB_BASE_URL'] = WANDB_BASE_URL
+except ImportError:
+    pass  # _local_secrets.py not available, use env vars directly
 
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
@@ -331,6 +364,12 @@ def main():
     model_type = getattr(config, 'model_type', 'Flux2Klein')
     logger.info(f"[INFO] Using model type: {model_type}")
     
+    # Check distributed type for proper dtype handling
+    # Need to check this BEFORE model loading for DeepSpeed ZeRO-3 compatibility
+    distributed_type_str = str(getattr(accelerator.state, 'distributed_type', 'NO'))
+    is_fsdp = 'FSDP' in distributed_type_str
+    is_deepspeed = 'DEEPSPEED' in distributed_type_str
+    
     model_factory = ModelFactory(config)
     (
         vae,
@@ -340,12 +379,7 @@ def main():
         noise_scheduler,
         text_encoding_pipeline,
         vae_scale_factor,
-    ) = model_factory.load_all()
-    
-    # Check distributed type for proper dtype handling
-    distributed_type_str = str(getattr(accelerator.state, 'distributed_type', 'NO'))
-    is_fsdp = 'FSDP' in distributed_type_str
-    is_deepspeed = 'DEEPSPEED' in distributed_type_str
+    ) = model_factory.load_all()  # Always load text_encoder, keep on CPU
     
     # For distributed training with bf16, keep model in bf16
     # This avoids gradient dtype mismatch issues
@@ -706,7 +740,16 @@ def main():
     # =========================================================
     # Get Validation Function (if configured)
     # =========================================================
-    validation_func_name = config.get('validation_func', 'Flux2Klein_fulltune_validation_func_parquet')
+    # Auto-select validation function based on model type if not explicitly set
+    if 'validation_func' in config:
+        validation_func_name = config['validation_func']
+    else:
+        # Choose default validation function based on model type
+        if model_type == 'QwenImage':
+            validation_func_name = 'QwenImage_fulltune_validation_func_parquet'
+        else:
+            validation_func_name = 'Flux2Klein_fulltune_validation_func_parquet'
+    
     validation_func = VALIDATION_FUNCS.get(validation_func_name)
     validation_steps = config.get('validation_steps', 500)
     validation_prompts = config.get('validation_prompts', None)
@@ -881,9 +924,10 @@ def main():
                 
                 # Validation
                 if validation_func is not None and validation_prompts is not None:
+                    # Only trigger early validation at step 1 if validation_steps is reasonably small
                     should_validate = (
                         global_step % validation_steps == 0 or 
-                        global_step == 1 or 
+                        (global_step == 1 and validation_steps <= 1000) or  # Skip step 1 validation if validation is effectively disabled
                         global_step == config.max_train_steps
                     )
                     
@@ -956,7 +1000,7 @@ def main():
                 transformer=transformer,
                 text_encoder=text_encoder,
                 tokenizer=tokenizer,
-                           scheduler=noise_scheduler,
+                scheduler=noise_scheduler,
                 accelerator=accelerator,
                 args=config,
                 global_step=global_step,

@@ -42,13 +42,7 @@ jobs:
   - pip install transformers==4.55.0 accelerate protobuf wandb #4.51.3不支持dict的config传入
   - pip install opencv-python pandas pyarrow datasets ftfy sentencepiece einops scikit-learn timm==0.9.2 mmengine tqdm
   - pip install bitsandbytes>=0.43.0 peft pydantic ray[train] prodigyopt
-  - export WANDB_ENTITY=v-yuxluo  # 强制使用你截图中的 Username
-  - export WANDB_PROJECT=ArXivQwenImage-Run  # 给项目起个新名字，确保拥有完整权限
-  - export WANDB_BASE_URL="https://microsoft-research.wandb.io"
-  - export WANDB_API_KEY=$${{secrets.WANDB_API_KEY}}
-  - export HF_TOKEN=$${{secrets.HF_TOKEN}}
-  - wandb login $$WANDB_API_KEY
-  - wandb login
+  # All secrets (HF_TOKEN, WANDB_*) are loaded from _local_secrets.py in train script
   - accelerate launch
     --config_file accelerate_cfg/deepspeed_zero2_bf16_ga1.yaml
     train_OpenSciDraw_fulltune.py

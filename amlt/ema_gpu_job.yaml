@@ -1,0 +1,57 @@
+description: EMA Computation for Flux2Klein (auto-detect checkpoints, decay=0.9)
+
+target:
+  service: sing
+  name: msrresrchvc
+  workspace_name: mcgvisionflowws
+
+environment:
+  image: amlt-sing/acpt-torch2.7.1-py3.10-cuda12.6-ubuntu22.04
+  setup:
+    - pip install safetensors tqdm
+
+code:
+  local_dir: $CONFIG_DIR/..
+
+storage:
+  yuxuanluo:
+    storage_account_name: mcgvisionflowsa
+    container_name: yuxuanluo
+    mount_dir: /mnt/data
+
+jobs:
+  - name: ema_ga4
+    sku: 1x80G4-A100
+    command:
+      - python test/compute_ema_amlt.py
+        --experiment_name 260124_fluxklein9B_fulltune_GA4
+        --fixed_decay 0.9
+        --output_dir /mnt/data/experiments/ema_ga4_decay90
+        --local_checkpoint_base /mnt/data/experiments/260124_fluxklein9B_fulltune_GA4
+    submit_args:
+      env:
+        _AZUREML_SINGULARITY_JOB_UAI: /subscriptions/e56674e8-8a8b-4559-8a24-4149e2e4565b/resourceGroups/mcg_vision_flow_rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mcgvisionflowid
+
+  - name: ema_ga2
+    sku: 1x80G4-A100
+    command:
+      - python test/compute_ema_amlt.py
+        --experiment_name 260124_fluxklein9B_fulltune_GA2
+        --fixed_decay 0.9
+        --output_dir /mnt/data/experiments/ema_ga2_decay90
+        --local_checkpoint_base /mnt/data/experiments/260124_fluxklein9B_fulltune_GA2
+    submit_args:
+      env:
+        _AZUREML_SINGULARITY_JOB_UAI: /subscriptions/e56674e8-8a8b-4559-8a24-4149e2e4565b/resourceGroups/mcg_vision_flow_rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mcgvisionflowid
+
+  - name: ema_ga1
+    sku: 1x80G4-A100
+    command:
+      - python test/compute_ema_amlt.py
+        --experiment_name 260124_fluxklein9B_fulltune_GA1
+        --fixed_decay 0.9
+        --output_dir /mnt/data/experiments/ema_ga1_decay90
+        --local_checkpoint_base /mnt/data/experiments/260124_fluxklein9B_fulltune_GA1
+    submit_args:
+      env:
+        _AZUREML_SINGULARITY_JOB_UAI: /subscriptions/e56674e8-8a8b-4559-8a24-4149e2e4565b/resourceGroups/mcg_vision_flow_rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mcgvisionflowid

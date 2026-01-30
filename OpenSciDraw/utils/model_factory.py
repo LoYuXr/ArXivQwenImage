@@ -34,18 +34,38 @@ from peft import prepare_model_for_kbit_training
 logger = get_logger(__name__)
 
 
+# Try to import from _local_secrets.py for HF token
+try:
+    from _local_secrets import HF_TOKEN as _SECRETS_HF_TOKEN
+except ImportError:
+    _SECRETS_HF_TOKEN = None
+
+
 def get_hf_token(config) -> Optional[str]:
-    """Get HuggingFace token from config or environment variable.
+    """Get HuggingFace token from config, environment variable, or _local_secrets.py.
     
     Priority:
-    1. config.huggingface_token (if set and not None)
-    2. HF_TOKEN environment variable
-    3. None
+    1. HF_TOKEN environment variable (highest - for explicit override)
+    2. config.huggingface_token (if set and not None)
+    3. _local_secrets.py HF_TOKEN
+    4. None
     """
+    # 1. Environment variable (highest priority for cloud/explicit override)
+    env_token = os.environ.get('HF_TOKEN')
+    if env_token:
+        return env_token
+    
+    # 2. Config file token
     token = getattr(config, 'huggingface_token', None)
     if token:
         return token
-    return os.environ.get('HF_TOKEN', None)
+    
+    # 3. _local_secrets.py
+    if _SECRETS_HF_TOKEN:
+        return _SECRETS_HF_TOKEN
+    
+    # 4. None
+    return None
 
 
 @dataclass
@@ -252,9 +272,19 @@ class ModelFactory:
             token=get_hf_token(self.config),
         )
     
-    def load_text_encoder(self):
-        """Load the text encoder."""
+    def load_text_encoder(self, skip_load=False):
+        """Load the text encoder.
+        
+        Args:
+            skip_load: If True, return a dummy/minimal text encoder.
+                      Useful for parquet dataset where text embeddings are pre-computed.
+        """
         logger.info(f"[INFO] Loading text encoder: {self.spec.text_encoder_class}")
+        
+        if skip_load:
+            logger.info(f"[INFO] Skipping text encoder load (parquet dataset mode)")
+            return None
+        
         text_encoder = self.TextEncoderClass.from_pretrained(
             self.config.pretrained_model_name_or_path,
             subfolder=self.spec.text_encoder_subfolder,
@@ -386,22 +416,27 @@ class ModelFactory:
         
         return latents_mean, latents_std
     
-    def load_all(self, device=None) -> Tuple:
+    def load_all(self, device=None, skip_text_encoder=False, skip_vae=False) -> Tuple:
         """
         Load all model components.
+        
+        Args:
+            device: Device to load models on (optional)
+            skip_text_encoder: If True, skip loading text encoder (for parquet dataset)
+            skip_vae: If True, skip loading VAE (for parquet dataset, though VAE is needed for BN stats)
         
         Returns:
             Tuple of (vae, transformer, tokenizer, text_encoder, scheduler, 
                      text_encoding_pipeline, vae_scale_factor)
         """
         tokenizer = self.load_tokenizer()
-        text_encoder = self.load_text_encoder()
-        vae = self.load_vae()
+        text_encoder = self.load_text_encoder(skip_load=skip_text_encoder)
+        vae = self.load_vae() if not skip_vae else None
         transformer = self.load_transformer()
         scheduler = self.load_scheduler()
         
-        text_encoding_pipeline = self.load_text_encoding_pipeline(tokenizer, text_encoder)
-        vae_scale_factor = self.get_vae_scale_factor(vae)
+        text_encoding_pipeline = self.load_text_encoding_pipeline(tokenizer, text_encoder) if text_encoder else None
+        vae_scale_factor = self.get_vae_scale_factor(vae) if vae else 8  # Default to 8 if no VAE
         
         logger.info(f"[INFO] VAE scale factor: {vae_scale_factor}")
         
@@ -444,3 +479,19 @@ def get_transformer_class(model_type: str) -> Type:
     """Get the transformer class for a model type."""
     spec = get_model_spec(model_type)
     return get_class_from_module(spec.transformer_module, spec.transformer_class)
+
+
+def get_text_encoder_class(model_type: str) -> Type:
+    """Get the text encoder class for a model type."""
+    spec = get_model_spec(model_type)
+    if spec.text_encoder_class is None:
+        raise ValueError(f"Model type {model_type} does not have a text encoder")
+    return get_class_from_module(spec.text_encoder_module, spec.text_encoder_class)
+
+
+def get_tokenizer_class(model_type: str) -> Type:
+    """Get the tokenizer class for a model type."""
+    spec = get_model_spec(model_type)
+    if spec.tokenizer_class is None:
+        raise ValueError(f"Model type {model_type} does not have a tokenizer")
+    return get_class_from_module(spec.tokenizer_module, spec.tokenizer_class)

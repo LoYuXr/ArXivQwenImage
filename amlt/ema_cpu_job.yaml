@@ -1,0 +1,54 @@
+description: EMA Computation for Flux2Klein Checkpoints (CPU Job)
+
+target:
+  service: aml
+  name: msrresrchvc
+
+environment:
+  image: mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04:latest
+  setup:
+    - pip install torch safetensors tqdm
+    - wget -q https://aka.ms/downloadazcopy-v10-linux -O /tmp/azcopy.tar.gz
+    - tar -xzf /tmp/azcopy.tar.gz -C /tmp
+    - cp /tmp/azcopy_linux_*/azcopy /usr/local/bin/
+    - chmod +x /usr/local/bin/azcopy
+
+code:
+  local_dir: $CONFIG_DIR/..
+
+storage:
+  yuxuanluo:
+    storage_account_name: mcgvisionflowsa
+    container_name: yuxuanluo
+    mount_dir: /mnt/yuxuanluo
+
+jobs:
+  - name: ema_ga4
+    sku: D16sv3
+    command:
+      - python test/compute_ema_amlt.py
+        --experiment_name 260124_fluxklein9B_fulltune_GA4
+        --checkpoint_steps "23000,25000,27000,28500"
+        --per_step_decay 0.9999
+        --output_dir /mnt/yuxuanluo/experiments/ema_ga4_decay9999
+        --local_checkpoint_base /mnt/yuxuanluo/experiments/260124_fluxklein9B_fulltune_GA4
+
+  - name: ema_ga2
+    sku: D16sv3
+    command:
+      - python test/compute_ema_amlt.py
+        --experiment_name 260124_fluxklein9B_fulltune_GA2
+        --checkpoint_steps "43500,45500,47500,49000,50500,52000,53500"
+        --per_step_decay 0.9999
+        --output_dir /mnt/yuxuanluo/experiments/ema_ga2_decay9999
+        --local_checkpoint_base /mnt/yuxuanluo/experiments/260124_fluxklein9B_fulltune_GA2
+
+  - name: ema_ga1
+    sku: D32sv3
+    command:
+      - python test/compute_ema_amlt.py
+        --experiment_name 260124_fluxklein9B_fulltune_GA1
+        --checkpoint_steps "64000,69000,74000,79000,84000,89000,93000,96000,98000"
+        --per_step_decay 0.9999
+        --output_dir /mnt/yuxuanluo/experiments/ema_ga1_decay9999
+        --local_checkpoint_base /mnt/yuxuanluo/experiments/260124_fluxklein9B_fulltune_GA1

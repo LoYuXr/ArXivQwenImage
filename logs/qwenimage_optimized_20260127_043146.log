@@ -1,0 +1,214 @@
+nohup: ignoring input
+W0127 04:31:55.624000 3708418 site-packages/torch/distributed/run.py:793] 
+W0127 04:31:55.624000 3708418 site-packages/torch/distributed/run.py:793] *****************************************
+W0127 04:31:55.624000 3708418 site-packages/torch/distributed/run.py:793] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0127 04:31:55.624000 3708418 site-packages/torch/distributed/run.py:793] *****************************************
+Config (path: configs/260127/qwenimage_fulltune_optimized.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'QwenImage', 'transformer_cfg': {'type': 'QwenImageTransformer2DModel'}, 'pretrained_model_name_or_path': 'Qwen/Qwen-Image-2512', 'huggingface_token': None, 'use_lora': False, 'lora_layers': 'to_k,to_q,to_v', 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 1, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'adamw', 'use_8bit_adam': False, 'learning_rate': 5e-06, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 100, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 3, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': '/home/v-yuxluo/data/huggingface_cache', 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'logit_normal', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 1.0, 'base_filesys_path': '/home/v-yuxluo/data/', 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data/', 'parquet_base_path': 'ArXiV_parquet/qwenimage_latents', 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 1, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'QwenImage_fulltune_train_iteration', 'validation_steps': 500, 'max_sequence_length': 1024, 'dataloader_num_workers': 4, 'pin_memory': True, 'num_inference_steps': 28, 'model_output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized', 'output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized', 'log_steps': 10, 'verbose_logging': True, 'logging_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized/logs', 'wandb_project': 'QwenImage-20B-FullTune', 'tracker_run_name': '260127_qwenimage_optimized', 'validation_prompts': ['A scientific diagram showing a neural network architecture with convolutional layers, pooling layers, and fully connected layers', 'A flowchart illustrating the machine learning pipeline from data collection to model deployment', 'A bar chart comparing the accuracy of different deep learning models on ImageNet benchmark'], 'resolution_list': [[768, 768], [768, 768], [768, 768]], 'config_dir': 'configs/260127/qwenimage_fulltune_optimized.py'}
+Config (path: configs/260127/qwenimage_fulltune_optimized.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'QwenImage', 'transformer_cfg': {'type': 'QwenImageTransformer2DModel'}, 'pretrained_model_name_or_path': 'Qwen/Qwen-Image-2512', 'huggingface_token': None, 'use_lora': False, 'lora_layers': 'to_k,to_q,to_v', 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 1, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'adamw', 'use_8bit_adam': False, 'learning_rate': 5e-06, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 100, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 3, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': '/home/v-yuxluo/data/huggingface_cache', 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'logit_normal', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 1.0, 'base_filesys_path': '/home/v-yuxluo/data/', 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data/', 'parquet_base_path': 'ArXiV_parquet/qwenimage_latents', 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 1, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'QwenImage_fulltune_train_iteration', 'validation_steps': 500, 'max_sequence_length': 1024, 'dataloader_num_workers': 4, 'pin_memory': True, 'num_inference_steps': 28, 'model_output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized', 'output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized', 'log_steps': 10, 'verbose_logging': True, 'logging_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized/logs', 'wandb_project': 'QwenImage-20B-FullTune', 'tracker_run_name': '260127_qwenimage_optimized', 'validation_prompts': ['A scientific diagram showing a neural network architecture with convolutional layers, pooling layers, and fully connected layers', 'A flowchart illustrating the machine learning pipeline from data collection to model deployment', 'A bar chart comparing the accuracy of different deep learning models on ImageNet benchmark'], 'resolution_list': [[768, 768], [768, 768], [768, 768]], 'config_dir': 'configs/260127/qwenimage_fulltune_optimized.py'}
+Config (path: configs/260127/qwenimage_fulltune_optimized.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'QwenImage', 'transformer_cfg': {'type': 'QwenImageTransformer2DModel'}, 'pretrained_model_name_or_path': 'Qwen/Qwen-Image-2512', 'huggingface_token': None, 'use_lora': False, 'lora_layers': 'to_k,to_q,to_v', 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 1, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'adamw', 'use_8bit_adam': False, 'learning_rate': 5e-06, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 100, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 3, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': '/home/v-yuxluo/data/huggingface_cache', 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'logit_normal', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 1.0, 'base_filesys_path': '/home/v-yuxluo/data/', 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data/', 'parquet_base_path': 'ArXiV_parquet/qwenimage_latents', 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 1, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'QwenImage_fulltune_train_iteration', 'validation_steps': 500, 'max_sequence_length': 1024, 'dataloader_num_workers': 4, 'pin_memory': True, 'num_inference_steps': 28, 'model_output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized', 'output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized', 'log_steps': 10, 'verbose_logging': True, 'logging_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized/logs', 'wandb_project': 'QwenImage-20B-FullTune', 'tracker_run_name': '260127_qwenimage_optimized', 'validation_prompts': ['A scientific diagram showing a neural network architecture with convolutional layers, pooling layers, and fully connected layers', 'A flowchart illustrating the machine learning pipeline from data collection to model deployment', 'A bar chart comparing the accuracy of different deep learning models on ImageNet benchmark'], 'resolution_list': [[768, 768], [768, 768], [768, 768]], 'config_dir': 'configs/260127/qwenimage_fulltune_optimized.py'}
+Config (path: configs/260127/qwenimage_fulltune_optimized.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'QwenImage', 'transformer_cfg': {'type': 'QwenImageTransformer2DModel'}, 'pretrained_model_name_or_path': 'Qwen/Qwen-Image-2512', 'huggingface_token': None, 'use_lora': False, 'lora_layers': 'to_k,to_q,to_v', 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 1, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'adamw', 'use_8bit_adam': False, 'learning_rate': 5e-06, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 100, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 3, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': '/home/v-yuxluo/data/huggingface_cache', 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'logit_normal', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 1.0, 'base_filesys_path': '/home/v-yuxluo/data/', 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data/', 'parquet_base_path': 'ArXiV_parquet/qwenimage_latents', 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 1, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'QwenImage_fulltune_train_iteration', 'validation_steps': 500, 'max_sequence_length': 1024, 'dataloader_num_workers': 4, 'pin_memory': True, 'num_inference_steps': 28, 'model_output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized', 'output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized', 'log_steps': 10, 'verbose_logging': True, 'logging_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized/logs', 'wandb_project': 'QwenImage-20B-FullTune', 'tracker_run_name': '260127_qwenimage_optimized', 'validation_prompts': ['A scientific diagram showing a neural network architecture with convolutional layers, pooling layers, and fully connected layers', 'A flowchart illustrating the machine learning pipeline from data collection to model deployment', 'A bar chart comparing the accuracy of different deep learning models on ImageNet benchmark'], 'resolution_list': [[768, 768], [768, 768], [768, 768]], 'config_dir': 'configs/260127/qwenimage_fulltune_optimized.py'}
+01/27/2026 04:32:03 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 0
+Local process index: 0
+Device: cuda:0
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 1, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'cpu', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/27/2026 04:32:03 - INFO - __main__ - [INFO] Using model type: QwenImage
+01/27/2026 04:32:03 - INFO - __main__ - [INFO] Skipping text encoder load (parquet dataset + DeepSpeed mode)
+01/27/2026 04:32:03 - INFO - OpenSciDraw.utils.model_factory - ============================================================
+01/27/2026 04:32:03 - INFO - OpenSciDraw.utils.model_factory - 🏭 Model Factory Initialized
+01/27/2026 04:32:03 - INFO - OpenSciDraw.utils.model_factory -    Model Type: QwenImage
+01/27/2026 04:32:03 - INFO - OpenSciDraw.utils.model_factory -    Pretrained Path: Qwen/Qwen-Image-2512
+01/27/2026 04:32:03 - INFO - OpenSciDraw.utils.model_factory -    Cache Dir: /home/v-yuxluo/data/huggingface_cache
+01/27/2026 04:32:03 - INFO - OpenSciDraw.utils.model_factory -    VAE Class: AutoencoderKLQwenImage
+01/27/2026 04:32:03 - INFO - OpenSciDraw.utils.model_factory -    Transformer Class: QwenImageTransformer2DModel
+01/27/2026 04:32:03 - INFO - OpenSciDraw.utils.model_factory -    Text Encoder Class: Qwen2_5_VLForConditionalGeneration
+01/27/2026 04:32:03 - INFO - OpenSciDraw.utils.model_factory -    Pipeline Class: QwenImagePipeline
+01/27/2026 04:32:03 - INFO - OpenSciDraw.utils.model_factory - ============================================================
+01/27/2026 04:32:03 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading tokenizer: Qwen2Tokenizer
+01/27/2026 04:32:03 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 3
+Local process index: 3
+Device: cuda:3
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 1, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'cpu', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/27/2026 04:32:03 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 2
+Local process index: 2
+Device: cuda:2
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 1, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'cpu', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/27/2026 04:32:03 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 1
+Local process index: 1
+Device: cuda:1
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 1, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'cpu', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/27/2026 04:32:04 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading text encoder: Qwen2_5_VLForConditionalGeneration
+01/27/2026 04:32:04 - INFO - OpenSciDraw.utils.model_factory - [INFO] Skipping text encoder load (parquet dataset mode)
+01/27/2026 04:32:04 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading VAE: AutoencoderKLQwenImage
+{'input_channels'} was not found in config. Values will be initialized to default values.
+All model checkpoint weights were used when initializing AutoencoderKLQwenImage.
+
+All the weights of AutoencoderKLQwenImage were initialized from the model checkpoint at Qwen/Qwen-Image-2512.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use AutoencoderKLQwenImage for predictions without further training.
+01/27/2026 04:32:08 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading transformer: QwenImageTransformer2DModel
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 5242.88it/s]
+Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 2765.88it/s]
+Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 1150.14it/s]
+Instantiating QwenImageTransformer2DModel model under default dtype torch.bfloat16.
+{'zero_cond_t', 'use_additional_t_cond', 'use_layer3d_rope'} was not found in config. Values will be initialized to default values.
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 11519.30it/s]
+Loading checkpoint shards:   0%|          | 0/9 [00:00<?, ?it/s]Loading checkpoint shards:  11%|█         | 1/9 [00:00<00:05,  1.36it/s]Loading checkpoint shards:  22%|██▏       | 2/9 [00:01<00:03,  2.04it/s]Loading checkpoint shards:  33%|███▎      | 3/9 [00:01<00:02,  2.45it/s]Loading checkpoint shards:  44%|████▍     | 4/9 [00:01<00:01,  2.71it/s]Loading checkpoint shards:  56%|█████▌    | 5/9 [00:02<00:01,  2.64it/s]Loading checkpoint shards:  67%|██████▋   | 6/9 [00:02<00:01,  2.76it/s]Loading checkpoint shards:  78%|███████▊  | 7/9 [00:02<00:00,  2.74it/s]Loading checkpoint shards:  89%|████████▉ | 8/9 [00:03<00:00,  2.53it/s]Loading checkpoint shards: 100%|██████████| 9/9 [00:03<00:00,  2.73it/s]
+All model checkpoint weights were used when initializing QwenImageTransformer2DModel.
+
+All the weights of QwenImageTransformer2DModel were initialized from the model checkpoint at Qwen/Qwen-Image-2512.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use QwenImageTransformer2DModel for predictions without further training.
+01/27/2026 04:32:12 - INFO - OpenSciDraw.utils.model_factory - [INFO] Fine-tuning the full model ...
+01/27/2026 04:32:12 - INFO - OpenSciDraw.utils.model_factory - [INFO] Enabling gradient checkpointing for transformer
+01/27/2026 04:32:12 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading scheduler: FlowMatchEulerDiscreteScheduler
+01/27/2026 04:32:12 - INFO - OpenSciDraw.utils.model_factory - [INFO] VAE scale factor: 8
+01/27/2026 04:32:12 - INFO - __main__ - [INFO] DeepSpeed detected - keeping transformer in bf16 for ZeRO-3
+01/27/2026 04:32:12 - INFO - __main__ - [INFO] Configuring model devices and offloading
+01/27/2026 04:32:12 - INFO - __main__ - [INFO] Using parquet dataset - VAE and text encoder remain on CPU
+01/27/2026 04:32:12 - INFO - __main__ - [INFO] DeepSpeed mode: transformer stays on CPU, ZeRO-3 will handle placement
+01/27/2026 04:32:12 - INFO - __main__ - [INFO] Gradient checkpointing enabled
+01/27/2026 04:32:12 - INFO - __main__ - [INFO] Number of trainable parameters: 20430.40M
+01/27/2026 04:32:12 - INFO - __main__ - [INFO] Loading dataset
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/qwenimage_latents...🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/qwenimage_latents...
+
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/qwenimage_latents...
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/qwenimage_latents...
+⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+
+⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]Scanning Parquet Files:  20%|██        | 17/84 [00:00<00:00, 167.77it/s]Scanning Parquet Files:  20%|██        | 17/84 [00:00<00:00, 163.96it/s]Scanning Parquet Files:  20%|██        | 17/84 [00:00<00:00, 163.28it/s]Scanning Parquet Files:  21%|██▏       | 18/84 [00:00<00:00, 125.81it/s]Scanning Parquet Files:  37%|███▋      | 31/84 [00:00<00:00, 57.49it/s] Scanning Parquet Files:  40%|████      | 34/84 [00:00<00:00, 60.06it/s] Scanning Parquet Files:  40%|████      | 34/84 [00:00<00:00, 51.57it/s] Scanning Parquet Files:  40%|████      | 34/84 [00:00<00:00, 51.57it/s] Scanning Parquet Files:  46%|████▋     | 39/84 [00:00<00:00, 50.37it/s]Scanning Parquet Files:  52%|█████▏    | 44/84 [00:00<00:00, 49.81it/s]Scanning Parquet Files:  51%|█████     | 43/84 [00:00<00:00, 46.48it/s]Scanning Parquet Files:  51%|█████     | 43/84 [00:00<00:00, 44.64it/s]Scanning Parquet Files:  54%|█████▎    | 45/84 [00:00<00:00, 43.31it/s]Scanning Parquet Files:  61%|██████    | 51/84 [00:00<00:00, 45.09it/s]Scanning Parquet Files:  60%|█████▉    | 50/84 [00:01<00:00, 38.40it/s]Scanning Parquet Files:  60%|█████▉    | 50/84 [00:01<00:00, 39.68it/s]Scanning Parquet Files:  60%|█████▉    | 50/84 [00:01<00:00, 38.13it/s]Scanning Parquet Files:  68%|██████▊   | 57/84 [00:01<00:00, 40.62it/s]Scanning Parquet Files:  65%|██████▌   | 55/84 [00:01<00:00, 37.87it/s]Scanning Parquet Files:  67%|██████▋   | 56/84 [00:01<00:00, 38.89it/s]Scanning Parquet Files:  65%|██████▌   | 55/84 [00:01<00:00, 38.19it/s]Scanning Parquet Files:  74%|███████▍  | 62/84 [00:01<00:00, 38.18it/s]Scanning Parquet Files:  70%|███████   | 59/84 [00:01<00:00, 35.94it/s]Scanning Parquet Files:  71%|███████▏  | 60/84 [00:01<00:00, 37.11it/s]Scanning Parquet Files:  73%|███████▎  | 61/84 [00:01<00:00, 35.55it/s]Scanning Parquet Files:  75%|███████▌  | 63/84 [00:01<00:00, 35.66it/s]Scanning Parquet Files:  80%|███████▉  | 67/84 [00:01<00:00, 37.01it/s]Scanning Parquet Files:  77%|███████▋  | 65/84 [00:01<00:00, 34.73it/s]Scanning Parquet Files:  85%|████████▍ | 71/84 [00:01<00:00, 37.36it/s]Scanning Parquet Files:  80%|███████▉  | 67/84 [00:01<00:00, 33.37it/s]Scanning Parquet Files:  77%|███████▋  | 65/84 [00:01<00:00, 31.13it/s]Scanning Parquet Files:  82%|████████▏ | 69/84 [00:01<00:00, 33.49it/s]Scanning Parquet Files:  85%|████████▍ | 71/84 [00:01<00:00, 33.80it/s]Scanning Parquet Files:  89%|████████▉ | 75/84 [00:01<00:00, 34.08it/s]Scanning Parquet Files:  82%|████████▏ | 69/84 [00:01<00:00, 30.44it/s]Scanning Parquet Files:  87%|████████▋ | 73/84 [00:01<00:00, 33.16it/s]Scanning Parquet Files:  89%|████████▉ | 75/84 [00:01<00:00, 32.39it/s]Scanning Parquet Files:  87%|████████▋ | 73/84 [00:01<00:00, 31.34it/s]Scanning Parquet Files:  95%|█████████▌| 80/84 [00:01<00:00, 32.62it/s]Scanning Parquet Files:  92%|█████████▏| 77/84 [00:01<00:00, 33.98it/s]Scanning Parquet Files: 100%|██████████| 84/84 [00:01<00:00, 43.08it/s]
+✅ Loaded 233515 samples.
+Scanning Parquet Files:  92%|█████████▏| 77/84 [00:01<00:00, 32.62it/s]Scanning Parquet Files:  94%|█████████▍| 79/84 [00:02<00:00, 30.05it/s]Scanning Parquet Files:  96%|█████████▋| 81/84 [00:02<00:00, 33.01it/s]Filtered dataset: 233360 samples remaining.
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+Scanning Parquet Files: 100%|██████████| 84/84 [00:02<00:00, 40.23it/s]
+Scanning Parquet Files: 100%|██████████| 84/84 [00:02<00:00, 39.96it/s]
+✅ Loaded 233515 samples.
+Scanning Parquet Files:  96%|█████████▋| 81/84 [00:02<00:00, 32.65it/s]✅ Loaded 233515 samples.
+Scanning Parquet Files: 100%|██████████| 84/84 [00:02<00:00, 39.12it/s]
+✅ Loaded 233515 samples.
+Filtered dataset: 233360 samples remaining.
+Filtered dataset: 233360 samples remaining.
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+01/27/2026 04:32:15 - INFO - __main__ - [INFO] Set DeepSpeed train_micro_batch_size_per_gpu to 1
+01/27/2026 04:32:15 - INFO - __main__ - [INFO] resume_from_checkpoint is None, but checking for existing checkpoints in /home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized...
+01/27/2026 04:32:15 - INFO - __main__ - [INFO] No checkpoints found in /home/v-yuxluo/data/experiments/260127_qwenimage_20b_optimized, starting fresh
+Filtered dataset: 233360 samples remaining.
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+[93m [WARNING] [0m DeepSpeed Op Builder: Installed CUDA version 11.8 does not match the version torch was compiled with 12.1.Detected `DS_SKIP_CUDA_CHECK=1`: Allowing this combination of CUDA, but it may result in unexpected behavior.
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/cpp_extension.py:1964: UserWarning: TORCH_CUDA_ARCH_LIST is not set, all archs for visible cards are included for compilation. 
+If this is not desired, please set os.environ['TORCH_CUDA_ARCH_LIST'].
+  warnings.warn(
+[93m [WARNING] [0m DeepSpeed Op Builder: Installed CUDA version 11.8 does not match the version torch was compiled with 12.1.Detected `DS_SKIP_CUDA_CHECK=1`: Allowing this combination of CUDA, but it may result in unexpected behavior.
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/cpp_extension.py:1964: UserWarning: TORCH_CUDA_ARCH_LIST is not set, all archs for visible cards are included for compilation. 
+If this is not desired, please set os.environ['TORCH_CUDA_ARCH_LIST'].
+  warnings.warn(
+[93m [WARNING] [0m DeepSpeed Op Builder: Installed CUDA version 11.8 does not match the version torch was compiled with 12.1.Detected `DS_SKIP_CUDA_CHECK=1`: Allowing this combination of CUDA, but it may result in unexpected behavior.
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/cpp_extension.py:1964: UserWarning: TORCH_CUDA_ARCH_LIST is not set, all archs for visible cards are included for compilation. 
+If this is not desired, please set os.environ['TORCH_CUDA_ARCH_LIST'].
+  warnings.warn(
+[93m [WARNING] [0m DeepSpeed Op Builder: Installed CUDA version 11.8 does not match the version torch was compiled with 12.1.Detected `DS_SKIP_CUDA_CHECK=1`: Allowing this combination of CUDA, but it may result in unexpected behavior.
+Stage 3 initialize beginning
+MA 38.06 GB         Max_MA 38.06 GB         CA 38.06 GB         Max_CA 38 GB 
+CPU Virtual Memory:  used = 37.42 GB, percent = 4.3%
+DeepSpeedZeRoOffload initialize [begin]
+MA 38.06 GB         Max_MA 38.27 GB         CA 38.37 GB         Max_CA 38 GB 
+CPU Virtual Memory:  used = 37.47 GB, percent = 4.3%
+Parameter Offload - Persistent parameters statistics: param_count = 1087, numel = 5582400
+DeepSpeedZeRoOffload initialize [end]
+MA 9.51 GB         Max_MA 38.06 GB         CA 38.37 GB         Max_CA 38 GB 
+CPU Virtual Memory:  used = 37.6 GB, percent = 4.3%
+Before creating fp16 partitions
+MA 9.51 GB         Max_MA 9.51 GB         CA 38.37 GB         Max_CA 38 GB 
+CPU Virtual Memory:  used = 37.59 GB, percent = 4.3%
+After creating fp16 partitions: 6
+MA 9.51 GB         Max_MA 9.51 GB         CA 9.52 GB         Max_CA 38 GB 
+CPU Virtual Memory:  used = 64.19 GB, percent = 7.4%
+Before creating fp32 partitions
+MA 9.51 GB         Max_MA 9.51 GB         CA 9.52 GB         Max_CA 10 GB 
+CPU Virtual Memory:  used = 65.45 GB, percent = 7.6%
+After creating fp32 partitions
+MA 9.51 GB         Max_MA 9.51 GB         CA 9.52 GB         Max_CA 10 GB 
+CPU Virtual Memory:  used = 113.84 GB, percent = 13.1%
+Before initializing optimizer states
+MA 9.51 GB         Max_MA 9.51 GB         CA 9.52 GB         Max_CA 10 GB 
+CPU Virtual Memory:  used = 117.83 GB, percent = 13.6%
+After initializing optimizer states
+MA 9.51 GB         Max_MA 9.51 GB         CA 9.52 GB         Max_CA 10 GB 
+CPU Virtual Memory:  used = 190.06 GB, percent = 21.9%
+After initializing ZeRO optimizer
+MA 10.45 GB         Max_MA 10.66 GB         CA 10.74 GB         Max_CA 11 GB 
+CPU Virtual Memory:  used = 228.2 GB, percent = 26.3%
+01/27/2026 04:45:49 - INFO - __main__ - ***** Running training *****
+01/27/2026 04:45:49 - INFO - __main__ -   Num examples = 233360
+01/27/2026 04:45:49 - INFO - __main__ -   Num Epochs = 1
+01/27/2026 04:45:49 - INFO - __main__ -   Instantaneous batch size per device = 1
+01/27/2026 04:45:49 - INFO - __main__ -   Total train batch size (w. parallel, distributed & accumulation) = 4
+01/27/2026 04:45:49 - INFO - __main__ -   Gradient Accumulation steps = 1
+01/27/2026 04:45:49 - INFO - __main__ -   Total optimization steps = 5000
+Steps:   0%|          | 0/5000 [00:00<?, ?it/s]01/27/2026 04:45:49 - INFO - __main__ - [INFO] Using training iteration function: QwenImage_fulltune_train_iteration
+01/27/2026 04:45:50 - INFO - __main__ - [INFO] Using validation function: QwenImage_fulltune_validation_func_parquet
+01/27/2026 04:45:50 - INFO - __main__ - [INFO] Validation every 500 steps
+wandb: Loaded settings from
+wandb:   /home/v-yuxluo/.config/wandb/settings
+wandb: [wandb.login()] Loaded credentials for https://microsoft-research.wandb.io from /home/v-yuxluo/.netrc.
+wandb: Currently logged in as: v-yuxluo to https://microsoft-research.wandb.io. Use `wandb login --relogin` to force relogin
+wandb: setting up run qdgvcca8
+wandb: Tracking run with wandb version 0.24.0
+wandb: Run data is saved locally in /home/v-yuxluo/WORK_local/ArXivQwenImage/wandb/run-20260127_044551-qdgvcca8
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 260127_qwenimage_optimized
+wandb: ⭐️ View project at https://microsoft-research.wandb.io/v-yuxluo/QwenImage-20B-FullTune
+wandb: 🚀 View run at https://microsoft-research.wandb.io/v-yuxluo/QwenImage-20B-FullTune/runs/qdgvcca8
+01/27/2026 04:45:52 - INFO - __main__ - 
+======================================================================
+01/27/2026 04:45:52 - INFO - __main__ - Starting Training Loop
+01/27/2026 04:45:52 - INFO - __main__ - ======================================================================
+
+[Step 0] QwenImage Full Fine-tune Debug:
+  Loss: 0.037769
+  Latent shape: torch.Size([1, 16, 1, 72, 126])
+  Bucket size: 576x1008
+  Model input mean: 0.1582, std: 0.8320
+  Noise mean: -0.0011, std: 1.0000
+  Model pred mean: -0.1562, std: 1.2656
+  Sigmas: [0.384765625]
+Steps:   0%|          | 1/5000 [05:48<483:37:54, 348.28s/it]01/27/2026 04:51:38 - INFO - __main__ - 
+🔍 Running validation at step 1...
+01/27/2026 04:51:38 - INFO - OpenSciDraw.validation_funcs.QwenImage_fulltune_validation_func - 
+============================================================
+01/27/2026 04:51:38 - INFO - OpenSciDraw.validation_funcs.QwenImage_fulltune_validation_func - Running QwenImage validation at step 1 (parquet mode)...
+01/27/2026 04:51:38 - INFO - OpenSciDraw.validation_funcs.QwenImage_fulltune_validation_func - ============================================================
+01/27/2026 04:51:38 - INFO - OpenSciDraw.validation_funcs.QwenImage_fulltune_validation_func -   Loading text_encoder temporarily for validation...
+`torch_dtype` is deprecated! Use `dtype` instead!

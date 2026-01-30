@@ -1,0 +1,61 @@
+# DeepSpeed ZeRO-3 Configuration for QwenImage-2512 (20B) WITHOUT CPU Offload
+# This config works when system CUDA version doesn't match torch compiled CUDA version
+# Uses pure GPU optimization instead of CPU offload
+
+compute_environment: LOCAL_MACHINE
+debug: false
+distributed_type: DEEPSPEED
+downcast_bf16: 'no'
+enable_cpu_affinity: false
+machine_rank: 0
+main_training_function: main
+mixed_precision: bf16
+num_machines: 1
+num_processes: 4
+rdzv_backend: static
+same_network: true
+tpu_env: []
+tpu_use_cluster: false
+tpu_use_sudo: false
+use_cpu: false
+
+# DeepSpeed configuration without CPU offload
+deepspeed_config:
+  # ZeRO Stage 3: Full model parallelism (partitions parameters + gradients + optimizer states)
+  zero_optimization:
+    stage: 3
+    # NO CPU offload - avoid CUDA version mismatch with CPUAdamBuilder
+    offload_optimizer:
+      device: none
+    offload_param:
+      device: none
+    # Required for saving model weights
+    stage3_gather_16bit_weights_on_model_save: true
+    # Prefetch settings for performance
+    stage3_prefetch_bucket_size: 2e7
+    stage3_param_persistence_threshold: 1e5
+    # Reduce bucket for gradient communication
+    reduce_bucket_size: 2e7
+    # Allow full contiguous gradients
+    contiguous_gradients: true
+  
+  # Gradient clipping
+  gradient_clipping: 1.0
+  
+  # Use bf16 mixed precision
+  bf16:
+    enabled: true
+  
+  fp16:
+    enabled: false
+  
+  # Batch size configuration (will be overridden by accelerate)
+  train_batch_size: auto
+  train_micro_batch_size_per_gpu: auto
+  gradient_accumulation_steps: 4
+  
+  # Disable printing steps
+  steps_per_print: inf
+  
+  # Use zero.Init for model initialization
+  zero3_init_flag: true

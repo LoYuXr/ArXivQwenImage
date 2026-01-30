@@ -1,0 +1,280 @@
+nohup: ignoring input
+W0127 02:48:38.566000 3582577 site-packages/torch/distributed/run.py:793] 
+W0127 02:48:38.566000 3582577 site-packages/torch/distributed/run.py:793] *****************************************
+W0127 02:48:38.566000 3582577 site-packages/torch/distributed/run.py:793] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0127 02:48:38.566000 3582577 site-packages/torch/distributed/run.py:793] *****************************************
+Config (path: configs/260127/qwenimage_fulltune_5000.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'QwenImage', 'transformer_cfg': {'type': 'QwenImageTransformer2DModel'}, 'pretrained_model_name_or_path': 'Qwen/Qwen-Image-2512', 'huggingface_token': None, 'use_lora': False, 'lora_layers': 'to_k,to_q,to_v', 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'adamw', 'use_8bit_adam': False, 'learning_rate': 5e-06, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 100, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 5, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': '/home/v-yuxluo/data/huggingface_cache', 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'logit_normal', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 1.0, 'base_filesys_path': '/home/v-yuxluo/data/', 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data/', 'parquet_base_path': 'ArXiV_parquet/qwenimage_latents', 'num_workers': 2, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 1, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'QwenImage_fulltune_train_iteration', 'validation_steps': 99999, 'max_sequence_length': 1024, 'dataloader_num_workers': 2, 'pin_memory': True, 'num_inference_steps': 50, 'model_output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps', 'output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps', 'log_steps': 10, 'verbose_logging': True, 'logging_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps/logs', 'wandb_project': 'QwenImage-20B-FullTune', 'tracker_run_name': '260127_qwenimage_5000steps', 'validation_prompts': ['A scientific diagram showing a neural network architecture with multiple layers', 'A chart comparing machine learning algorithms performance'], 'resolution_list': [[768, 768], [768, 768]], 'config_dir': 'configs/260127/qwenimage_fulltune_5000.py'}
+Config (path: configs/260127/qwenimage_fulltune_5000.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'QwenImage', 'transformer_cfg': {'type': 'QwenImageTransformer2DModel'}, 'pretrained_model_name_or_path': 'Qwen/Qwen-Image-2512', 'huggingface_token': None, 'use_lora': False, 'lora_layers': 'to_k,to_q,to_v', 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'adamw', 'use_8bit_adam': False, 'learning_rate': 5e-06, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 100, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 5, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': '/home/v-yuxluo/data/huggingface_cache', 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'logit_normal', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 1.0, 'base_filesys_path': '/home/v-yuxluo/data/', 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data/', 'parquet_base_path': 'ArXiV_parquet/qwenimage_latents', 'num_workers': 2, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 1, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'QwenImage_fulltune_train_iteration', 'validation_steps': 99999, 'max_sequence_length': 1024, 'dataloader_num_workers': 2, 'pin_memory': True, 'num_inference_steps': 50, 'model_output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps', 'output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps', 'log_steps': 10, 'verbose_logging': True, 'logging_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps/logs', 'wandb_project': 'QwenImage-20B-FullTune', 'tracker_run_name': '260127_qwenimage_5000steps', 'validation_prompts': ['A scientific diagram showing a neural network architecture with multiple layers', 'A chart comparing machine learning algorithms performance'], 'resolution_list': [[768, 768], [768, 768]], 'config_dir': 'configs/260127/qwenimage_fulltune_5000.py'}
+Config (path: configs/260127/qwenimage_fulltune_5000.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'QwenImage', 'transformer_cfg': {'type': 'QwenImageTransformer2DModel'}, 'pretrained_model_name_or_path': 'Qwen/Qwen-Image-2512', 'huggingface_token': None, 'use_lora': False, 'lora_layers': 'to_k,to_q,to_v', 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'adamw', 'use_8bit_adam': False, 'learning_rate': 5e-06, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 100, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 5, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': '/home/v-yuxluo/data/huggingface_cache', 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'logit_normal', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 1.0, 'base_filesys_path': '/home/v-yuxluo/data/', 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data/', 'parquet_base_path': 'ArXiV_parquet/qwenimage_latents', 'num_workers': 2, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 1, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'QwenImage_fulltune_train_iteration', 'validation_steps': 99999, 'max_sequence_length': 1024, 'dataloader_num_workers': 2, 'pin_memory': True, 'num_inference_steps': 50, 'model_output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps', 'output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps', 'log_steps': 10, 'verbose_logging': True, 'logging_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps/logs', 'wandb_project': 'QwenImage-20B-FullTune', 'tracker_run_name': '260127_qwenimage_5000steps', 'validation_prompts': ['A scientific diagram showing a neural network architecture with multiple layers', 'A chart comparing machine learning algorithms performance'], 'resolution_list': [[768, 768], [768, 768]], 'config_dir': 'configs/260127/qwenimage_fulltune_5000.py'}
+Config (path: configs/260127/qwenimage_fulltune_5000.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'QwenImage', 'transformer_cfg': {'type': 'QwenImageTransformer2DModel'}, 'pretrained_model_name_or_path': 'Qwen/Qwen-Image-2512', 'huggingface_token': None, 'use_lora': False, 'lora_layers': 'to_k,to_q,to_v', 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'adamw', 'use_8bit_adam': False, 'learning_rate': 5e-06, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 100, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 500, 'resume_from_checkpoint': None, 'checkpoints_total_limit': 5, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': '/home/v-yuxluo/data/huggingface_cache', 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'logit_normal', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 1.0, 'base_filesys_path': '/home/v-yuxluo/data/', 'dataset_cfg': {'type': 'ArXiVParquetDatasetV2', 'base_dir': '/home/v-yuxluo/data/', 'parquet_base_path': 'ArXiV_parquet/qwenimage_latents', 'num_workers': 2, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': False}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 1, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'QwenImage_fulltune_train_iteration', 'validation_steps': 99999, 'max_sequence_length': 1024, 'dataloader_num_workers': 2, 'pin_memory': True, 'num_inference_steps': 50, 'model_output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps', 'output_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps', 'log_steps': 10, 'verbose_logging': True, 'logging_dir': '/home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps/logs', 'wandb_project': 'QwenImage-20B-FullTune', 'tracker_run_name': '260127_qwenimage_5000steps', 'validation_prompts': ['A scientific diagram showing a neural network architecture with multiple layers', 'A chart comparing machine learning algorithms performance'], 'resolution_list': [[768, 768], [768, 768]], 'config_dir': 'configs/260127/qwenimage_fulltune_5000.py'}
+01/27/2026 02:48:47 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 1
+Local process index: 1
+Device: cuda:1
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'cpu', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/27/2026 02:48:47 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 2
+Local process index: 2
+Device: cuda:2
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'cpu', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/27/2026 02:48:47 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 0
+Local process index: 0
+Device: cuda:0
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'cpu', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/27/2026 02:48:47 - INFO - __main__ - [INFO] Using model type: QwenImage
+01/27/2026 02:48:47 - INFO - __main__ - [INFO] Skipping text encoder load (parquet dataset + DeepSpeed mode)
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory - ============================================================
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory - 🏭 Model Factory Initialized
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory -    Model Type: QwenImage
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory -    Pretrained Path: Qwen/Qwen-Image-2512
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory -    Cache Dir: /home/v-yuxluo/data/huggingface_cache
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory -    VAE Class: AutoencoderKLQwenImage
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory -    Transformer Class: QwenImageTransformer2DModel
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory -    Text Encoder Class: Qwen2_5_VLForConditionalGeneration
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory -    Pipeline Class: QwenImagePipeline
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory - ============================================================
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading tokenizer: Qwen2Tokenizer
+01/27/2026 02:48:47 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 3
+Local process index: 3
+Device: cuda:3
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'cpu', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading text encoder: Qwen2_5_VLForConditionalGeneration
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory - [INFO] Skipping text encoder load (parquet dataset mode)
+01/27/2026 02:48:47 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading VAE: AutoencoderKLQwenImage
+{'input_channels'} was not found in config. Values will be initialized to default values.
+All model checkpoint weights were used when initializing AutoencoderKLQwenImage.
+
+All the weights of AutoencoderKLQwenImage were initialized from the model checkpoint at Qwen/Qwen-Image-2512.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use AutoencoderKLQwenImage for predictions without further training.
+01/27/2026 02:48:48 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading transformer: QwenImageTransformer2DModel
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 124995.81it/s]
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 7912.12it/s]
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 15761.48it/s]
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 15643.90it/s]
+Instantiating QwenImageTransformer2DModel model under default dtype torch.bfloat16.
+{'zero_cond_t', 'use_additional_t_cond', 'use_layer3d_rope'} was not found in config. Values will be initialized to default values.
+Loading checkpoint shards:   0%|          | 0/9 [00:00<?, ?it/s]Loading checkpoint shards:  11%|█         | 1/9 [00:00<00:03,  2.33it/s]Loading checkpoint shards:  67%|██████▋   | 6/9 [00:00<00:00, 13.85it/s]Loading checkpoint shards: 100%|██████████| 9/9 [00:00<00:00, 15.12it/s]
+All model checkpoint weights were used when initializing QwenImageTransformer2DModel.
+
+All the weights of QwenImageTransformer2DModel were initialized from the model checkpoint at Qwen/Qwen-Image-2512.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use QwenImageTransformer2DModel for predictions without further training.
+01/27/2026 02:48:49 - INFO - OpenSciDraw.utils.model_factory - [INFO] Fine-tuning the full model ...
+01/27/2026 02:48:49 - INFO - OpenSciDraw.utils.model_factory - [INFO] Enabling gradient checkpointing for transformer
+01/27/2026 02:48:49 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading scheduler: FlowMatchEulerDiscreteScheduler
+01/27/2026 02:48:49 - INFO - OpenSciDraw.utils.model_factory - [INFO] VAE scale factor: 8
+01/27/2026 02:48:49 - INFO - __main__ - [INFO] DeepSpeed detected - keeping transformer in bf16 for ZeRO-3
+01/27/2026 02:48:49 - INFO - __main__ - [INFO] Configuring model devices and offloading
+01/27/2026 02:48:49 - INFO - __main__ - [INFO] Using parquet dataset - VAE and text encoder remain on CPU
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/qwenimage_latents...
+01/27/2026 02:48:49 - INFO - __main__ - [INFO] DeepSpeed mode: transformer stays on CPU, ZeRO-3 will handle placement
+01/27/2026 02:48:49 - INFO - __main__ - [INFO] Gradient checkpointing enabled
+01/27/2026 02:48:49 - INFO - __main__ - [INFO] Number of trainable parameters: 20430.40M
+01/27/2026 02:48:49 - INFO - __main__ - [INFO] Loading dataset
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/qwenimage_latents...
+⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/qwenimage_latents...
+⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]Scanning Parquet Files:  20%|██        | 17/84 [00:00<00:00, 149.22it/s]⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/optim/optimizer/zero_optimizer.py:11: DeprecationWarning: `TorchScript` support for functional optimizers is deprecated and will be removed in a future PyTorch release. Consider using the `torch.compile` optimizer instead.
+  from torch.distributed.optim import \
+🔍 Building metadata from all parquet files in /home/v-yuxluo/data/ArXiV_parquet/qwenimage_latents...
+Scanning Parquet Files:  20%|██        | 17/84 [00:00<00:00, 140.88it/s]Scanning Parquet Files:  20%|██        | 17/84 [00:00<00:00, 142.47it/s]⏳ Loading/parsing metadata (parquet: path only) from 84 parquet files...
+Scanning Parquet Files:   0%|          | 0/84 [00:00<?, ?it/s]Scanning Parquet Files:  20%|██        | 17/84 [00:00<00:00, 135.76it/s]Scanning Parquet Files:  38%|███▊      | 32/84 [00:00<00:00, 55.79it/s] Scanning Parquet Files:  38%|███▊      | 32/84 [00:00<00:00, 55.31it/s] Scanning Parquet Files:  38%|███▊      | 32/84 [00:00<00:00, 55.24it/s] Scanning Parquet Files:  49%|████▉     | 41/84 [00:00<00:00, 45.34it/s]Scanning Parquet Files:  48%|████▊     | 40/84 [00:00<00:00, 47.70it/s]Scanning Parquet Files:  37%|███▋      | 31/84 [00:00<00:01, 50.31it/s] Scanning Parquet Files:  49%|████▉     | 41/84 [00:00<00:00, 44.63it/s]Scanning Parquet Files:  55%|█████▍    | 46/84 [00:00<00:00, 42.82it/s]Scanning Parquet Files:  57%|█████▋    | 48/84 [00:00<00:00, 42.00it/s]Scanning Parquet Files:  46%|████▋     | 39/84 [00:00<00:01, 43.76it/s]Scanning Parquet Files:  56%|█████▌    | 47/84 [00:01<00:00, 40.29it/s]Scanning Parquet Files:  64%|██████▍   | 54/84 [00:01<00:00, 37.83it/s]Scanning Parquet Files:  61%|██████    | 51/84 [00:01<00:00, 36.27it/s]Scanning Parquet Files:  54%|█████▎    | 45/84 [00:00<00:00, 39.56it/s]Scanning Parquet Files:  62%|██████▏   | 52/84 [00:01<00:00, 39.35it/s]Scanning Parquet Files:  65%|██████▌   | 55/84 [00:01<00:00, 35.10it/s]Scanning Parquet Files:  70%|███████   | 59/84 [00:01<00:00, 34.04it/s]Scanning Parquet Files:  60%|█████▉    | 50/84 [00:01<00:00, 36.96it/s]Scanning Parquet Files:  70%|███████   | 59/84 [00:01<00:00, 32.98it/s]Scanning Parquet Files:  68%|██████▊   | 57/84 [00:01<00:00, 34.66it/s]Scanning Parquet Files:  75%|███████▌  | 63/84 [00:01<00:00, 33.84it/s]Scanning Parquet Files:  75%|███████▌  | 63/84 [00:01<00:00, 32.95it/s]Scanning Parquet Files:  65%|██████▌   | 55/84 [00:01<00:00, 33.10it/s]Scanning Parquet Files:  73%|███████▎  | 61/84 [00:01<00:00, 32.28it/s]Scanning Parquet Files:  80%|███████▉  | 67/84 [00:01<00:00, 32.01it/s]Scanning Parquet Files:  80%|███████▉  | 67/84 [00:01<00:00, 31.21it/s]Scanning Parquet Files:  77%|███████▋  | 65/84 [00:01<00:00, 32.69it/s]Scanning Parquet Files:  70%|███████   | 59/84 [00:01<00:00, 31.10it/s]Scanning Parquet Files:  85%|████████▍ | 71/84 [00:01<00:00, 32.49it/s]Scanning Parquet Files:  85%|████████▍ | 71/84 [00:01<00:00, 32.02it/s]Scanning Parquet Files:  83%|████████▎ | 70/84 [00:01<00:00, 34.96it/s]Scanning Parquet Files:  75%|███████▌  | 63/84 [00:01<00:00, 31.29it/s]Scanning Parquet Files:  89%|████████▉ | 75/84 [00:01<00:00, 31.45it/s]Scanning Parquet Files:  89%|████████▉ | 75/84 [00:01<00:00, 31.04it/s]Scanning Parquet Files:  88%|████████▊ | 74/84 [00:01<00:00, 33.38it/s]Scanning Parquet Files:  94%|█████████▍| 79/84 [00:02<00:00, 32.57it/s]Scanning Parquet Files:  80%|███████▉  | 67/84 [00:01<00:00, 29.92it/s]Scanning Parquet Files:  94%|█████████▍| 79/84 [00:02<00:00, 31.95it/s]Scanning Parquet Files:  93%|█████████▎| 78/84 [00:01<00:00, 33.78it/s]Scanning Parquet Files:  99%|█████████▉| 83/84 [00:02<00:00, 33.25it/s]Scanning Parquet Files: 100%|██████████| 84/84 [00:02<00:00, 39.08it/s]
+Scanning Parquet Files:  85%|████████▍ | 71/84 [00:01<00:00, 30.77it/s]✅ Loaded 233515 samples.
+Scanning Parquet Files:  99%|█████████▉| 83/84 [00:02<00:00, 32.47it/s]Scanning Parquet Files: 100%|██████████| 84/84 [00:02<00:00, 38.61it/s]
+Scanning Parquet Files:  98%|█████████▊| 82/84 [00:02<00:00, 32.25it/s]✅ Loaded 233515 samples.
+Filtered dataset: 233360 samples remaining.
+Scanning Parquet Files: 100%|██████████| 84/84 [00:02<00:00, 38.82it/s]
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+Scanning Parquet Files:  89%|████████▉ | 75/84 [00:02<00:00, 29.74it/s]✅ Loaded 233515 samples.
+Filtered dataset: 233360 samples remaining.
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+Scanning Parquet Files:  94%|█████████▍| 79/84 [00:02<00:00, 29.63it/s]Filtered dataset: 233360 samples remaining.
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+Scanning Parquet Files:  99%|█████████▉| 83/84 [00:02<00:00, 31.07it/s]Scanning Parquet Files: 100%|██████████| 84/84 [00:02<00:00, 36.54it/s]
+✅ Loaded 233515 samples.
+Filtered dataset: 233360 samples remaining.
+/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/utils/data/sampler.py:76: UserWarning: `data_source` argument is not used and will be removed in 2.2.0.You may still have custom implementation that utilizes it.
+  warnings.warn(
+01/27/2026 02:48:52 - INFO - __main__ - [INFO] Set DeepSpeed train_micro_batch_size_per_gpu to 1
+01/27/2026 02:48:52 - INFO - __main__ - [INFO] resume_from_checkpoint is None, but checking for existing checkpoints in /home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps...
+01/27/2026 02:48:52 - INFO - __main__ - [INFO] No checkpoints found in /home/v-yuxluo/data/experiments/260127_qwenimage_20b_5000steps, starting fresh
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 1007, in <module>
+[rank1]:     main()
+[rank1]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 633, in main
+[rank1]:     transformer, optimizer, train_dataloader, lr_scheduler = accelerator.prepare(
+[rank1]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/accelerator.py", line 1551, in prepare
+[rank1]:     result = self._prepare_deepspeed(*args)
+[rank1]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/accelerator.py", line 2328, in _prepare_deepspeed
+[rank1]:     optimizer = map_pytorch_optim_to_deepspeed(optimizer)
+[rank1]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/utils/deepspeed.py", line 97, in map_pytorch_optim_to_deepspeed
+[rank1]:     return optimizer_class(optimizer.param_groups, **defaults)
+[rank1]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/adam/cpu_adam.py", line 94, in __init__
+[rank1]:     self.ds_opt_adam = CPUAdamBuilder().load()
+[rank1]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 542, in load
+[rank1]:     return self.jit_load(verbose)
+[rank1]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 575, in jit_load
+[rank1]:     cxx_args = self.strip_empty_entries(self.cxx_args())
+[rank1]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 858, in cxx_args
+[rank1]:     CUDA_ENABLE = self.get_cuda_compile_flag()
+[rank1]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 430, in get_cuda_compile_flag
+[rank1]:     assert_no_cuda_mismatch(self.name)
+[rank1]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 109, in assert_no_cuda_mismatch
+[rank1]:     raise CUDAMismatchException(
+[rank1]: deepspeed.ops.op_builder.builder.CUDAMismatchException: >- DeepSpeed Op Builder: Installed CUDA version 11.8 does not match the version torch was compiled with 12.1, unable to compile cuda/cpp extensions without a matching cuda version.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 1007, in <module>
+[rank2]:     main()
+[rank2]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 633, in main
+[rank2]:     transformer, optimizer, train_dataloader, lr_scheduler = accelerator.prepare(
+[rank2]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/accelerator.py", line 1551, in prepare
+[rank2]:     result = self._prepare_deepspeed(*args)
+[rank2]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/accelerator.py", line 2328, in _prepare_deepspeed
+[rank2]:     optimizer = map_pytorch_optim_to_deepspeed(optimizer)
+[rank2]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/utils/deepspeed.py", line 97, in map_pytorch_optim_to_deepspeed
+[rank2]:     return optimizer_class(optimizer.param_groups, **defaults)
+[rank2]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/adam/cpu_adam.py", line 94, in __init__
+[rank2]:     self.ds_opt_adam = CPUAdamBuilder().load()
+[rank2]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 542, in load
+[rank2]:     return self.jit_load(verbose)
+[rank2]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 575, in jit_load
+[rank2]:     cxx_args = self.strip_empty_entries(self.cxx_args())
+[rank2]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 858, in cxx_args
+[rank2]:     CUDA_ENABLE = self.get_cuda_compile_flag()
+[rank2]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 430, in get_cuda_compile_flag
+[rank2]:     assert_no_cuda_mismatch(self.name)
+[rank2]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 109, in assert_no_cuda_mismatch
+[rank2]:     raise CUDAMismatchException(
+[rank2]: deepspeed.ops.op_builder.builder.CUDAMismatchException: >- DeepSpeed Op Builder: Installed CUDA version 11.8 does not match the version torch was compiled with 12.1, unable to compile cuda/cpp extensions without a matching cuda version.
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 1007, in <module>
+[rank3]:     main()
+[rank3]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 633, in main
+[rank3]:     transformer, optimizer, train_dataloader, lr_scheduler = accelerator.prepare(
+[rank3]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/accelerator.py", line 1551, in prepare
+[rank3]:     result = self._prepare_deepspeed(*args)
+[rank3]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/accelerator.py", line 2328, in _prepare_deepspeed
+[rank3]:     optimizer = map_pytorch_optim_to_deepspeed(optimizer)
+[rank3]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/utils/deepspeed.py", line 97, in map_pytorch_optim_to_deepspeed
+[rank3]:     return optimizer_class(optimizer.param_groups, **defaults)
+[rank3]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/adam/cpu_adam.py", line 94, in __init__
+[rank3]:     self.ds_opt_adam = CPUAdamBuilder().load()
+[rank3]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 542, in load
+[rank3]:     return self.jit_load(verbose)
+[rank3]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 575, in jit_load
+[rank3]:     cxx_args = self.strip_empty_entries(self.cxx_args())
+[rank3]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 858, in cxx_args
+[rank3]:     CUDA_ENABLE = self.get_cuda_compile_flag()
+[rank3]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 430, in get_cuda_compile_flag
+[rank3]:     assert_no_cuda_mismatch(self.name)
+[rank3]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 109, in assert_no_cuda_mismatch
+[rank3]:     raise CUDAMismatchException(
+[rank3]: deepspeed.ops.op_builder.builder.CUDAMismatchException: >- DeepSpeed Op Builder: Installed CUDA version 11.8 does not match the version torch was compiled with 12.1, unable to compile cuda/cpp extensions without a matching cuda version.
+Exception ignored in: <function DeepSpeedCPUAdam.__del__ at 0x145e27d83880>
+Traceback (most recent call last):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/adam/cpu_adam.py", line 102, in __del__
+    self.ds_opt_adam.destroy_adam(self.opt_id)
+AttributeError: 'DeepSpeedCPUAdam' object has no attribute 'ds_opt_adam'
+Exception ignored in: <function DeepSpeedCPUAdam.__del__ at 0x14691925b880>
+Traceback (most recent call last):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/adam/cpu_adam.py", line 102, in __del__
+    self.ds_opt_adam.destroy_adam(self.opt_id)
+AttributeError: 'DeepSpeedCPUAdam' object has no attribute 'ds_opt_adam'
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 1007, in <module>
+[rank0]:     main()
+[rank0]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_fulltune.py", line 633, in main
+[rank0]:     transformer, optimizer, train_dataloader, lr_scheduler = accelerator.prepare(
+[rank0]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/accelerator.py", line 1551, in prepare
+[rank0]:     result = self._prepare_deepspeed(*args)
+[rank0]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/accelerator.py", line 2328, in _prepare_deepspeed
+[rank0]:     optimizer = map_pytorch_optim_to_deepspeed(optimizer)
+[rank0]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/utils/deepspeed.py", line 97, in map_pytorch_optim_to_deepspeed
+[rank0]:     return optimizer_class(optimizer.param_groups, **defaults)
+[rank0]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/adam/cpu_adam.py", line 94, in __init__
+[rank0]:     self.ds_opt_adam = CPUAdamBuilder().load()
+[rank0]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 542, in load
+[rank0]:     return self.jit_load(verbose)
+[rank0]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 575, in jit_load
+[rank0]:     cxx_args = self.strip_empty_entries(self.cxx_args())
+[rank0]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 858, in cxx_args
+[rank0]:     CUDA_ENABLE = self.get_cuda_compile_flag()
+[rank0]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 430, in get_cuda_compile_flag
+[rank0]:     assert_no_cuda_mismatch(self.name)
+[rank0]:   File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 109, in assert_no_cuda_mismatch
+[rank0]:     raise CUDAMismatchException(
+[rank0]: deepspeed.ops.op_builder.builder.CUDAMismatchException: >- DeepSpeed Op Builder: Installed CUDA version 11.8 does not match the version torch was compiled with 12.1, unable to compile cuda/cpp extensions without a matching cuda version.
+Exception ignored in: <function DeepSpeedCPUAdam.__del__ at 0x1488d70cb880>
+Traceback (most recent call last):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/adam/cpu_adam.py", line 102, in __del__
+    self.ds_opt_adam.destroy_adam(self.opt_id)
+AttributeError: 'DeepSpeedCPUAdam' object has no attribute 'ds_opt_adam'
+Exception ignored in: <function DeepSpeedCPUAdam.__del__ at 0x14f726eaf880>
+Traceback (most recent call last):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/deepspeed/ops/adam/cpu_adam.py", line 102, in __del__
+    self.ds_opt_adam.destroy_adam(self.opt_id)
+AttributeError: 'DeepSpeedCPUAdam' object has no attribute 'ds_opt_adam'
+[rank0]:[W127 02:48:54.976600596 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
+W0127 02:48:54.653000 3582577 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 3582991 closing signal SIGTERM
+W0127 02:48:54.656000 3582577 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 3582993 closing signal SIGTERM
+W0127 02:48:54.657000 3582577 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 3582994 closing signal SIGTERM
+E0127 02:48:55.040000 3582577 site-packages/torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 1 (pid: 3582992) of binary: /home/v-yuxluo/miniconda3/envs/flux2/bin/python3.10
+Traceback (most recent call last):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/bin/accelerate", line 7, in <module>
+    sys.exit(main())
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/launch.py", line 1266, in launch_command
+    deepspeed_launcher(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/launch.py", line 952, in deepspeed_launcher
+    distrib_run.run(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+train_OpenSciDraw_fulltune.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-01-27_02:48:54
+  host      : robustdnn-a100-14.internal.cloudapp.net
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 3582992)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

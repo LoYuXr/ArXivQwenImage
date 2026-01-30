@@ -96,8 +96,8 @@ gradient_checkpointing = True
 
 # ====== Checkpointing ======
 checkpointing_steps = 1000  # Checkpoint every 1000 steps (each ~114GB with DeepSpeed)
-resume_from_checkpoint = None  # Start fresh (previous checkpoint was corrupted)
-checkpoints_total_limit = 2  # Only keep 2 checkpoints (~230GB total)
+resume_from_checkpoint = "latest"
+checkpoints_total_limit = None  # Keep all checkpoints
 
 # ====== Output Directories ======
 model_output_dir = "/home/v-yuxluo/data/experiments/flux2klein_fulltune_5000"

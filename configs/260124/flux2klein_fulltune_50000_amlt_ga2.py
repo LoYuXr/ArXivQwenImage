@@ -68,7 +68,7 @@ max_train_steps = 65000
 num_train_epochs = 1
 
 checkpointing_steps = 500
-checkpoints_total_limit = 3
+checkpoints_total_limit = None
 validation_steps = 500
 
 # Learning Rate
