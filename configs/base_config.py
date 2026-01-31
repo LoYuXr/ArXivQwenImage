@@ -72,6 +72,12 @@ checkpointing_steps = 500
 resume_from_checkpoint = "latest"
 checkpoints_total_limit = None
 
+# EMA (Exponential Moving Average) settings
+use_ema = False           # Whether to use EMA model
+ema_decay = 0.9999        # EMA decay rate
+ema_update_after_step = 0 # Start EMA after this step
+ema_steps = 100           # Update EMA every N steps
+
 # 混合精度
 mixed_precision = "bf16"
 allow_tf32 = False

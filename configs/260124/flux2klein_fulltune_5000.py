@@ -60,8 +60,8 @@ sampler_cfg = dict(
     type='DistributedBucketSamplerV2',
     dataset=None,
     batch_size=2,
-    num_replicas=None,
-    rank=None,
+    num_replicas=1,  # Force no sharding in sampler, let accelerator handle distribution
+    rank=0,  # Force rank 0, accelerator will handle actual rank
     drop_last=True,
     shuffle=True,
 )
@@ -98,6 +98,12 @@ gradient_checkpointing = True
 checkpointing_steps = 1000  # Checkpoint every 1000 steps (each ~114GB with DeepSpeed)
 resume_from_checkpoint = "latest"
 checkpoints_total_limit = None  # Keep all checkpoints
+
+# ====== EMA (Exponential Moving Average) ======
+use_ema = True
+ema_decay = 0.9999
+ema_update_after_step = 0
+ema_steps = 100  # Update EMA every 100 steps
 
 # ====== Output Directories ======
 model_output_dir = "/home/v-yuxluo/data/experiments/flux2klein_fulltune_5000"

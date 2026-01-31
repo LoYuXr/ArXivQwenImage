@@ -52,8 +52,8 @@ sampler_cfg = dict(
     type='DistributedBucketSamplerV2',
     dataset=None,
     batch_size=1,
-    num_replicas=None,
-    rank=None,
+    num_replicas=1,  # Force no sharding in sampler, let accelerator handle distribution
+    rank=0,  # Force rank 0, accelerator will handle actual rank
     drop_last=True,
     shuffle=True,
 )
@@ -68,8 +68,14 @@ max_train_steps = 130000
 num_train_epochs = 1
 
 checkpointing_steps = 1000
-checkpoints_total_limit = None
+checkpoints_total_limit = None  # Keep all checkpoints
 validation_steps = 1000
+
+# ====== EMA (Exponential Moving Average) ======
+use_ema = True
+ema_decay = 0.9999
+ema_update_after_step = 0
+ema_steps = 100  # Update EMA every 100 steps
 
 # Learning Rate
 learning_rate = 1e-5

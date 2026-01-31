@@ -77,6 +77,8 @@ import logging
 import warnings
 import itertools
 import tempfile
+import time
+import gc
 from datetime import timedelta
 from functools import partial
 from contextlib import nullcontext
@@ -111,6 +113,7 @@ from diffusers.training_utils import (
     compute_density_for_timestep_sampling,
     compute_loss_weighting_for_sd3,
     free_memory,
+    EMAModel,
 )
 from diffusers.utils import (
     check_min_version,
@@ -214,6 +217,7 @@ def save_model_checkpoint(
     global_step,
     logger,
     is_final=False,
+    ema_transformer=None,
 ):
     """
     Save full model checkpoint (no LoRA, direct transformer weights).
@@ -228,6 +232,7 @@ def save_model_checkpoint(
         global_step: Current training step
         logger: Logger instance
         is_final: Whether this is the final checkpoint
+        ema_transformer: Optional EMA model to save
     """
     if is_final:
         save_path = os.path.join(config.model_output_dir, "final_model")
@@ -250,6 +255,12 @@ def save_model_checkpoint(
             # Save transformer weights
             transformer_save_path = os.path.join(save_path, "transformer")
             unwrapped_transformer.save_pretrained(transformer_save_path)
+            
+            # Save EMA weights if available
+            if ema_transformer is not None:
+                ema_save_path = os.path.join(save_path, "ema_weights.pt")
+                torch.save(ema_transformer.state_dict(), ema_save_path)
+                logger.info(f"Saved EMA weights to {ema_save_path}")
             
             # Save training state
             state_dict = {
@@ -440,6 +451,21 @@ def main():
         logger.info("[INFO] Gradient checkpointing enabled")
     
     # =========================================================
+    # Create EMA Model (if enabled)
+    # =========================================================
+    ema_transformer = None
+    if config.get('use_ema', False):
+        ema_decay = config.get('ema_decay', 0.9999)
+        ema_update_after_step = config.get('ema_update_after_step', 0)
+        
+        ema_transformer = EMAModel(
+            transformer.parameters(),
+            decay=ema_decay,
+            update_after_step=ema_update_after_step,
+        )
+        logger.info(f"[INFO] EMA model created with decay={ema_decay}, update_after_step={ema_update_after_step}")
+    
+    # =========================================================
     # Prepare Transformer for Full Fine-tuning
     # =========================================================
     # Unfreeze all transformer parameters
@@ -522,11 +548,12 @@ def main():
     if sampler_cfg is not None:
         # Fill in the dataset reference
         sampler_cfg['dataset'] = dataset
-        # Fill in distributed info if not set
-        if sampler_cfg.get('num_replicas') is None:
-            sampler_cfg['num_replicas'] = accelerator.num_processes
-        if sampler_cfg.get('rank') is None:
-            sampler_cfg['rank'] = accelerator.process_index
+        # IMPORTANT: Force num_replicas=1, rank=0 to prevent double sharding!
+        # The sampler should NOT do distributed sharding because accelerator.prepare()
+        # will handle the distribution across GPUs. If we set num_replicas=num_gpus here,
+        # each GPU would only see 1/4 of 1/4 = 1/16 of the data!
+        sampler_cfg['num_replicas'] = 1  # Force no sharding in sampler
+        sampler_cfg['rank'] = 0  # Force rank 0
         # Override batch_size from config
         sampler_cfg['batch_size'] = config.train_batch_size
         # Set seed for reproducibility
@@ -650,6 +677,29 @@ def main():
     transformer, optimizer, train_dataloader, lr_scheduler = accelerator.prepare(
         transformer, optimizer, train_dataloader, lr_scheduler
     )
+
+    # =========================================================
+    # EMA stays on CPU to save GPU memory (~18GB for 9B model)
+    # We'll copy parameters to CPU when updating EMA
+    # This is different from train_visionflow.py which puts EMA on GPU,
+    # but we have validation that temporarily loads VAE+text_encoder to GPU
+    # =========================================================
+    if ema_transformer is not None:
+        logger.info(f"[INFO] EMA model stays on CPU to save GPU memory")
+        
+        # Load EMA weights from checkpoint if available
+        if resume_checkpoint_path and os.path.exists(resume_checkpoint_path):
+            ema_ckpt_path = os.path.join(resume_checkpoint_path, "ema_weights.pt")
+            if os.path.exists(ema_ckpt_path):
+                try:
+                    ema_state_dict = torch.load(ema_ckpt_path, map_location="cpu")
+                    ema_transformer.load_state_dict(ema_state_dict)
+                    logger.info(f"[INFO] Loaded EMA weights from checkpoint: {ema_ckpt_path}")
+                except Exception as e:
+                    logger.warning(f"[WARNING] Failed to load EMA weights: {e}")
+                    logger.warning(f"[WARNING] EMA will start from current transformer weights")
+            else:
+                logger.info(f"[INFO] No EMA checkpoint found, using fresh EMA from transformer weights")
 
     # =========================================================
     # Training Loop Setup
@@ -848,6 +898,35 @@ def main():
                 progress_bar.update(1)
                 global_step += 1
                 
+                # Update EMA model (completely on CPU to avoid GPU OOM)
+                ema_steps = config.get('ema_steps', 100)
+                if ema_transformer is not None and global_step % ema_steps == 0:
+                    # EMA is on CPU, transformer is on GPU (via DeepSpeed ZeRO-2).
+                    # We can't move EMA to GPU as it would cause OOM (70GB + 18GB > 80GB).
+                    # Instead, we manually do EMA update on CPU:
+                    # 1. Copy GPU params to CPU
+                    # 2. Update EMA shadow params on CPU
+                    # 3. Free CPU copies
+                    
+                    ema_decay = ema_transformer.cur_decay_value if hasattr(ema_transformer, 'cur_decay_value') else ema_transformer.decay
+                    ema_transformer.optimization_step += 1
+                    decay = ema_transformer.get_decay(ema_transformer.optimization_step)
+                    ema_transformer.cur_decay_value = decay
+                    one_minus_decay = 1 - decay
+                    
+                    with torch.no_grad():
+                        for s_param, param in zip(ema_transformer.shadow_params, transformer.parameters()):
+                            # Copy GPU param to CPU, then update shadow param
+                            param_cpu = param.data.detach().cpu()
+                            if param.requires_grad:
+                                s_param.sub_(one_minus_decay * (s_param - param_cpu))
+                            else:
+                                s_param.copy_(param_cpu)
+                            del param_cpu  # Free immediately
+                    
+                    if global_step % (ema_steps * 10) == 0:  # Log every 10 EMA updates
+                        logger.info(f"[INFO] EMA updated on CPU at step {global_step}, decay={decay:.6f}")
+                
                 # Track loss
                 current_loss = loss.detach().item()
                 loss_tracker.update(current_loss)
@@ -885,6 +964,7 @@ def main():
                         config=config,
                         global_step=global_step,
                         logger=logger,
+                        ema_transformer=ema_transformer,
                     )
                     
                     # Clean old checkpoints (only on main process)
@@ -924,15 +1004,18 @@ def main():
                 
                 # Validation
                 if validation_func is not None and validation_prompts is not None:
-                    # Only trigger early validation at step 1 if validation_steps is reasonably small
                     should_validate = (
                         global_step % validation_steps == 0 or 
-                        (global_step == 1 and validation_steps <= 1000) or  # Skip step 1 validation if validation is effectively disabled
+                        (global_step == 1 and validation_steps <= 1000) or
                         global_step == config.max_train_steps
                     )
                     
                     if should_validate:
                         logger.info(f"\n🔍 Running validation at step {global_step}...")
+                        
+                        # Free memory before validation
+                        gc.collect()
+                        torch.cuda.empty_cache()
                         
                         # Move VAE and text encoder to GPU for validation
                         if config.use_parquet_dataset:
@@ -953,11 +1036,16 @@ def main():
                         except Exception as e:
                             logger.error(f"Validation failed: {e}")
                         
-                        # Move back to CPU
+                        # Move back to CPU and aggressively free memory
                         if config.use_parquet_dataset:
                             vae.to("cpu")
                             text_encoder.to("cpu")
-                            torch.cuda.empty_cache()
+                        
+                        # Aggressive memory cleanup to prevent OOM on next training step
+                        gc.collect()
+                        torch.cuda.synchronize()
+                        torch.cuda.empty_cache()
+                        gc.collect()
                         
                         # Set transformer back to train mode
                         transformer.train()
@@ -985,6 +1073,7 @@ def main():
         global_step=global_step,
         logger=logger,
         is_final=True,
+        ema_transformer=ema_transformer,
     )
     
     # Final validation

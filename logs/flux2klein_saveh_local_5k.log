@@ -1,0 +1,163 @@
+W0130 04:20:42.948000 2148085 site-packages/torch/distributed/run.py:793] 
+W0130 04:20:42.948000 2148085 site-packages/torch/distributed/run.py:793] *****************************************
+W0130 04:20:42.948000 2148085 site-packages/torch/distributed/run.py:793] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0130 04:20:42.948000 2148085 site-packages/torch/distributed/run.py:793] *****************************************
+Config (path: configs/260130/flux2klein_saveh_local_5k.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'Flux2Klein', 'transformer_cfg': {'type': 'Flux2Transformer2DModel'}, 'pretrained_model_name_or_path': 'black-forest-labs/FLUX.2-klein-base-9B', 'huggingface_token': None, 'use_lora': False, 'lora_layers': None, 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'AdamW', 'use_8bit_adam': False, 'learning_rate': 1e-05, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 500, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 1000, 'resume_from_checkpoint': 'latest', 'checkpoints_total_limit': None, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': None, 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'none', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 3.5, 'dataset_cfg': {'type': 'ArXiVParquetDatasetV3', 'base_dir': '/home/v-yuxluo/data', 'parquet_base_path': 'ArXiV_parquet/flux_latents_saveh', 'vae_scaling_factor': 0.3611, 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': True}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 2, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'Flux2Klein_fulltune_train_iteration', 'model_output_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k', 'image_output_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k', 'logging_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k/logs', 'log_steps': 1, 'wandb_project': 'Flux2Klein-SaveH', 'run_name': 'flux2klein_9b_saveh_2015_5k', 'validation_func': 'Flux2Klein_fulltune_validation_func_parquet', 'validation_steps': 500, 'num_inference_steps': 28, 'validation_prompts': ['The figure illustrates a process hooking mechanism using the LD_PRELOAD environment variable to inject a custom data collection library, siren.so, into target ELF binary executables during runtime.', 'The figure presents a comparative diagram of four different defect detection tasks, labeled (a) ISDD, (b) MISDD, (c) MIISDD, and (d) MISDD-MM, illustrating variations in data modality handling and fusion strategies.', 'The figure illustrates a linear probing framework applied to a frozen multimodal large language model (LLM) across different decoder layers.', 'The figure presents a conceptual comparison of four different point cloud completion learning paradigms, arranged in a 2x2 grid layout.'], 'resolution_list': [[1008, 576], [1008, 576], [1008, 576], [768, 720]], 'max_sequence_length': 2048, 'dataloader_num_workers': 4, 'debug_mode': False, 'config_dir': 'configs/260130/flux2klein_saveh_local_5k.py'}
+Config (path: configs/260130/flux2klein_saveh_local_5k.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'Flux2Klein', 'transformer_cfg': {'type': 'Flux2Transformer2DModel'}, 'pretrained_model_name_or_path': 'black-forest-labs/FLUX.2-klein-base-9B', 'huggingface_token': None, 'use_lora': False, 'lora_layers': None, 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'AdamW', 'use_8bit_adam': False, 'learning_rate': 1e-05, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 500, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 1000, 'resume_from_checkpoint': 'latest', 'checkpoints_total_limit': None, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': None, 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'none', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 3.5, 'dataset_cfg': {'type': 'ArXiVParquetDatasetV3', 'base_dir': '/home/v-yuxluo/data', 'parquet_base_path': 'ArXiV_parquet/flux_latents_saveh', 'vae_scaling_factor': 0.3611, 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': True}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 2, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'Flux2Klein_fulltune_train_iteration', 'model_output_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k', 'image_output_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k', 'logging_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k/logs', 'log_steps': 1, 'wandb_project': 'Flux2Klein-SaveH', 'run_name': 'flux2klein_9b_saveh_2015_5k', 'validation_func': 'Flux2Klein_fulltune_validation_func_parquet', 'validation_steps': 500, 'num_inference_steps': 28, 'validation_prompts': ['The figure illustrates a process hooking mechanism using the LD_PRELOAD environment variable to inject a custom data collection library, siren.so, into target ELF binary executables during runtime.', 'The figure presents a comparative diagram of four different defect detection tasks, labeled (a) ISDD, (b) MISDD, (c) MIISDD, and (d) MISDD-MM, illustrating variations in data modality handling and fusion strategies.', 'The figure illustrates a linear probing framework applied to a frozen multimodal large language model (LLM) across different decoder layers.', 'The figure presents a conceptual comparison of four different point cloud completion learning paradigms, arranged in a 2x2 grid layout.'], 'resolution_list': [[1008, 576], [1008, 576], [1008, 576], [768, 720]], 'max_sequence_length': 2048, 'dataloader_num_workers': 4, 'debug_mode': False, 'config_dir': 'configs/260130/flux2klein_saveh_local_5k.py'}
+Config (path: configs/260130/flux2klein_saveh_local_5k.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'Flux2Klein', 'transformer_cfg': {'type': 'Flux2Transformer2DModel'}, 'pretrained_model_name_or_path': 'black-forest-labs/FLUX.2-klein-base-9B', 'huggingface_token': None, 'use_lora': False, 'lora_layers': None, 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'AdamW', 'use_8bit_adam': False, 'learning_rate': 1e-05, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 500, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 1000, 'resume_from_checkpoint': 'latest', 'checkpoints_total_limit': None, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': None, 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'none', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 3.5, 'dataset_cfg': {'type': 'ArXiVParquetDatasetV3', 'base_dir': '/home/v-yuxluo/data', 'parquet_base_path': 'ArXiV_parquet/flux_latents_saveh', 'vae_scaling_factor': 0.3611, 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': True}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 2, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'Flux2Klein_fulltune_train_iteration', 'model_output_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k', 'image_output_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k', 'logging_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k/logs', 'log_steps': 1, 'wandb_project': 'Flux2Klein-SaveH', 'run_name': 'flux2klein_9b_saveh_2015_5k', 'validation_func': 'Flux2Klein_fulltune_validation_func_parquet', 'validation_steps': 500, 'num_inference_steps': 28, 'validation_prompts': ['The figure illustrates a process hooking mechanism using the LD_PRELOAD environment variable to inject a custom data collection library, siren.so, into target ELF binary executables during runtime.', 'The figure presents a comparative diagram of four different defect detection tasks, labeled (a) ISDD, (b) MISDD, (c) MIISDD, and (d) MISDD-MM, illustrating variations in data modality handling and fusion strategies.', 'The figure illustrates a linear probing framework applied to a frozen multimodal large language model (LLM) across different decoder layers.', 'The figure presents a conceptual comparison of four different point cloud completion learning paradigms, arranged in a 2x2 grid layout.'], 'resolution_list': [[1008, 576], [1008, 576], [1008, 576], [768, 720]], 'max_sequence_length': 2048, 'dataloader_num_workers': 4, 'debug_mode': False, 'config_dir': 'configs/260130/flux2klein_saveh_local_5k.py'}
+Config (path: configs/260130/flux2klein_saveh_local_5k.py): {'seed': 42, 'device': 'cuda', 'dtype': 'float32', 'revision': None, 'variant': None, 'bnb_quantization_config_path': None, 'model_type': 'Flux2Klein', 'transformer_cfg': {'type': 'Flux2Transformer2DModel'}, 'pretrained_model_name_or_path': 'black-forest-labs/FLUX.2-klein-base-9B', 'huggingface_token': None, 'use_lora': False, 'lora_layers': None, 'rank': 64, 'lora_alpha': 4, 'lora_dropout': 0.0, 'layer_weighting': 5.0, 'pos_embedding': 'rope', 'decoder_arch': 'vit', 'use_parquet_dataset': True, 'train_batch_size': 1, 'num_train_epochs': 100, 'max_train_steps': 5000, 'gradient_accumulation_steps': 4, 'gradient_checkpointing': True, 'cache_latents': False, 'optimizer': 'AdamW', 'use_8bit_adam': False, 'learning_rate': 1e-05, 'lr_scheduler': 'cosine', 'lr_warmup_steps': 500, 'adam_beta1': 0.9, 'adam_beta2': 0.999, 'adam_weight_decay': 0.01, 'adam_epsilon': 1e-08, 'max_grad_norm': 1.0, 'prodigy_beta3': None, 'prodigy_decouple': True, 'prodigy_use_bias_correction': True, 'prodigy_safeguard_warmup': True, 'checkpointing_steps': 1000, 'resume_from_checkpoint': 'latest', 'checkpoints_total_limit': None, 'mixed_precision': 'bf16', 'allow_tf32': True, 'upcast_before_saving': False, 'offload': False, 'report_to': 'wandb', 'push_to_hub': False, 'hub_token': None, 'hub_model_id': None, 'cache_dir': None, 'scale_lr': False, 'lr_num_cycles': 1, 'lr_power': 1.0, 'weighting_scheme': 'none', 'logit_mean': 0.0, 'logit_std': 1.0, 'mode_scale': 1.29, 'validation_guidance_scale': 3.5, 'dataset_cfg': {'type': 'ArXiVParquetDatasetV3', 'base_dir': '/home/v-yuxluo/data', 'parquet_base_path': 'ArXiV_parquet/flux_latents_saveh', 'vae_scaling_factor': 0.3611, 'num_workers': 4, 'num_train_examples': None, 'debug_mode': False, 'is_main_process': True, 'stat_data': True}, 'sampler_cfg': {'type': 'DistributedBucketSamplerV2', 'dataset': None, 'batch_size': 2, 'num_replicas': None, 'rank': None, 'drop_last': True, 'shuffle': True}, 'train_iteration_func': 'Flux2Klein_fulltune_train_iteration', 'model_output_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k', 'image_output_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k', 'logging_dir': '/home/v-yuxluo/data/experiments/flux2klein_saveh_test_5k/logs', 'log_steps': 1, 'wandb_project': 'Flux2Klein-SaveH', 'run_name': 'flux2klein_9b_saveh_2015_5k', 'validation_func': 'Flux2Klein_fulltune_validation_func_parquet', 'validation_steps': 500, 'num_inference_steps': 28, 'validation_prompts': ['The figure illustrates a process hooking mechanism using the LD_PRELOAD environment variable to inject a custom data collection library, siren.so, into target ELF binary executables during runtime.', 'The figure presents a comparative diagram of four different defect detection tasks, labeled (a) ISDD, (b) MISDD, (c) MIISDD, and (d) MISDD-MM, illustrating variations in data modality handling and fusion strategies.', 'The figure illustrates a linear probing framework applied to a frozen multimodal large language model (LLM) across different decoder layers.', 'The figure presents a conceptual comparison of four different point cloud completion learning paradigms, arranged in a 2x2 grid layout.'], 'resolution_list': [[1008, 576], [1008, 576], [1008, 576], [768, 720]], 'max_sequence_length': 2048, 'dataloader_num_workers': 4, 'debug_mode': False, 'config_dir': 'configs/260130/flux2klein_saveh_local_5k.py'}
+01/30/2026 04:20:52 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 3
+Local process index: 3
+Device: cuda:3
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'none', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/30/2026 04:20:52 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 0
+Local process index: 0
+Device: cuda:0
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'none', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/30/2026 04:20:52 - INFO - __main__ - [INFO] Using model type: Flux2Klein
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory - ============================================================
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory - 🏭 Model Factory Initialized
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory -    Model Type: Flux2Klein
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory -    Pretrained Path: black-forest-labs/FLUX.2-klein-base-9B
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory -    Cache Dir: None
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory -    VAE Class: AutoencoderKLFlux2
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory -    Transformer Class: Flux2Transformer2DModel
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory -    Text Encoder Class: Qwen3ForCausalLM
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory -    Pipeline Class: Flux2KleinPipeline
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory - ============================================================
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading tokenizer: Qwen2TokenizerFast
+01/30/2026 04:20:52 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 2
+Local process index: 2
+Device: cuda:2
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'none', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/30/2026 04:20:52 - INFO - __main__ - Distributed environment: DEEPSPEED  Backend: nccl
+Num processes: 4
+Process index: 1
+Local process index: 1
+Device: cuda:1
+
+Mixed precision type: bf16
+ds_config: {'train_batch_size': 'auto', 'train_micro_batch_size_per_gpu': 'auto', 'gradient_accumulation_steps': 4, 'zero_optimization': {'stage': 3, 'offload_optimizer': {'device': 'none', 'nvme_path': None}, 'offload_param': {'device': 'none', 'nvme_path': None}, 'stage3_gather_16bit_weights_on_model_save': True}, 'gradient_clipping': 1.0, 'steps_per_print': inf, 'bf16': {'enabled': True}, 'fp16': {'enabled': False}}
+
+01/30/2026 04:20:52 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading text encoder: Qwen3ForCausalLM
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/4 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:00<00:00,  2.62it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:00<00:00,  2.63it/s]Loading checkpoint shards:  50%|█████     | 2/4 [00:00<00:00,  2.64it/s]Loading checkpoint shards:  25%|██▌       | 1/4 [00:01<00:03,  1.13s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:01<00:00,  1.46it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:01<00:00,  1.46it/s]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:01<00:00,  1.45it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:01<00:00,  2.07it/s]
+Loading checkpoint shards: 100%|██████████| 4/4 [00:01<00:00,  2.07it/s]
+Loading checkpoint shards: 100%|██████████| 4/4 [00:01<00:00,  2.08it/s]
+Loading checkpoint shards:  50%|█████     | 2/4 [00:02<00:02,  1.12s/it]Loading checkpoint shards:  75%|███████▌  | 3/4 [00:03<00:01,  1.12s/it]Loading checkpoint shards: 100%|██████████| 4/4 [00:03<00:00,  1.25it/s]Loading checkpoint shards: 100%|██████████| 4/4 [00:03<00:00,  1.09it/s]
+01/30/2026 04:20:57 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading VAE: AutoencoderKLFlux2
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 5588.68it/s]
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 6052.39it/s]
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 26132.74it/s]
+All model checkpoint weights were used when initializing AutoencoderKLFlux2.
+
+All the weights of AutoencoderKLFlux2 were initialized from the model checkpoint at black-forest-labs/FLUX.2-klein-base-9B.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use AutoencoderKLFlux2 for predictions without further training.
+01/30/2026 04:20:57 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading transformer: Flux2Transformer2DModel
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:389: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  if hasattr(vae, attr_name):
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:390: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  attr_value = getattr(vae, attr_name)
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:389: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  if hasattr(vae, attr_name):
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:390: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  attr_value = getattr(vae, attr_name)
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:389: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  if hasattr(vae, attr_name):
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:390: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  attr_value = getattr(vae, attr_name)
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files: 100%|██████████| 2/2 [00:00<00:00, 29641.72it/s]
+Instantiating Flux2Transformer2DModel model under default dtype torch.bfloat16.
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00, 78.77it/s]
+All model checkpoint weights were used when initializing Flux2Transformer2DModel.
+
+All the weights of Flux2Transformer2DModel were initialized from the model checkpoint at black-forest-labs/FLUX.2-klein-base-9B.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use Flux2Transformer2DModel for predictions without further training.
+01/30/2026 04:20:58 - INFO - OpenSciDraw.utils.model_factory - [INFO] Fine-tuning the full model ...
+01/30/2026 04:20:58 - INFO - OpenSciDraw.utils.model_factory - [INFO] Enabling gradient checkpointing for transformer
+01/30/2026 04:20:58 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading scheduler: FlowMatchEulerDiscreteScheduler
+01/30/2026 04:20:58 - INFO - OpenSciDraw.utils.model_factory - [INFO] Loading text encoding pipeline: Flux2KleinPipeline
+{'is_distilled'} was not found in config. Values will be initialized to default values.
+Loading pipeline components...:   0%|          | 0/2 [00:00<?, ?it/s]Loading pipeline components...: 100%|██████████| 2/2 [00:00<00:00, 4038.81it/s]
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:389: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  if hasattr(vae, attr_name):
+/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/model_factory.py:390: FutureWarning: Accessing config attribute `block_out_channels` directly via 'AutoencoderKLFlux2' object attribute is deprecated. Please access 'block_out_channels' over 'AutoencoderKLFlux2's config object instead, e.g. 'unet.config.block_out_channels'.
+  attr_value = getattr(vae, attr_name)
+01/30/2026 04:20:58 - INFO - OpenSciDraw.utils.model_factory - [INFO] VAE scale factor: 16
+01/30/2026 04:20:58 - INFO - __main__ - [INFO] move models to the assigned device
+01/30/2026 04:20:58 - INFO - __main__ - [INFO] Using parquet dataset, delay moving some models to device until inference
+[rank3]: Traceback (most recent call last):
+[rank3]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 792, in <module>
+[rank3]:     main(config)
+[rank3]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 430, in main
+[rank3]:     raise NotImplementedError('Only lora fine-tuning is supported right now.')
+[rank3]: NotImplementedError: Only lora fine-tuning is supported right now.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 792, in <module>
+[rank1]:     main(config)
+[rank1]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 430, in main
+[rank1]:     raise NotImplementedError('Only lora fine-tuning is supported right now.')
+[rank1]: NotImplementedError: Only lora fine-tuning is supported right now.
+[rank2]: Traceback (most recent call last):
+[rank2]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 792, in <module>
+[rank2]:     main(config)
+[rank2]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 430, in main
+[rank2]:     raise NotImplementedError('Only lora fine-tuning is supported right now.')
+[rank2]: NotImplementedError: Only lora fine-tuning is supported right now.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 792, in <module>
+[rank0]:     main(config)
+[rank0]:   File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 430, in main
+[rank0]:     raise NotImplementedError('Only lora fine-tuning is supported right now.')
+[rank0]: NotImplementedError: Only lora fine-tuning is supported right now.
+[rank0]:[W130 04:21:02.910272151 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
+W0130 04:21:03.633000 2148085 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 2148391 closing signal SIGTERM
+W0130 04:21:03.634000 2148085 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 2148392 closing signal SIGTERM
+W0130 04:21:03.635000 2148085 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 2148393 closing signal SIGTERM
+E0130 04:21:04.002000 2148085 site-packages/torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 3 (pid: 2148394) of binary: /home/v-yuxluo/miniconda3/envs/flux2/bin/python3.10
+Traceback (most recent call last):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/bin/accelerate", line 7, in <module>
+    sys.exit(main())
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/launch.py", line 1266, in launch_command
+    deepspeed_launcher(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/launch.py", line 952, in deepspeed_launcher
+    distrib_run.run(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+train_OpenSciDraw_loop.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-01-30_04:21:03
+  host      : robustdnn-a100-14.internal.cloudapp.net
+  rank      : 3 (local_rank: 3)
+  exitcode  : 1 (pid: 2148394)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

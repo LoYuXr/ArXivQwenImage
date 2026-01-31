@@ -1,0 +1,79 @@
+W0130 04:18:37.509000 2145206 site-packages/torch/distributed/run.py:793] 
+W0130 04:18:37.509000 2145206 site-packages/torch/distributed/run.py:793] *****************************************
+W0130 04:18:37.509000 2145206 site-packages/torch/distributed/run.py:793] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0130 04:18:37.509000 2145206 site-packages/torch/distributed/run.py:793] *****************************************
+Traceback (most recent call last):
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 791, in <module>
+    config = parse_config()
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/parse_config.py", line 24, in parse_config
+    config = Config.fromfile(args.config_dir)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/config/config.py", line 460, in fromfile
+    lazy_import is None and not Config._is_lazy_import(filename):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/config/config.py", line 1662, in _is_lazy_import
+    with open(filename, encoding='utf-8') as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'configs/260130/flux2klein_local_2015_test.py'
+Traceback (most recent call last):
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 791, in <module>
+    config = parse_config()
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/parse_config.py", line 24, in parse_config
+    config = Config.fromfile(args.config_dir)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/config/config.py", line 460, in fromfile
+    lazy_import is None and not Config._is_lazy_import(filename):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/config/config.py", line 1662, in _is_lazy_import
+    with open(filename, encoding='utf-8') as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'configs/260130/flux2klein_local_2015_test.py'
+Traceback (most recent call last):
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 791, in <module>
+    config = parse_config()
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/parse_config.py", line 24, in parse_config
+    config = Config.fromfile(args.config_dir)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/config/config.py", line 460, in fromfile
+    lazy_import is None and not Config._is_lazy_import(filename):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/config/config.py", line 1662, in _is_lazy_import
+    with open(filename, encoding='utf-8') as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'configs/260130/flux2klein_local_2015_test.py'
+Traceback (most recent call last):
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/train_OpenSciDraw_loop.py", line 791, in <module>
+    config = parse_config()
+  File "/home/v-yuxluo/WORK_local/ArXivQwenImage/OpenSciDraw/utils/parse_config.py", line 24, in parse_config
+    config = Config.fromfile(args.config_dir)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/config/config.py", line 460, in fromfile
+    lazy_import is None and not Config._is_lazy_import(filename):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/mmengine/config/config.py", line 1662, in _is_lazy_import
+    with open(filename, encoding='utf-8') as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'configs/260130/flux2klein_local_2015_test.py'
+W0130 04:18:46.468000 2145206 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 2145591 closing signal SIGTERM
+W0130 04:18:46.469000 2145206 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 2145593 closing signal SIGTERM
+W0130 04:18:46.471000 2145206 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 2145594 closing signal SIGTERM
+E0130 04:18:46.838000 2145206 site-packages/torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 1 (pid: 2145592) of binary: /home/v-yuxluo/miniconda3/envs/flux2/bin/python3.10
+Traceback (most recent call last):
+  File "/home/v-yuxluo/miniconda3/envs/flux2/bin/accelerate", line 7, in <module>
+    sys.exit(main())
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/launch.py", line 1266, in launch_command
+    deepspeed_launcher(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/accelerate/commands/launch.py", line 952, in deepspeed_launcher
+    distrib_run.run(args)
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/v-yuxluo/miniconda3/envs/flux2/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+train_OpenSciDraw_loop.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-01-30_04:18:46
+  host      : robustdnn-a100-14.internal.cloudapp.net
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 2145592)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
